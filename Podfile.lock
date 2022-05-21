@@ -1,0 +1,149 @@
+PODS:
+  - Alamofire (5.5.0)
+  - BSBacktraceLogger (0.0.1)
+  - Charts (3.6.0):
+    - Charts/Core (= 3.6.0)
+  - Charts/Core (3.6.0)
+  - CocoaLumberjack (3.7.4):
+    - CocoaLumberjack/Core (= 3.7.4)
+  - CocoaLumberjack/Core (3.7.4)
+  - DoraemonKit/Core (2.0.0):
+    - BSBacktraceLogger
+    - fishhook
+  - DoraemonKit/WithLogger (2.0.0):
+    - BSBacktraceLogger
+    - CocoaLumberjack
+    - DoraemonKit/Core
+    - fishhook
+  - DoraemonKit/WithMLeaksFinder (2.0.0):
+    - BSBacktraceLogger
+    - DoraemonKit/Core
+    - FBRetainCycleDetector
+    - fishhook
+  - FBRetainCycleDetector (0.1.4)
+  - FFPopup (1.1.5)
+  - fishhook (0.2)
+  - HandyJSON (5.0.2)
+  - IQKeyboardManager (6.5.9)
+  - JXSegmentedView (1.3.0)
+  - LookinServer (1.0.4)
+  - Masonry (1.1.0)
+  - MBProgressHUD (1.2.0)
+  - MJRefresh (3.7.5)
+  - Moya (15.0.0):
+    - Moya/Core (= 15.0.0)
+  - Moya/Core (15.0.0):
+    - Alamofire (~> 5.0)
+  - RxCocoa (6.5.0):
+    - RxRelay (= 6.5.0)
+    - RxSwift (= 6.5.0)
+  - RxRelay (6.5.0):
+    - RxSwift (= 6.5.0)
+  - RxSwift (6.5.0)
+  - SDWebImage (5.0.6):
+    - SDWebImage/Core (= 5.0.6)
+  - SDWebImage/Core (5.0.6)
+  - SnapKit (4.0.1)
+  - Toast (4.0.0)
+  - YYText (1.0.7)
+  - ZLBaseExtension (1.2.0):
+    - YYText
+  - ZLBaseUI (1.2.1):
+    - Masonry
+
+DEPENDENCIES:
+  - Charts
+  - DoraemonKit/Core (~> 2.0.0)
+  - DoraemonKit/WithLogger (~> 2.0.0)
+  - DoraemonKit/WithMLeaksFinder (= 2.0.0)
+  - FFPopup
+  - HandyJSON
+  - IQKeyboardManager
+  - JXSegmentedView
+  - LookinServer
+  - Masonry
+  - MBProgressHUD
+  - MJRefresh
+  - Moya
+  - RxCocoa
+  - RxRelay
+  - RxSwift
+  - SDWebImage (~> 5.0.0)
+  - SnapKit (~> 4.0.0)
+  - Toast
+  - YYText
+  - ZLBaseExtension (from `https://github.com/ExistOrLive/ZLBaseExtension.git`, tag `1.2.0`)
+  - ZLBaseUI (from `https://github.com/ExistOrLive/ZLBaseUI.git`, tag `1.2.1`)
+
+SPEC REPOS:
+  trunk:
+    - Alamofire
+    - BSBacktraceLogger
+    - Charts
+    - CocoaLumberjack
+    - DoraemonKit
+    - FBRetainCycleDetector
+    - FFPopup
+    - fishhook
+    - HandyJSON
+    - IQKeyboardManager
+    - JXSegmentedView
+    - LookinServer
+    - Masonry
+    - MBProgressHUD
+    - MJRefresh
+    - Moya
+    - RxCocoa
+    - RxRelay
+    - RxSwift
+    - SDWebImage
+    - SnapKit
+    - Toast
+    - YYText
+
+EXTERNAL SOURCES:
+  ZLBaseExtension:
+    :git: https://github.com/ExistOrLive/ZLBaseExtension.git
+    :tag: 1.2.0
+  ZLBaseUI:
+    :git: https://github.com/ExistOrLive/ZLBaseUI.git
+    :tag: 1.2.1
+
+CHECKOUT OPTIONS:
+  ZLBaseExtension:
+    :git: https://github.com/ExistOrLive/ZLBaseExtension.git
+    :tag: 1.2.0
+  ZLBaseUI:
+    :git: https://github.com/ExistOrLive/ZLBaseUI.git
+    :tag: 1.2.1
+
+SPEC CHECKSUMS:
+  Alamofire: 1c4fb5369c3fe93d2857c780d8bbe09f06f97e7c
+  BSBacktraceLogger: 06b983ee93a9f87d957960e9c73d660d5966b447
+  Charts: b1e3a1f5a1c9ba5394438ca3b91bd8c9076310af
+  CocoaLumberjack: 543c79c114dadc3b1aba95641d8738b06b05b646
+  DoraemonKit: 9e923599e28d0b61f1c6de4aef2c2d669b30abb7
+  FBRetainCycleDetector: 46f8179bbb1c587deee3ea838a1a3ee02acf5015
+  FFPopup: a208dcee8db3e54ec4a88fcd6481f6f5d85b7a83
+  fishhook: ea19933abfe8f2f52c55fd8b6e2718467d3ebc89
+  HandyJSON: 9e4e236f5d2dbefad5155a77417bbea438201c03
+  IQKeyboardManager: 241cc94ccabc9deb8f8bd7d12f00d73288d13ecc
+  JXSegmentedView: fec0d335355b6e019c494fe2e030bde8a36d2df6
+  LookinServer: 743c1681771d0a8dcc38825325a080c3186404a5
+  Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
+  MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
+  MJRefresh: fdf5e979eb406a0341468932d1dfc8b7f9fce961
+  Moya: 138f0573e53411fb3dc17016add0b748dfbd78ee
+  RxCocoa: 94f817b71c07517321eb4f9ad299112ca8af743b
+  RxRelay: 1de1523e604c72b6c68feadedd1af3b1b4d0ecbd
+  RxSwift: 5710a9e6b17f3c3d6e40d6e559b9fa1e813b2ef8
+  SDWebImage: 920f1a2ff1ca8296ad34f6e0510a1ef1d70ac965
+  SnapKit: 0de968a9fec17499afa29683b05d0c775b6d1c29
+  Toast: 91b396c56ee72a5790816f40d3a94dd357abc196
+  YYText: 5c461d709e24d55a182d1441c41dc639a18a4849
+  ZLBaseExtension: 90e59e26595222fb11628a97f4b2951ab843e4f1
+  ZLBaseUI: 2815898555602f9bebb23ca0277ff5352d2a2952
+
+PODFILE CHECKSUM: 908fa5cd08827ddf68ff79df9a52cc05c0bb9b0c
+
+COCOAPODS: 1.11.3
