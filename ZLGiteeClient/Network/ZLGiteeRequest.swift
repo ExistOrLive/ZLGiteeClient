@@ -11,6 +11,8 @@ import Moya
 enum ZLGiteeRequest {
     case user(login: String)
     case userPublicRepos(login: String)
+    case userFollower(login: String, page: Int, per_page: Int)
+    case userFollowing(login: String, page: Int, per_page: Int)
 }
 
 extension ZLGiteeRequest: TargetType {
@@ -29,13 +31,17 @@ extension ZLGiteeRequest: TargetType {
             return "/api/\(ZLGiteeRequest.version)/users/\(login)"
         case .userPublicRepos(let login):
             return "/api/\(ZLGiteeRequest.version)/users/\(login)/repos"
+        case .userFollower(let login, _, _):
+            return "/api/\(ZLGiteeRequest.version)/users/\(login)/followers"
+        case.userFollowing(let login, _, _):
+            return "/api/\(ZLGiteeRequest.version)/users/\(login)/following"
         }
     }
 
     /// The HTTP method used in the request.
     var method: Moya.Method {
         switch self {
-        case .user,.userPublicRepos:
+        case .user,.userPublicRepos, .userFollower, .userFollowing:
             return .get
         }
     }
@@ -55,6 +61,16 @@ extension ZLGiteeRequest: TargetType {
                                                    "sort":"full_name",
                                                    "page":1,
                                                    "per_page":20],
+                                      encoding: URLEncoding())
+        case .userFollower(_, let page, let per_page):
+            return .requestParameters(parameters: ["page":page,
+                                                   "per_page":per_page,
+                                                   "access_token":"618ac9c82d588bbe793a6c0924c86ade"],
+                                      encoding: URLEncoding())
+        case .userFollowing(_, let page, let per_page):
+            return .requestParameters(parameters: ["page":page,
+                                                   "per_page":per_page,
+                                                   "access_token":"618ac9c82d588bbe793a6c0924c86ade"],
                                       encoding: URLEncoding())
         }
        
