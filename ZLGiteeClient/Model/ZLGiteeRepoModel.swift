@@ -62,9 +62,9 @@ class ZLGiteeRepoModel: HandyJSON {
     var outsourced: Bool = false
     var project_creator: String?
     var members: [String]?
-    var pushed_at: String?
-    var created_at: String?
-    var updated_at: String?
+    var pushed_at: Date?
+    var created_at: Date?
+    var updated_at: Date?
     var parent: String?
     var paas: String?
     var stared: Bool = false
@@ -90,6 +90,15 @@ class ZLGiteeRepoModel: HandyJSON {
         
         mapper <<<
                     self.isInternal <-- "internal"
+        mapper <<<
+            self.created_at <-- CustomDateFormatTransform(formatString: "yyyy-MM-dd'T'HH:mm:ssZ")
+        
+        mapper <<<
+            self.updated_at <-- CustomDateFormatTransform(formatString: "yyyy-MM-dd'T'HH:mm:ssZ")
+        
+        mapper <<<
+            self.pushed_at <-- CustomDateFormatTransform(formatString: "yyyy-MM-dd'T'HH:mm:ssZ")
+
     }
 
 }

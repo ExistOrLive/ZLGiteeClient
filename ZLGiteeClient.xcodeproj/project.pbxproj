@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		315152702842196D0048DEC6 /* UIView+ShareMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3151526F2842196D0048DEC6 /* UIView+ShareMenu.swift */; };
+		3151527A2842399E0048DEC6 /* ZLWebContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 315152752842399E0048DEC6 /* ZLWebContentViewModel.swift */; };
+		3151527B2842399E0048DEC6 /* ZLWebContentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 315152772842399E0048DEC6 /* ZLWebContentController.swift */; };
+		3151527C2842399E0048DEC6 /* ZLWebContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 315152792842399E0048DEC6 /* ZLWebContentView.swift */; };
+		3151527F28423C850048DEC6 /* ZLCommonURLManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3151527E28423C850048DEC6 /* ZLCommonURLManager.swift */; };
 		316BA9EA283E429000E83CC0 /* ZLUserFollowingListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 316BA9E9283E429000E83CC0 /* ZLUserFollowingListController.swift */; };
 		31D69B3C2838D2EF009DAEEE /* ZLGiteeFollowerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31D69B3B2838D2EF009DAEEE /* ZLGiteeFollowerModel.swift */; };
 		31D69B3E2838D818009DAEEE /* ZLUserFollowerListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31D69B3D2838D818009DAEEE /* ZLUserFollowerListController.swift */; };
@@ -43,6 +48,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3151526F2842196D0048DEC6 /* UIView+ShareMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+ShareMenu.swift"; sourceTree = "<group>"; };
+		315152752842399E0048DEC6 /* ZLWebContentViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZLWebContentViewModel.swift; sourceTree = "<group>"; };
+		315152772842399E0048DEC6 /* ZLWebContentController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZLWebContentController.swift; sourceTree = "<group>"; };
+		315152792842399E0048DEC6 /* ZLWebContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZLWebContentView.swift; sourceTree = "<group>"; };
+		3151527E28423C850048DEC6 /* ZLCommonURLManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZLCommonURLManager.swift; sourceTree = "<group>"; };
 		316BA9E9283E429000E83CC0 /* ZLUserFollowingListController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZLUserFollowingListController.swift; sourceTree = "<group>"; };
 		31D69B3B2838D2EF009DAEEE /* ZLGiteeFollowerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZLGiteeFollowerModel.swift; sourceTree = "<group>"; };
 		31D69B3D2838D818009DAEEE /* ZLUserFollowerListController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZLUserFollowerListController.swift; sourceTree = "<group>"; };
@@ -94,6 +104,56 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3151526E2842194E0048DEC6 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				3151526F2842196D0048DEC6 /* UIView+ShareMenu.swift */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
+		315152732842399E0048DEC6 /* ZLWebContentController */ = {
+			isa = PBXGroup;
+			children = (
+				315152742842399E0048DEC6 /* viewModel */,
+				315152762842399E0048DEC6 /* controller */,
+				315152782842399E0048DEC6 /* view */,
+			);
+			path = ZLWebContentController;
+			sourceTree = "<group>";
+		};
+		315152742842399E0048DEC6 /* viewModel */ = {
+			isa = PBXGroup;
+			children = (
+				315152752842399E0048DEC6 /* ZLWebContentViewModel.swift */,
+			);
+			path = viewModel;
+			sourceTree = "<group>";
+		};
+		315152762842399E0048DEC6 /* controller */ = {
+			isa = PBXGroup;
+			children = (
+				315152772842399E0048DEC6 /* ZLWebContentController.swift */,
+			);
+			path = controller;
+			sourceTree = "<group>";
+		};
+		315152782842399E0048DEC6 /* view */ = {
+			isa = PBXGroup;
+			children = (
+				315152792842399E0048DEC6 /* ZLWebContentView.swift */,
+			);
+			path = view;
+			sourceTree = "<group>";
+		};
+		3151527D28423C570048DEC6 /* ZLURLManager */ = {
+			isa = PBXGroup;
+			children = (
+				3151527E28423C850048DEC6 /* ZLCommonURLManager.swift */,
+			);
+			path = ZLURLManager;
+			sourceTree = "<group>";
+		};
 		330D32D8C6A7E8CE6DE3B2F2 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -124,6 +184,9 @@
 		740C2F622837C49400DAFF0E /* ZLGiteeClient */ = {
 			isa = PBXGroup;
 			children = (
+				3151527D28423C570048DEC6 /* ZLURLManager */,
+				315152732842399E0048DEC6 /* ZLWebContentController */,
+				3151526E2842194E0048DEC6 /* Extension */,
 				740C2F9A2837E2D600DAFF0E /* CellData */,
 				740C2F942837E25B00DAFF0E /* Cell */,
 				740C2F8C2837E1A300DAFF0E /* ZLMVVM */,
@@ -386,6 +449,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3151527A2842399E0048DEC6 /* ZLWebContentViewModel.swift in Sources */,
 				31D69B3C2838D2EF009DAEEE /* ZLGiteeFollowerModel.swift in Sources */,
 				740C2F642837C49400DAFF0E /* AppDelegate.swift in Sources */,
 				31D69B442838DDC0009DAEEE /* ZLUserTableViewCell.swift in Sources */,
@@ -396,7 +460,9 @@
 				740C2FA92837E83F00DAFF0E /* ZLViewUpdatable.swift in Sources */,
 				74AAE5C0284207400030DA01 /* ZLCommonTableViewCellData.swift in Sources */,
 				316BA9EA283E429000E83CC0 /* ZLUserFollowingListController.swift in Sources */,
+				3151527C2842399E0048DEC6 /* ZLWebContentView.swift in Sources */,
 				74AAE5BA284203EA0030DA01 /* ZLUserInfoController.swift in Sources */,
+				3151527B2842399E0048DEC6 /* ZLWebContentController.swift in Sources */,
 				740C2FAC2837E83F00DAFF0E /* ZLViewStatus.swift in Sources */,
 				74AAE5C2284207EC0030DA01 /* ZLUserInfoHeaderCellData.swift in Sources */,
 				740C2F782837C80A00DAFF0E /* ZLMainViewController.swift in Sources */,
@@ -411,10 +477,12 @@
 				31D69B3E2838D818009DAEEE /* ZLUserFollowerListController.swift in Sources */,
 				740C2F932837E1A300DAFF0E /* ZLTableViewCellProtocol.swift in Sources */,
 				740C2F8B2837E13300DAFF0E /* ZLUserReposListController.swift in Sources */,
+				3151527F28423C850048DEC6 /* ZLCommonURLManager.swift in Sources */,
 				740C2F892837DCB600DAFF0E /* ZLGiteeRepoModel.swift in Sources */,
 				740C2F842837D0AF00DAFF0E /* ZLGiteeRequest.swift in Sources */,
 				740C2F812837CCC400DAFF0E /* ZLProfileController.swift in Sources */,
 				740C2F912837E1A300DAFF0E /* ZLTableViewBaseCellData.swift in Sources */,
+				315152702842196D0048DEC6 /* UIView+ShareMenu.swift in Sources */,
 				740C2FAE2837E83F00DAFF0E /* ZLProgressHUD.swift in Sources */,
 				740C2F992837E28700DAFF0E /* ZLRepositoryTableViewCell.swift in Sources */,
 			);

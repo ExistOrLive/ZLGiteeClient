@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import HandyJSON
 
 class ZLUserInfoHeaderCellData: ZLTableViewBaseCellData {
     
@@ -28,7 +29,11 @@ extension ZLUserInfoHeaderCellData: ZLUserInfoHeaderCellDataSourceAndDelegate {
         "\(model.name ?? "")(\(model.login ?? ""))"
     }
     var time: String {
-        model.created_at ?? ""
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        let time = dateFormatter.string(from: model.created_at ?? Date())
+        let createdAtStr = "创建于"
+        return "\(createdAtStr) \((time))"
     }
     var desc: String {
         model.bio ?? ""

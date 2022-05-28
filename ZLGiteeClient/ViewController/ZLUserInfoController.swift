@@ -23,6 +23,7 @@ class ZLUserInfoController: ZLBaseViewController {
         super.viewDidLoad()
         setupUI()
         tableContainerView.startLoad()
+        setSharedButton()
     }
     
     func setupUI() {
@@ -32,6 +33,27 @@ class ZLUserInfoController: ZLBaseViewController {
         tableContainerView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
+    }
+    
+    func setSharedButton() {
+
+        let button = UIButton.init(type: .custom)
+        button.setAttributedTitle(NSAttributedString(string: "...",
+                                                     attributes: [.font: UIFont.systemFont(ofSize: 30),
+                                                                  .foregroundColor: UIColor.label(withName: "ICON_Common")]),
+                                  for: .normal)
+        button.frame = CGRect.init(x: 0, y: 0, width: 60, height: 60)
+        button.addTarget(self, action: #selector(onMoreButtonClick(button:)), for: .touchUpInside)
+
+        self.zlNavigationBar.rightButton = button
+    }
+
+    // action
+    @objc func onMoreButtonClick(button: UIButton) {
+
+        guard let _ = login,
+              let url = URL(string: model?.html_url ?? "") else { return }
+        button.showShareMenu(title: url.absoluteString, url: url, sourceViewController: self)
     }
     
     func generateCellDatas() {
@@ -68,20 +90,32 @@ class ZLUserInfoController: ZLBaseViewController {
         }
         
         if let qq = model.qq, !qq.isEmpty {
-            let qqCellData = ZLCommonTableViewCellData(canClick: false, title: "QQ", info: qq, cellHeight: 50, actionBlock: nil)
+            let qqCellData = ZLCommonTableViewCellData(canClick: false, title: "QQ", info: qq, cellHeight: 50) {
+                let pasteBoard = UIPasteboard.general
+                pasteBoard.string = model.qq
+                ZLToastView.showMessage("成功拷贝到剪切板")
+            }
             addSubViewModel(qqCellData)
             cellDatas.append(qqCellData)
         }
         
         
         if let wechat = model.wechat, !wechat.isEmpty {
-            let wechatCellData = ZLCommonTableViewCellData(canClick: false, title: "微信", info: wechat, cellHeight: 50, actionBlock: nil)
+            let wechatCellData = ZLCommonTableViewCellData(canClick: false, title: "微信", info: wechat, cellHeight: 50) {
+                let pasteBoard = UIPasteboard.general
+                pasteBoard.string = model.wechat
+                ZLToastView.showMessage("成功拷贝到剪切板")
+            }
             addSubViewModel(wechatCellData)
             cellDatas.append(wechatCellData)
         }
         
         if let linkedin = model.linkedin, !linkedin.isEmpty {
-            let linkedinCellData = ZLCommonTableViewCellData(canClick: false, title: "领英", info: linkedin, cellHeight: 50, actionBlock: nil)
+            let linkedinCellData = ZLCommonTableViewCellData(canClick: false, title: "领英", info: linkedin, cellHeight: 50)  {
+                let pasteBoard = UIPasteboard.general
+                pasteBoard.string = model.linkedin
+                ZLToastView.showMessage("成功拷贝到剪切板")
+            }
             addSubViewModel(linkedinCellData)
             cellDatas.append(linkedinCellData)
         }

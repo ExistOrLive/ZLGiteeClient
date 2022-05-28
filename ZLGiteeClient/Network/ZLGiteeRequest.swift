@@ -55,7 +55,7 @@ extension ZLGiteeRequest: TargetType {
     var task: Task {
         switch self {
         case .user:
-            return .requestParameters(parameters: ["access_token":"618ac9c82d588bbe793a6c0924c86ade"],
+            return .requestParameters(parameters: ["access_token":""],
                                       encoding: URLEncoding())
         case .userPublicRepos:
             return .requestParameters(parameters: ["type":"all",
@@ -66,12 +66,12 @@ extension ZLGiteeRequest: TargetType {
         case .userFollower(_, let page, let per_page):
             return .requestParameters(parameters: ["page":page,
                                                    "per_page":per_page,
-                                                   "access_token":"618ac9c82d588bbe793a6c0924c86ade"],
+                                                   "access_token":""],
                                       encoding: URLEncoding())
         case .userFollowing(_, let page, let per_page):
             return .requestParameters(parameters: ["page":page,
                                                    "per_page":per_page,
-                                                   "access_token":"618ac9c82d588bbe793a6c0924c86ade"],
+                                                   "access_token":""],
                                       encoding: URLEncoding())
         }
        

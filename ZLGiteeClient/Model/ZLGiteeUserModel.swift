@@ -49,7 +49,14 @@ class ZLGiteeUserModel: HandyJSON {
     var public_repos: Int = 0
     var public_gists: Int = 0
     
-    var created_at: String?
-    var updated_at: String?
-
+    var created_at: Date?
+    var updated_at: Date?
+    
+    func mapping(mapper: HelpingMapper) {
+        mapper <<<
+            self.created_at <-- CustomDateFormatTransform(formatString: "yyyy-MM-dd'T'HH:mm:ssZ")
+        
+        mapper <<<
+            self.updated_at <-- CustomDateFormatTransform(formatString: "yyyy-MM-dd'T'HH:mm:ssZ")
+    }
 }
