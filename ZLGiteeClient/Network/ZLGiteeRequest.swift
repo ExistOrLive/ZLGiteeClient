@@ -55,7 +55,8 @@ extension ZLGiteeRequest: TargetType {
     var task: Task {
         switch self {
         case .user:
-            return .requestPlain
+            return .requestParameters(parameters: ["access_token":"618ac9c82d588bbe793a6c0924c86ade"],
+                                      encoding: URLEncoding())
         case .userPublicRepos:
             return .requestParameters(parameters: ["type":"all",
                                                    "sort":"full_name",

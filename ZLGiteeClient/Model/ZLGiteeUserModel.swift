@@ -48,4 +48,8 @@ class ZLGiteeUserModel: HandyJSON {
     var watched: Int = 0
     var public_repos: Int = 0
     var public_gists: Int = 0
+    
+    var created_at: String?
+    var updated_at: String?
+
 }

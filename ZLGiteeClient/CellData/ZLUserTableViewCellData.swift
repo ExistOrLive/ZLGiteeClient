@@ -29,7 +29,10 @@ class ZLUserTableViewCellData: ZLTableViewBaseCellData {
     }
 
     override func onCellSingleTap() {
-        
+        let vc = ZLUserInfoController()
+        vc.login = userModel.login ?? ""
+        vc.hidesBottomBarWhenPushed = true
+        viewController?.navigationController?.pushViewController(vc, animated: true)
     }
 }
 

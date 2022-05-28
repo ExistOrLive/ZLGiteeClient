@@ -23,7 +23,6 @@ class ZLUserFollowerListController: ZLBaseViewController {
         super.viewDidLoad()
         setupUI()
         tableContainerView.startLoad()
-        view.backgroundColor = .clear
     }
     
     func setupUI() {
