@@ -14,6 +14,8 @@ target 'ZLGiteeClient' do
  pod 'ZLBaseExtension', :git => "https://github.com/ExistOrLive/ZLBaseExtension.git", :tag => '1.2.0'
  #pod 'ZLBaseExtension', :path => "../../ZLBaseExtension"
 
+# 弹出框 弹出菜单
+pod 'FWPopupView'
 # 刷新控件
 pod 'MJRefresh'
 # 转圈控件

@@ -11,19 +11,21 @@ import SnapKit
 import Moya
 
 class ZLUserReposListController: ZLBaseViewController {
-
-    var cellDatas: [ZLTableViewBaseCellData] = []
+    
+    // Entry Params
+    var login: String?
+    
+    // ViewModel
+    private var cellDatas: [ZLTableViewBaseCellData] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
         tableContainerView.startLoad()
-        view.backgroundColor = .clear
     }
     
     func setupUI() {
         title = "仓库"
-        
         contentView.addSubview(tableContainerView)
         tableContainerView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
@@ -57,7 +59,7 @@ extension ZLUserReposListController: ZLTableContainerViewDelegate {
 extension ZLUserReposListController {
     func loadData(loadNewData: Bool) {
         let provider = MoyaProvider<ZLGiteeRequest>()
-        provider.request(ZLGiteeRequest.userPublicRepos(login: "existorlive")) { [weak self]result in
+        provider.request(ZLGiteeRequest.userPublicRepos(login: login ?? "")) { [weak self]result in
             guard let self = self else { return }
             switch result {
             case .success(let response):
