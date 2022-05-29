@@ -7,6 +7,7 @@
 
 import UIKit
 import HandyJSON
+import ZLUIUtilities
 
 class ZLUserInfoHeaderCellData: ZLTableViewBaseCellData {
     

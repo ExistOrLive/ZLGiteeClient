@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import ZLUIUtilities
 
 protocol ZLCommonTableViewCellDataSourceAndDelegate: NSObjectProtocol {
 
@@ -71,9 +72,9 @@ class ZLCommonTableViewCell: UITableViewCell {
 
     lazy var nextLabel: UILabel = {
         let label = UILabel()
-//        label.font = UIFont.zlIconFont(withSize: 15)
+        label.font = UIFont.zlIconFont(withSize: 15)
         label.textColor = UIColor(named: "ICON_Common")
-//        label.text = ZLIconFont.NextArrow.rawValue
+        label.text = ZLIconFont.NextArrow.rawValue
         return label
     }()
 }

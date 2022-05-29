@@ -9,6 +9,7 @@
 import UIKit
 import ZLBaseUI
 import WebKit
+import ZLUIUtilities
 
 class ZLWebContentViewModel: ZLBaseViewModel {
     

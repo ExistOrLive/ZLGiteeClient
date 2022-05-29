@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import ZLUIUtilities
 
 class ZLRepositoryTableViewCellData: ZLTableViewBaseCellData {
     
