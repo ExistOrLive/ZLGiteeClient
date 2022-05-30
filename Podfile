@@ -9,10 +9,13 @@ target 'ZLGiteeClient' do
   use_frameworks!
 
   pod 'ZLBaseUI', :git => 'https://github.com/ExistOrLive/ZLBaseUI.git', :tag => '1.2.1'
-  #pod 'ZLBaseUI', :path => "../../ZLBaseUI"
+  #pod 'ZLBaseUI', :path => "../ZLBaseUI"
 
  pod 'ZLBaseExtension', :git => "https://github.com/ExistOrLive/ZLBaseExtension.git", :tag => '1.2.0'
- #pod 'ZLBaseExtension', :path => "../../ZLBaseExtension"
+ #pod 'ZLBaseExtension', :path => "../ZLBaseExtension"
+ 
+ pod 'ZLUIUtilities', :git => "https://github.com/ExistOrLive/ZLUIUtilities.git"
+ #pod 'ZLUIUtilities', :path => "../ZLUIUtilities"
 
 # 弹出框 弹出菜单
 pod 'FWPopupView'

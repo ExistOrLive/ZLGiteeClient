@@ -8,6 +8,7 @@
 
 import UIKit
 import ZLBaseUI
+import ZLUIUtilities
 
 protocol ZLUserInfoHeaderCellDataSourceAndDelegate: NSObjectProtocol {
 

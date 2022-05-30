@@ -52,6 +52,13 @@ PODS:
     - YYText
   - ZLBaseUI (1.2.1):
     - Masonry
+  - ZLUIUtilities (0.1.0):
+    - MBProgressHUD
+    - MJRefresh
+    - SnapKit
+    - Toast
+    - ZLBaseExtension
+    - ZLBaseUI
 
 DEPENDENCIES:
   - Charts
@@ -77,6 +84,7 @@ DEPENDENCIES:
   - YYText
   - ZLBaseExtension (from `https://github.com/ExistOrLive/ZLBaseExtension.git`, tag `1.2.0`)
   - ZLBaseUI (from `https://github.com/ExistOrLive/ZLBaseUI.git`, tag `1.2.1`)
+  - ZLUIUtilities (from `https://github.com/ExistOrLive/ZLUIUtilities.git`)
 
 SPEC REPOS:
   trunk:
@@ -112,6 +120,8 @@ EXTERNAL SOURCES:
   ZLBaseUI:
     :git: https://github.com/ExistOrLive/ZLBaseUI.git
     :tag: 1.2.1
+  ZLUIUtilities:
+    :git: https://github.com/ExistOrLive/ZLUIUtilities.git
 
 CHECKOUT OPTIONS:
   ZLBaseExtension:
@@ -120,6 +130,9 @@ CHECKOUT OPTIONS:
   ZLBaseUI:
     :git: https://github.com/ExistOrLive/ZLBaseUI.git
     :tag: 1.2.1
+  ZLUIUtilities:
+    :commit: adbcc7534163738f2b19ebf5c1446c064afb1bd1
+    :git: https://github.com/ExistOrLive/ZLUIUtilities.git
 
 SPEC CHECKSUMS:
   Alamofire: 1c4fb5369c3fe93d2857c780d8bbe09f06f97e7c
@@ -148,7 +161,8 @@ SPEC CHECKSUMS:
   YYText: 5c461d709e24d55a182d1441c41dc639a18a4849
   ZLBaseExtension: 90e59e26595222fb11628a97f4b2951ab843e4f1
   ZLBaseUI: 2815898555602f9bebb23ca0277ff5352d2a2952
+  ZLUIUtilities: 58cc312400e93051b01ab73e77998865ee43f53a
 
-PODFILE CHECKSUM: be61b0c435f44b473e91467c0304b9623ba64a81
+PODFILE CHECKSUM: 15258026a6220ab420998a4d8a31f061649d30dd
 
-COCOAPODS: 1.11.2
+COCOAPODS: 1.11.3

@@ -38,13 +38,13 @@ import ZLBaseUI
     
     private lazy var rightButton: UIButton = {
         let button = UIButton(frame:CGRect(x: 0, y: 0, width: 60, height: 60))
-//        let attributedTitle = ZLIconFont
-//            .More
-//            .rawValue
-//            .asMutableAttributedString()
-//            .font(UIFont.zlIconFont(withSize: 30))
-//            .foregroundColor(UIColor.label(withName: "ICON_Common"))
-//        button.setAttributedTitle(attributedTitle, for: .normal)
+        let attributedTitle = ZLIconFont
+            .More
+            .rawValue
+            .asMutableAttributedString()
+            .font(UIFont.zlIconFont(withSize: 30))
+            .foregroundColor(UIColor.label(withName: "ICON_Common"))
+        button.setAttributedTitle(attributedTitle, for: .normal)
         button.addTarget(self, action: #selector(onRightButtonClicked(button:)), for: .touchUpInside)
         return button
     }()

@@ -13,21 +13,6 @@ class ZLNotificationsController: ZLBaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        let provider = MoyaProvider<ZLGiteeRequest>()
-        provider.request(ZLGiteeRequest.user(login: "existorlive")) { result in
-            switch result {
-            case .success(let response):
-                let data = response.data
-                let dataStr = String(data: data, encoding:.utf8)
-                let model = ZLGiteeUserModel.deserialize(from: dataStr, designatedPath: nil)
-                print(model)
-            case .failure(let error):
-                print(error)
-            }
-        
-        }
-        
     }
     
 

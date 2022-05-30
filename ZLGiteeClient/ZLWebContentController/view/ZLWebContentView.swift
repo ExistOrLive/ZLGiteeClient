@@ -87,53 +87,53 @@ class ZLWebContentView: ZLBaseView {
     
     private lazy var backButton: UIButton = {
         let button = UIButton(type: .custom)
-//        button.setImage(UIImage
-//            .iconFontImage(withText: ZLIconFont.BackArrow.rawValue,
-//                                              fontSize: 25,
-//                                              color: UIColor.label(withName: "CommonOperationColor")),
-//                        for: .normal)
-//        button.setImage(UIImage.iconFontImage(withText: ZLIconFont.BackArrow.rawValue,
-//                                              fontSize: 25,
-//                                              color: UIColor.label(withName: "DisabledColor")),
-//                        for: .disabled)
+        button.setImage(UIImage
+            .iconFontImage(withText: ZLIconFont.BackArrow.rawValue,
+                                              fontSize: 25,
+                                              color: UIColor.label(withName: "CommonOperationColor")),
+                        for: .normal)
+        button.setImage(UIImage.iconFontImage(withText: ZLIconFont.BackArrow.rawValue,
+                                              fontSize: 25,
+                                              color: UIColor.label(withName: "DisabledColor")),
+                        for: .disabled)
         button.addTarget(self, action: #selector(onGoBackButtonClicked), for: .touchUpInside)
         return button
     }()
 
     private lazy var forwardButton: UIButton = {
         let button = UIButton(type: .custom)
-//        button.setImage(UIImage.iconFontImage(withText: ZLIconFont.NextArrow.rawValue,
-//                                              fontSize: 25,
-//                                              color: UIColor.label(withName: "CommonOperationColor")),
-//                        for: .normal)
-//        button.setImage(UIImage.iconFontImage(withText: ZLIconFont.NextArrow.rawValue,
-//                                              fontSize: 25,
-//                                              color: UIColor.label(withName: "DisabledColor")),
-//                        for: .disabled)
+        button.setImage(UIImage.iconFontImage(withText: ZLIconFont.NextArrow.rawValue,
+                                              fontSize: 25,
+                                              color: UIColor.label(withName: "CommonOperationColor")),
+                        for: .normal)
+        button.setImage(UIImage.iconFontImage(withText: ZLIconFont.NextArrow.rawValue,
+                                              fontSize: 25,
+                                              color: UIColor.label(withName: "DisabledColor")),
+                        for: .disabled)
         button.addTarget(self, action: #selector(onGoForwardButtonClicked), for: .touchUpInside)
         return button
     }()
     
     private lazy var reloadOrStopButton: UIButton = {
         let button = UIButton(type: .custom)
-//        button.setImage(UIImage.iconFontImage(withText: ZLIconFont.Close.rawValue,
-//                                              fontSize: 25,
-//                                              color: UIColor.label(withName: "CommonOperationColor")),
-//                        for: .normal)
-//        button.setImage(UIImage.iconFontImage(withText: ZLIconFont.Reload.rawValue,
-//                                              fontSize: 25,
-//                                              color: UIColor.label(withName: "CommonOperationColor")),
-//                        for: .highlighted)
+        button.setImage(UIImage.iconFontImage(withText: ZLIconFont.Close.rawValue,
+                                              fontSize: 25,
+                                              color: UIColor.label(withName: "CommonOperationColor")),
+                        for: .normal)
+        button.setImage(UIImage.iconFontImage(withText: ZLIconFont.Reload.rawValue,
+                                              fontSize: 25,
+                                              color: UIColor.label(withName: "CommonOperationColor")),
+                        for: .highlighted)
         button.addTarget(self, action: #selector(onReloadOrStopLoadButtonCicked), for: .touchUpInside)
         return button
     }()
     
     private lazy var safariButton: UIButton = {
         let button = UIButton(type: .custom)
-//        button.setImage(UIImage.iconFontImage(withText: ZLIconFont.Safari.rawValue,
-//                                              fontSize: 25,
-//                                              color: UIColor.label(withName: "CommonOperationColor")),
-//                        for: .normal)
+        button.setImage(UIImage.iconFontImage(withText: ZLIconFont.Safari.rawValue,
+                                              fontSize: 25,
+                                              color: UIColor.label(withName: "CommonOperationColor")),
+                        for: .normal)
         button.addTarget(self, action: #selector(openInSafari), for: .touchUpInside)
         return button
     }()

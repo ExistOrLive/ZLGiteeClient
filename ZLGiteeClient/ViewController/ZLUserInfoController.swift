@@ -8,6 +8,7 @@
 import UIKit
 import ZLBaseUI
 import Moya
+import ZLUIUtilities
 
 class ZLUserInfoController: ZLBaseViewController {
     
@@ -17,7 +18,7 @@ class ZLUserInfoController: ZLBaseViewController {
     // model
     var model: ZLGiteeUserModel?
     // viewModel
-    var cellDatas: [ZLTableViewBaseCellData] = []
+    var sectionDatas: [ZLTableViewBaseSectionData] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,8 +39,8 @@ class ZLUserInfoController: ZLBaseViewController {
     func setSharedButton() {
 
         let button = UIButton.init(type: .custom)
-        button.setAttributedTitle(NSAttributedString(string: "...",
-                                                     attributes: [.font: UIFont.systemFont(ofSize: 30),
+        button.setAttributedTitle(NSAttributedString(string: ZLIconFont.More.rawValue,
+                                                     attributes: [.font: UIFont.zlIconFont(withSize:30 ),
                                                                   .foregroundColor: UIColor.label(withName: "ICON_Common")]),
                                   for: .normal)
         button.frame = CGRect.init(x: 0, y: 0, width: 60, height: 60)
@@ -57,36 +58,39 @@ class ZLUserInfoController: ZLBaseViewController {
     }
     
     func generateCellDatas() {
-        cellDatas.removeAll()
-        for cellData in cellDatas {
-            cellData.removeFromSuperViewModel()
+        sectionDatas.removeAll()
+        for sectionData in sectionDatas {
+            sectionData.removeFromSuperViewModel()
         }
         
         guard let model = model else {
-            tableContainerView.resetCellDatas(cellDatas: cellDatas, hasMoreData: false)
+            tableContainerView.resetSectionDatas(sectionDatas: sectionDatas, hasMoreData: false)
             return
         }
         
         let headerCellData = ZLUserInfoHeaderCellData(model: model)
         addSubViewModel(headerCellData)
-        cellDatas.append(headerCellData)
+        let headerSectionData = ZLCommonSectionHeaderFooterViewData(cellDatas: [headerCellData], headerHeight: 10, headerColor: .clear, headerReuseIdentifier: "ZLCommonSectionHeaderView")
+        addSubViewModel(headerSectionData)
+        sectionDatas.append(headerSectionData)
         
+        var itemCellDatas: [ZLTableViewBaseCellData] = []
         if let profession = model.profession, !profession.isEmpty {
             let professionCellData = ZLCommonTableViewCellData(canClick: false, title: "职业", info: profession, cellHeight: 50, actionBlock: nil)
             addSubViewModel(professionCellData)
-            cellDatas.append(professionCellData)
+            itemCellDatas.append(professionCellData)
         }
         
         if let company = model.company, !company.isEmpty {
             let companyCellData = ZLCommonTableViewCellData(canClick: false, title: "公司", info: company, cellHeight: 50, actionBlock: nil)
             addSubViewModel(companyCellData)
-            cellDatas.append(companyCellData)
+            itemCellDatas.append(companyCellData)
         }
         
         if let email = model.email, !email.isEmpty {
             let emailCellData = ZLCommonTableViewCellData(canClick: false, title: "邮箱", info: email, cellHeight: 50, actionBlock: nil)
             addSubViewModel(emailCellData)
-            cellDatas.append(emailCellData)
+            itemCellDatas.append(emailCellData)
         }
         
         if let qq = model.qq, !qq.isEmpty {
@@ -96,7 +100,7 @@ class ZLUserInfoController: ZLBaseViewController {
                 ZLToastView.showMessage("成功拷贝到剪切板")
             }
             addSubViewModel(qqCellData)
-            cellDatas.append(qqCellData)
+            itemCellDatas.append(qqCellData)
         }
         
         
@@ -107,7 +111,7 @@ class ZLUserInfoController: ZLBaseViewController {
                 ZLToastView.showMessage("成功拷贝到剪切板")
             }
             addSubViewModel(wechatCellData)
-            cellDatas.append(wechatCellData)
+            itemCellDatas.append(wechatCellData)
         }
         
         if let linkedin = model.linkedin, !linkedin.isEmpty {
@@ -117,23 +121,25 @@ class ZLUserInfoController: ZLBaseViewController {
                 ZLToastView.showMessage("成功拷贝到剪切板")
             }
             addSubViewModel(linkedinCellData)
-            cellDatas.append(linkedinCellData)
+            itemCellDatas.append(linkedinCellData)
         }
         
         if let weibo = model.weibo, !weibo.isEmpty {
             let weiboCellData = ZLCommonTableViewCellData(canClick: false, title: "微博", info: weibo, cellHeight: 50, actionBlock: nil)
             addSubViewModel(weiboCellData)
-            cellDatas.append(weiboCellData)
+            itemCellDatas.append(weiboCellData)
         }
         
         if let blog = model.blog, !blog.isEmpty {
             let blogCellData = ZLCommonTableViewCellData(canClick: false, title: "博客", info: blog, cellHeight: 50, actionBlock: nil)
             addSubViewModel(blogCellData)
-            cellDatas.append(blogCellData)
+            itemCellDatas.append(blogCellData)
         }
+        let itemSectionData = ZLCommonSectionHeaderFooterViewData(cellDatas: itemCellDatas, headerHeight: 10, headerColor: .clear, headerReuseIdentifier: "ZLCommonSectionHeaderView")
+        addSubViewModel(itemSectionData)
+        sectionDatas.append(itemSectionData)
         
-        tableContainerView.resetCellDatas(cellDatas: cellDatas, hasMoreData: false)
-        
+        tableContainerView.resetSectionDatas(sectionDatas: sectionDatas, hasMoreData: false)
     }
     
     
@@ -142,6 +148,7 @@ class ZLUserInfoController: ZLBaseViewController {
         tableView.setTableViewHeader()
         tableView.register(ZLUserInfoHeaderCell.self, forCellReuseIdentifier: "ZLUserInfoHeaderCell")
         tableView.register(ZLCommonTableViewCell.self, forCellReuseIdentifier: "ZLCommonTableViewCell")
+        tableView.register(ZLCommonSectionHeaderView.self, forViewReuseIdentifier: "ZLCommonSectionHeaderView")
         tableView.delegate = self
         return tableView
     }()

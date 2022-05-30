@@ -9,6 +9,7 @@
 import UIKit
 import SnapKit
 import SDWebImage
+import ZLUIUtilities
 
 protocol ZLRepositoryTableViewCellDelegate: NSObjectProtocol {
 
@@ -113,24 +114,24 @@ class ZLRepositoryTableViewCell: UITableViewCell {
 
     lazy var starLabel: UILabel = {
         let label = UILabel()
-//        label.text = ZLIconFont.RepoStar.rawValue
-//        label.font = UIFont.zlIconFont(withSize: 15)
+        label.text = ZLIconFont.RepoStar.rawValue
+        label.font = UIFont.zlIconFont(withSize: 15)
         label.textColor = UIColor(named: "ZLLabelColor2")
         return label
     }()
 
     lazy var forkLabel: UILabel = {
         let label = UILabel()
-//        label.text = ZLIconFont.RepoFork.rawValue
-//        label.font = UIFont.zlIconFont(withSize: 15)
+        label.text = ZLIconFont.RepoFork.rawValue
+        label.font = UIFont.zlIconFont(withSize: 15)
         label.textColor = UIColor(named: "ZLLabelColor2")
         return label
     }()
 
     lazy var privateLabel: UILabel = {
         let label = UILabel()
-//        label.text = ZLIconFont.RepoPrivate.rawValue
-//        label.font = UIFont.zlIconFont(withSize: 15)
+        label.text = ZLIconFont.RepoPrivate.rawValue
+        label.font = UIFont.zlIconFont(withSize: 15)
         label.textColor = UIColor(named: "ZLLabelColor2")
         return label
     }()
