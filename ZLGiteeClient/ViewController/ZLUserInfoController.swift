@@ -172,7 +172,7 @@ extension ZLUserInfoController {
     func loadRequest() {
         
         guard let login = self.login, !login.isEmpty else {
-            ZLToastView.showMessage("login为空", sourceView: contentView)
+            ZLToastView.showMessage("login 为空", sourceView: contentView)
             return
         }
         

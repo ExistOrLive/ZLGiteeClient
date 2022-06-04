@@ -10,9 +10,10 @@ import Moya
 
 enum ZLGiteeRequest {
     case user(login: String)
-    case userPublicRepos(login: String)
+    case userPublicRepos(login: String, page: Int, per_page: Int)
     case userFollower(login: String, page: Int, per_page: Int)
     case userFollowing(login: String, page: Int, per_page: Int)
+    case userStars(login: String)
 }
 
 extension ZLGiteeRequest: TargetType {
@@ -29,19 +30,21 @@ extension ZLGiteeRequest: TargetType {
         switch self {
         case .user(let login):
             return "/api/\(ZLGiteeRequest.version)/users/\(login)"
-        case .userPublicRepos(let login):
+        case .userPublicRepos(let login, _, _):
             return "/api/\(ZLGiteeRequest.version)/users/\(login)/repos"
         case .userFollower(let login, _, _):
             return "/api/\(ZLGiteeRequest.version)/users/\(login)/followers"
         case.userFollowing(let login, _, _):
             return "/api/\(ZLGiteeRequest.version)/users/\(login)/following"
+        case .userStars(let login):
+            return "/api/\(ZLGiteeRequest.version)/users/\(login)/starred"
         }
     }
 
     /// The HTTP method used in the request.
     var method: Moya.Method {
         switch self {
-        case .user,.userPublicRepos, .userFollower, .userFollowing:
+        case .user,.userPublicRepos, .userFollower, .userFollowing, .userStars:
             return .get
         }
     }
@@ -55,23 +58,28 @@ extension ZLGiteeRequest: TargetType {
     var task: Task {
         switch self {
         case .user:
-            return .requestParameters(parameters: ["access_token":""],
+            return .requestParameters(parameters: ["access_token":myClientID],
                                       encoding: URLEncoding())
-        case .userPublicRepos:
+        case .userPublicRepos(_, let page, let per_page):
             return .requestParameters(parameters: ["type":"all",
                                                    "sort":"full_name",
-                                                   "page":1,
-                                                   "per_page":20],
+                                                   "page":page,
+                                                   "per_page":per_page],
                                       encoding: URLEncoding())
         case .userFollower(_, let page, let per_page):
             return .requestParameters(parameters: ["page":page,
                                                    "per_page":per_page,
-                                                   "access_token":""],
+                                                   "access_token":myClientID],
                                       encoding: URLEncoding())
         case .userFollowing(_, let page, let per_page):
             return .requestParameters(parameters: ["page":page,
                                                    "per_page":per_page,
-                                                   "access_token":""],
+                                                   "access_token":myClientID],
+                                      encoding: URLEncoding())
+        case .userStars:
+            return .requestParameters(parameters: ["access_token":myClientID,
+                                                   "limit":20,
+                                                   "sort":"created"],
                                       encoding: URLEncoding())
         }
        

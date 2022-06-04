@@ -16,6 +16,9 @@ class ZLUserReposListController: ZLBaseViewController {
     // Entry Params
     var login: String?
     
+    private var page: Int = 1
+    private var per_page: Int = 20
+    
     // ViewModel
     private var cellDatas: [ZLTableViewBaseCellData] = []
     
@@ -37,6 +40,7 @@ class ZLUserReposListController: ZLBaseViewController {
     lazy var tableContainerView: ZLTableContainerView =  {
         let tableView = ZLTableContainerView()
         tableView.setTableViewHeader()
+        tableView.setTableViewFooter()
         tableView.register(ZLRepositoryTableViewCell.self, forCellReuseIdentifier: "ZLRepositoryTableViewCell")
         tableView.delegate = self
         return tableView
@@ -59,8 +63,22 @@ extension ZLUserReposListController: ZLTableContainerViewDelegate {
 // request
 extension ZLUserReposListController {
     func loadData(loadNewData: Bool) {
+        
+        guard let login = self.login,
+           !login.isEmpty else {
+            ZLToastView.showMessage("login 为空", sourceView:view)
+            tableContainerView.endRefresh()
+            return
+        }
+
+        if loadNewData == true {
+            page = 1
+        } else {
+            page += 1
+        }
+        
         let provider = MoyaProvider<ZLGiteeRequest>()
-        provider.request(ZLGiteeRequest.userPublicRepos(login: login ?? "")) { [weak self]result in
+        provider.request(ZLGiteeRequest.userPublicRepos(login: login, page: page, per_page: per_page)) { [weak self]result in
             guard let self = self else { return }
             switch result {
             case .success(let response):
@@ -76,20 +94,28 @@ extension ZLUserReposListController {
                         }
                         return ZLRepositoryTableViewCellData(model: model)
                     }
-                    self.addSubViewModels(cellDatas)
-                    for cellData in self.cellDatas {
-                        cellData.removeFromSuperViewModel()
+                    if loadNewData {
+                        for cellData in self.cellDatas {
+                            cellData.removeFromSuperViewModel()
+                        }
+                        self.addSubViewModels(cellDatas)
+                        self.cellDatas = cellDatas
+                        self.tableContainerView.resetCellDatas(cellDatas: cellDatas, hasMoreData: cellDatas.count >= self.per_page)
+                        
+                    } else {
+                        self.addSubViewModels(cellDatas)
+                        self.cellDatas.append(contentsOf: cellDatas)
+                        self.tableContainerView.resetCellDatas(cellDatas: self.cellDatas, hasMoreData: cellDatas.count >= self.per_page)
                     }
-                    self.cellDatas = cellDatas
-                    self.tableContainerView.resetCellDatas(cellDatas: cellDatas, hasMoreData: false)
-                
+                    
                 } else {
-                    print(dataStr)
+                    self.tableContainerView.endRefresh()
+                    ZLToastView.showMessage(dataStr ?? "", sourceView: self.contentView)
                 }
                 
             case .failure(let error):
                 self.tableContainerView.endRefresh()
-                print(error)
+                ZLToastView.showMessage(error.localizedDescription, sourceView: self.contentView)
             }
         }
     }

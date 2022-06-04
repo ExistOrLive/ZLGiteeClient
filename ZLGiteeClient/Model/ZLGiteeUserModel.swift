@@ -8,6 +8,7 @@
 import UIKit
 import HandyJSON
 
+// MARK: ----- ZLGiteeUserBriefModel -----
 class ZLGiteeUserBriefModel: HandyJSON {
     required init() {}
     var id: Int = 0
@@ -18,7 +19,7 @@ class ZLGiteeUserBriefModel: HandyJSON {
     var type: String?
 }
 
-
+// MARK: ----- ZLGiteeUserModel -----
 class ZLGiteeUserModel: HandyJSON {
     
     required init() {}

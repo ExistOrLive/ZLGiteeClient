@@ -80,7 +80,7 @@ class ZLGiteeRepoModel: HandyJSON {
     var enterprise: String?
     var project_labels: [String] = []
     
-    
+    // MARK: ----- ZLGiteeUser 格式转换 -----
     func mapping(mapper: HelpingMapper) {
         mapper <<<
                     self.isPublic <-- "public"
