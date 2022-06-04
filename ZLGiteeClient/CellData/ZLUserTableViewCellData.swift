@@ -11,11 +11,11 @@ import ZLUIUtilities
 
 class ZLUserTableViewCellData: ZLTableViewBaseCellData {
 
-    let userModel: ZLGiteeFollowerModel
+    let userModel: ZLGiteeUserModel
 
     weak var cell: ZLUserTableViewCell?
 
-    init(userModel: ZLGiteeFollowerModel) {
+    init(userModel: ZLGiteeUserModel) {
         self.userModel = userModel
         super.init()
     }

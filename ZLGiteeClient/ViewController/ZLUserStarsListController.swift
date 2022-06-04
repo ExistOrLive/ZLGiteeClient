@@ -1,8 +1,8 @@
 //
-//  ZLUserFollowingListController.swift
+//  ZLUserStarsListController.swift
 //  ZLGiteeClient
 //
-//  Created by ZhangX on 2022/5/25.
+//  Created by ZhangX on 2022/6/2.
 //
 
 import UIKit
@@ -11,55 +11,53 @@ import SnapKit
 import Moya
 import ZLUIUtilities
 
-class ZLUserFollowingListController: ZLBaseViewController {
-    
+class ZLUserStarsListController: ZLBaseViewController {
+
     // Entry Params
     var login: String?
     
-    private var page: Int = 1
-    private var per_page: Int = 20
-    
     // ViewModel
     private var cellDatas: [ZLTableViewBaseCellData] = []
-        
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
         tableContainerView.startLoad()
     }
-    
+
     func setupUI() {
-        title = "关注"
-        
+        title = "标星"
+
         contentView.addSubview(tableContainerView)
         tableContainerView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
     }
-    
+
     lazy var tableContainerView: ZLTableContainerView =  {
         let tableView = ZLTableContainerView()
         tableView.setTableViewHeader()
         tableView.setTableViewFooter()
-        tableView.register(ZLUserTableViewCell.self, forCellReuseIdentifier: "ZLUserTableViewCell")
+        tableView.register(ZLRepositoryTableViewCell.self, forCellReuseIdentifier: "ZLRepositoryTableViewCell")
         tableView.delegate = self
         return tableView
     }()
 }
-extension ZLUserFollowingListController: ZLTableContainerViewDelegate {
+
+extension ZLUserStarsListController: ZLTableContainerViewDelegate {
     func zlLoadNewData() {
         loadData(loadNewData: true)
     }
-    
+
     func zlLoadMoreData() {
         loadData(loadNewData: false)
     }
 }
 
 // request
-extension ZLUserFollowingListController {
+extension ZLUserStarsListController {
     func loadData(loadNewData: Bool) {
-        
+
         guard let login = self.login,
            !login.isEmpty else {
             ZLToastView.showMessage("login 为空", sourceView:view)
@@ -67,26 +65,21 @@ extension ZLUserFollowingListController {
             return
         }
 
-        if loadNewData == true {
-            page = 1
-        } else {
-            page += 1
-        }
         let provider = MoyaProvider<ZLGiteeRequest>()
-        provider.request(ZLGiteeRequest.userFollowing(login: login, page: page, per_page: per_page)) { [weak self]result in
+        provider.request(ZLGiteeRequest.userStars(login: login)) { [weak self]result in
             guard let self = self else { return }
             switch result {
             case .success(let response):
                 let dataStr = String(data: response.data, encoding: .utf8)
                 if response.statusCode == 200 {
-                    guard let followerArray =  [ZLGiteeUserModel].deserialize(from: dataStr, designatedPath: nil) else {
+                    guard let starArray =  [ZLGiteeRepoModel].deserialize(from: dataStr, designatedPath: nil) else {
                         return
                     }
-                    let cellDatas: [ZLUserTableViewCellData] =  followerArray.compactMap { model in
+                    let cellDatas: [ZLRepositoryTableViewCellData] =  starArray.compactMap { model in
                         guard let model = model else {
                             return nil
                         }
-                        return ZLUserTableViewCellData(userModel: model)
+                        return ZLRepositoryTableViewCellData(model: model)
                     }
                     if loadNewData {
                         for cellData in self.cellDatas {
@@ -94,19 +87,19 @@ extension ZLUserFollowingListController {
                         }
                         self.addSubViewModels(cellDatas)
                         self.cellDatas = cellDatas
-                        self.tableContainerView.resetCellDatas(cellDatas: self.cellDatas, hasMoreData: cellDatas.count >= self.per_page)
-                        
+                        self.tableContainerView.resetCellDatas(cellDatas: cellDatas, hasMoreData: false)
+
                     } else {
                         self.addSubViewModels(cellDatas)
                         self.cellDatas.append(contentsOf: cellDatas)
-                        self.tableContainerView.resetCellDatas(cellDatas: self.cellDatas, hasMoreData: cellDatas.count >= self.per_page)
+                        self.tableContainerView.resetCellDatas(cellDatas: cellDatas, hasMoreData: false)
                     }
-            
+
                 } else {
                     self.tableContainerView.endRefresh()
                     ZLToastView.showMessage(dataStr ?? "", sourceView: self.contentView)
                 }
-                
+
             case .failure(let error):
                 self.tableContainerView.endRefresh()
                 ZLToastView.showMessage(error.localizedDescription, sourceView: self.contentView)

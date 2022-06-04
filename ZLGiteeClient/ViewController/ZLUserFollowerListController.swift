@@ -13,11 +13,13 @@ import ZLUIUtilities
 
 class ZLUserFollowerListController: ZLBaseViewController {
     
+    // Entry Params
     var login: String?
     
     private var page: Int = 1
     private var per_page: Int = 20
     
+    // ViewModel
     private var cellDatas: [ZLTableViewBaseCellData] = []
         
     override func viewDidLoad() {
@@ -61,7 +63,7 @@ extension ZLUserFollowerListController {
         
         guard let login = self.login,
            !login.isEmpty else {
-            ZLToastView.showMessage("login is nil", sourceView:view)
+            ZLToastView.showMessage("login 为空", sourceView:view)
             tableContainerView.endRefresh()
             return
         }
@@ -71,6 +73,7 @@ extension ZLUserFollowerListController {
         } else {
             page += 1
         }
+        
         let provider = MoyaProvider<ZLGiteeRequest>()
         provider.request(ZLGiteeRequest.userFollower(login: login, page: page, per_page: per_page)) { [weak self]result in
             guard let self = self else { return }
@@ -78,7 +81,7 @@ extension ZLUserFollowerListController {
             case .success(let response):
                 let dataStr = String(data: response.data, encoding: .utf8)
                 if response.statusCode == 200 {
-                    guard let followerArray =  [ZLGiteeFollowerModel].deserialize(from: dataStr, designatedPath: nil) else {
+                    guard let followerArray =  [ZLGiteeUserModel].deserialize(from: dataStr, designatedPath: nil) else {
                         return
                     }
                     let cellDatas: [ZLUserTableViewCellData] =  followerArray.compactMap { model in

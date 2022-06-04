@@ -94,3 +94,6 @@ iOSInjectionProject/
 
 #bundle
 .bundle
+
+# ignore ZLGiteeAppKey.swift
+ZLGiteeClient/ZLGiteeClient/ZLSupportFiles/ZLGiteeAppKey.swift
