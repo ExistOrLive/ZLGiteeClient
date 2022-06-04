@@ -83,7 +83,7 @@ DEPENDENCIES:
   - Toast
   - YYText
   - ZLBaseExtension (from `https://github.com/ExistOrLive/ZLBaseExtension.git`, tag `1.2.0`)
-  - ZLBaseUI (from `https://github.com/ExistOrLive/ZLBaseUI.git`, tag `1.2.1`)
+  - ZLBaseUI (from `https://github.com/ExistOrLive/ZLBaseUI.git`)
   - ZLUIUtilities (from `https://github.com/ExistOrLive/ZLUIUtilities.git`)
 
 SPEC REPOS:
@@ -119,7 +119,6 @@ EXTERNAL SOURCES:
     :tag: 1.2.0
   ZLBaseUI:
     :git: https://github.com/ExistOrLive/ZLBaseUI.git
-    :tag: 1.2.1
   ZLUIUtilities:
     :git: https://github.com/ExistOrLive/ZLUIUtilities.git
 
@@ -128,8 +127,8 @@ CHECKOUT OPTIONS:
     :git: https://github.com/ExistOrLive/ZLBaseExtension.git
     :tag: 1.2.0
   ZLBaseUI:
+    :commit: 60e7e064882fdfe446f75f045262314809d726e6
     :git: https://github.com/ExistOrLive/ZLBaseUI.git
-    :tag: 1.2.1
   ZLUIUtilities:
     :commit: adbcc7534163738f2b19ebf5c1446c064afb1bd1
     :git: https://github.com/ExistOrLive/ZLUIUtilities.git
@@ -163,6 +162,6 @@ SPEC CHECKSUMS:
   ZLBaseUI: 2815898555602f9bebb23ca0277ff5352d2a2952
   ZLUIUtilities: 58cc312400e93051b01ab73e77998865ee43f53a
 
-PODFILE CHECKSUM: 15258026a6220ab420998a4d8a31f061649d30dd
+PODFILE CHECKSUM: 62967a193930540c61bb481463549c73ef6b648f
 
 COCOAPODS: 1.11.3

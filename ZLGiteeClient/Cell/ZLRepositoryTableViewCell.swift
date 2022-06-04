@@ -301,6 +301,10 @@ extension ZLRepositoryTableViewCell: ZLViewUpdatableWithViewData {
 
         longPressGesture.isEnabled = data.hasLongPressAction()
     }
+    
+    func justUpdateView() {
+        
+    }
 }
 
 extension ZLRepositoryTableViewCell {

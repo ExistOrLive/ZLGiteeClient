@@ -8,7 +8,7 @@ target 'ZLGiteeClient' do
   # Comment the next line if you don't want to use dynamic frameworks
   use_frameworks!
 
-  pod 'ZLBaseUI', :git => 'https://github.com/ExistOrLive/ZLBaseUI.git', :tag => '1.2.1'
+  pod 'ZLBaseUI', :git => 'https://github.com/ExistOrLive/ZLBaseUI.git'
   #pod 'ZLBaseUI', :path => "../ZLBaseUI"
 
  pod 'ZLBaseExtension', :git => "https://github.com/ExistOrLive/ZLBaseExtension.git", :tag => '1.2.0'

@@ -88,4 +88,8 @@ extension ZLCommonTableViewCell: ZLViewUpdatableWithViewData {
         subLabel.text = viewData.info
         nextLabel.isHidden = !viewData.canClick
     }
+    
+    func justUpdateView() {
+        
+    }
 }

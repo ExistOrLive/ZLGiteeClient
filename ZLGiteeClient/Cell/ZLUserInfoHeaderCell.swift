@@ -238,6 +238,10 @@ extension ZLUserInfoHeaderCell: ZLViewUpdatableWithViewData {
         delegate = viewData
         reloadData()
     }
+    
+    func justUpdateView() {
+        
+    }
 }
 
 

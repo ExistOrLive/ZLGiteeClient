@@ -16,6 +16,12 @@ enum ZLGiteeRequest {
     case userStars(login: String)
 }
 
+extension ZLGiteeRequest {
+    static var sharedProvider: MoyaProvider<ZLGiteeRequest> = {
+       return MoyaProvider<ZLGiteeRequest>()
+    }()
+}
+
 extension ZLGiteeRequest: TargetType {
     
     static let version = "v5"

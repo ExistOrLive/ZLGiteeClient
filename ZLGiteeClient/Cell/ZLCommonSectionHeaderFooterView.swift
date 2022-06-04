@@ -30,6 +30,10 @@ extension ZLCommonSectionHeaderView: ZLViewUpdatableWithViewData {
     func fillWithViewData(viewData data: ZLCommonSectionHeaderViewDelegate) {
         contentView.backgroundColor = data.headerBackgroundColor
     }
+    
+    func justUpdateView() {
+        
+    }
 }
 
 
@@ -53,6 +57,10 @@ extension ZLCommonSectionFooterView: ZLViewUpdatableWithViewData {
     
     func fillWithViewData(viewData data: ZLCommonSectionFooterViewDelegate) {
         contentView.backgroundColor = data.footerBackgroundColor
+    }
+    
+    func justUpdateView() {
+        
     }
 }
 
