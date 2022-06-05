@@ -84,7 +84,9 @@ extension ZLUserInfoHeaderCellData: ZLUserInfoHeaderCellDataSourceAndDelegate {
     }
     
     func onStarReposNumButtonClicked() {
-        
+        let vc = ZLUserStarsListController()
+        vc.login = model.login ?? ""
+        viewController?.navigationController?.pushViewController(vc, animated: true)
     }
     
     func onFollowsNumButtonClicked() {

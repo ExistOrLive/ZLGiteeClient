@@ -28,13 +28,13 @@ class ZLGiteePermission: HandyJSON {
 class ZLGiteeRepoModel: HandyJSON {
     required init() {}
     var id: Int = 0
-    var full_name: String?
-    var human_name: String?
+    var full_name: String? // 用户名 + 仓库名
+    var human_name: String? // 用户名 + 仓库名
     var url: String?
-    var namespace: ZLGiteeNamespace?
+    var namespace: ZLGiteeNamespace? //命名空间
     var path: String?
     var name: String?
-    var owner: ZLGiteeUserBriefModel?
+    var owner: ZLGiteeUserBriefModel? // 用户信息
     var assigner: ZLGiteeUserBriefModel?
     var fork: Bool = false
     var html_url: String?
@@ -51,7 +51,7 @@ class ZLGiteeRepoModel: HandyJSON {
     var stargazers_count: Int = 0
     var watchers_count: Int = 0
     var default_branch: String?
-    var open_issues_count: Int?
+    var open_issues_count: Int = 0
     var has_issues: Bool = false
     var has_wiki: Bool = false
     var issue_comment: Bool = false
@@ -65,7 +65,7 @@ class ZLGiteeRepoModel: HandyJSON {
     var pushed_at: Date?
     var created_at: Date?
     var updated_at: Date?
-    var parent: String?
+    var parent: ZLGiteeRepoModel?
     var paas: String?
     var stared: Bool = false
     var watched: Bool = false

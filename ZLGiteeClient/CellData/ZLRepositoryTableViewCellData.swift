@@ -42,7 +42,9 @@ class ZLRepositoryTableViewCellData: ZLTableViewBaseCellData {
 extension ZLRepositoryTableViewCellData: ZLRepositoryTableViewCellDelegate {
     
     func onRepoAvaterClicked() {
-        
+//        let vc = ZLUserInfoController()
+//        vc.login = "zxhubs"
+//        viewController?.navigationController?.pushViewController(vc, animated: true)
     }
 
     func getOwnerAvatarURL() -> String? {
