@@ -14,6 +14,14 @@ enum ZLGiteeRequest {
     case userFollower(login: String, page: Int, per_page: Int)
     case userFollowing(login: String, page: Int, per_page: Int)
     case userStars(login: String)
+    case repoInfo(login: String, repoName: String)
+    case forkRepo(login: String, repoName: String)
+    case starRepo(login: String, repoName: String)
+    case unstarRepo(login: String, repoName: String)
+    case isStarRepo(login: String, repoName: String)
+    case watchRepo(login: String, repoName: String, watchType: String)
+    case unwatchRepo(login: String, repoName: String)
+    case isWatchRepo(login: String, repoName: String)
 }
 
 extension ZLGiteeRequest {
@@ -44,14 +52,41 @@ extension ZLGiteeRequest: TargetType {
             return "/api/\(ZLGiteeRequest.version)/users/\(login)/following"
         case .userStars(let login):
             return "/api/\(ZLGiteeRequest.version)/users/\(login)/starred"
+        case .repoInfo(let login, let repoName):
+            return "/api/\(ZLGiteeRequest.version)/repos/\(login)/\(repoName)"
+        case .forkRepo(let login, let repoName):
+            return "/api/\(ZLGiteeRequest.version)/repos/\(login)/\(repoName)/forks"
+        case .starRepo(let login, let repoName),
+             .unstarRepo(let login, let repoName),
+             .isStarRepo(let login, let repoName):
+            return "/api/\(ZLGiteeRequest.version)/user/starred/\(login)/\(repoName)"
+        case .watchRepo(let login, let repoName, _),
+             .unwatchRepo(let login, let repoName),
+             .isWatchRepo(let login, let repoName):
+            return "/api/\(ZLGiteeRequest.version)/user/subscriptions/\(login)/\(repoName)"
         }
     }
 
     /// The HTTP method used in the request.
     var method: Moya.Method {
         switch self {
-        case .user,.userPublicRepos, .userFollower, .userFollowing, .userStars:
+        case .user,
+             .userPublicRepos,
+             .userFollower,
+             .userFollowing,
+             .userStars,
+             .repoInfo,
+             .isStarRepo,
+             .isWatchRepo:
             return .get
+        case .forkRepo:
+            return .post
+        case .starRepo,
+             .watchRepo:
+            return .put
+        case .unstarRepo,
+             .unwatchRepo:
+            return .delete
         }
     }
 
@@ -72,12 +107,8 @@ extension ZLGiteeRequest: TargetType {
                                                    "page":page,
                                                    "per_page":per_page],
                                       encoding: URLEncoding())
-        case .userFollower(_, let page, let per_page):
-            return .requestParameters(parameters: ["page":page,
-                                                   "per_page":per_page,
-                                                   "access_token":myClientID],
-                                      encoding: URLEncoding())
-        case .userFollowing(_, let page, let per_page):
+        case .userFollower(_, let page, let per_page),
+             .userFollowing(_, let page, let per_page):
             return .requestParameters(parameters: ["page":page,
                                                    "per_page":per_page,
                                                    "access_token":myClientID],
@@ -86,6 +117,23 @@ extension ZLGiteeRequest: TargetType {
             return .requestParameters(parameters: ["access_token":myClientID,
                                                    "limit":20,
                                                    "sort":"created"],
+                                      encoding: URLEncoding())
+        case .repoInfo,
+             .forkRepo,
+             .starRepo,
+             .unstarRepo,
+             .isStarRepo,
+             .unwatchRepo,
+             .isWatchRepo:
+            return .requestParameters(parameters: ["owner":"",
+                                                   "repo":"",
+                                                   "access_token":myClientID],
+                                      encoding: URLEncoding())
+        case .watchRepo:
+            return .requestParameters(parameters: ["owner":"",
+                                                   "repo":"",
+                                                   "access_token":myClientID,
+                                                   "watch_type":""],
                                       encoding: URLEncoding())
         }
        
