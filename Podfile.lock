@@ -1,31 +1,21 @@
 PODS:
+  - AGConnectABTest (1.9.0.302):
+    - AGConnectCredential (~> 1.4)
+  - AGConnectCore (1.9.0.302):
+    - HMFoundation (~> 1.4)
+  - AGConnectCredential (1.9.0.302):
+    - AGConnectCore (~> 1.4)
+  - AGConnectRemoteConfig (1.9.0.302):
+    - AGConnectABTest (~> 1.4)
+    - AGConnectCredential (~> 1.7)
   - Alamofire (5.5.0)
-  - BSBacktraceLogger (0.0.1)
-  - Charts (3.6.0):
-    - Charts/Core (= 3.6.0)
-  - Charts/Core (3.6.0)
-  - CocoaLumberjack (3.7.4):
-    - CocoaLumberjack/Core (= 3.7.4)
-  - CocoaLumberjack/Core (3.7.4)
-  - DoraemonKit/Core (2.0.0):
-    - BSBacktraceLogger
-    - fishhook
-  - DoraemonKit/WithLogger (2.0.0):
-    - BSBacktraceLogger
-    - CocoaLumberjack
-    - DoraemonKit/Core
-    - fishhook
-  - DoraemonKit/WithMLeaksFinder (2.0.0):
-    - BSBacktraceLogger
-    - DoraemonKit/Core
-    - FBRetainCycleDetector
-    - fishhook
-  - FBRetainCycleDetector (0.1.4)
   - FFPopup (1.1.5)
-  - fishhook (0.2)
   - FWPopupView (4.2.1):
     - SnapKit
   - HandyJSON (5.0.2)
+  - HiAnalytics (6.10.0.311):
+    - AGConnectCredential
+  - HMFoundation (1.9.0.302)
   - IQKeyboardManager (6.5.9)
   - JXSegmentedView (1.3.0)
   - LookinServer (1.0.4)
@@ -59,45 +49,45 @@ PODS:
     - Toast
     - ZLBaseExtension
     - ZLBaseUI
+  - ZLUtilities (0.1.0):
+    - AGConnectCore
+    - AGConnectRemoteConfig
+    - HiAnalytics
 
 DEPENDENCIES:
-  - Charts
-  - DoraemonKit/Core (~> 2.0.0)
-  - DoraemonKit/WithLogger (~> 2.0.0)
-  - DoraemonKit/WithMLeaksFinder (= 2.0.0)
   - FFPopup
   - FWPopupView
   - HandyJSON
   - IQKeyboardManager
   - JXSegmentedView
   - LookinServer
-  - Masonry
   - MBProgressHUD
   - MJRefresh
   - Moya
   - RxCocoa
   - RxRelay
   - RxSwift
-  - SDWebImage (~> 5.0.0)
-  - SnapKit (~> 4.0.0)
+  - SDWebImage
+  - SnapKit
   - Toast
   - YYText
-  - ZLBaseExtension (from `https://github.com/ExistOrLive/ZLBaseExtension.git`, tag `1.2.0`)
+  - ZLBaseExtension (from `https://github.com/ExistOrLive/ZLBaseExtension.git`)
   - ZLBaseUI (from `https://github.com/ExistOrLive/ZLBaseUI.git`)
   - ZLUIUtilities (from `https://github.com/ExistOrLive/ZLUIUtilities.git`)
+  - ZLUtilities (from `https://github.com/ExistOrLive/ZLUtilities.git`)
 
 SPEC REPOS:
   trunk:
+    - AGConnectABTest
+    - AGConnectCore
+    - AGConnectCredential
+    - AGConnectRemoteConfig
     - Alamofire
-    - BSBacktraceLogger
-    - Charts
-    - CocoaLumberjack
-    - DoraemonKit
-    - FBRetainCycleDetector
     - FFPopup
-    - fishhook
     - FWPopupView
     - HandyJSON
+    - HiAnalytics
+    - HMFoundation
     - IQKeyboardManager
     - JXSegmentedView
     - LookinServer
@@ -116,34 +106,38 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   ZLBaseExtension:
     :git: https://github.com/ExistOrLive/ZLBaseExtension.git
-    :tag: 1.2.0
   ZLBaseUI:
     :git: https://github.com/ExistOrLive/ZLBaseUI.git
   ZLUIUtilities:
     :git: https://github.com/ExistOrLive/ZLUIUtilities.git
+  ZLUtilities:
+    :git: https://github.com/ExistOrLive/ZLUtilities.git
 
 CHECKOUT OPTIONS:
   ZLBaseExtension:
+    :commit: bb25c16c2e48e69fdef502568ba1b7e716a8cf15
     :git: https://github.com/ExistOrLive/ZLBaseExtension.git
-    :tag: 1.2.0
   ZLBaseUI:
     :commit: 60e7e064882fdfe446f75f045262314809d726e6
     :git: https://github.com/ExistOrLive/ZLBaseUI.git
   ZLUIUtilities:
     :commit: adbcc7534163738f2b19ebf5c1446c064afb1bd1
     :git: https://github.com/ExistOrLive/ZLUIUtilities.git
+  ZLUtilities:
+    :commit: ffb5f032f2ecf9fd09f28cf517fcf709cc777189
+    :git: https://github.com/ExistOrLive/ZLUtilities.git
 
 SPEC CHECKSUMS:
+  AGConnectABTest: f1e5be41719628dc342e27d1139e379845bd8aa6
+  AGConnectCore: 8080cbbee27357ab3d9d97b13d5e3be117eeba35
+  AGConnectCredential: 962f8a4abc33f3ae7b69bcf00f709b2a74096a1d
+  AGConnectRemoteConfig: d84e6bb1ee804a13bb7d09676d00f95a61d7dbee
   Alamofire: 1c4fb5369c3fe93d2857c780d8bbe09f06f97e7c
-  BSBacktraceLogger: 06b983ee93a9f87d957960e9c73d660d5966b447
-  Charts: b1e3a1f5a1c9ba5394438ca3b91bd8c9076310af
-  CocoaLumberjack: 543c79c114dadc3b1aba95641d8738b06b05b646
-  DoraemonKit: 9e923599e28d0b61f1c6de4aef2c2d669b30abb7
-  FBRetainCycleDetector: 46f8179bbb1c587deee3ea838a1a3ee02acf5015
   FFPopup: a208dcee8db3e54ec4a88fcd6481f6f5d85b7a83
-  fishhook: ea19933abfe8f2f52c55fd8b6e2718467d3ebc89
   FWPopupView: eea10388d25444fbe69b9222a5b5f317bb049395
   HandyJSON: 9e4e236f5d2dbefad5155a77417bbea438201c03
+  HiAnalytics: 07a774c560885f699db1d25af9e0cfc3fcf315e3
+  HMFoundation: 07a5cc092dc728e13400df5d24648f03ded00a95
   IQKeyboardManager: 241cc94ccabc9deb8f8bd7d12f00d73288d13ecc
   JXSegmentedView: fec0d335355b6e019c494fe2e030bde8a36d2df6
   LookinServer: 743c1681771d0a8dcc38825325a080c3186404a5
@@ -161,7 +155,8 @@ SPEC CHECKSUMS:
   ZLBaseExtension: 90e59e26595222fb11628a97f4b2951ab843e4f1
   ZLBaseUI: 2815898555602f9bebb23ca0277ff5352d2a2952
   ZLUIUtilities: 58cc312400e93051b01ab73e77998865ee43f53a
+  ZLUtilities: 65a433eda88c05edb4a48f9209c8736e2a5d3b0a
 
-PODFILE CHECKSUM: 62967a193930540c61bb481463549c73ef6b648f
+PODFILE CHECKSUM: a47d23efae8ac53760bbc2e22b3468ecebcac711
 
-COCOAPODS: 1.11.3
+COCOAPODS: 1.15.2

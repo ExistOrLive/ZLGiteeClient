@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0251B3525D755171B717C966 /* libPods-ZLGiteeClient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 729C778147D1FA3E2D617FAB /* libPods-ZLGiteeClient.a */; };
 		31460EA628488C1700E64254 /* ZLGiteeAppKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31460EA528488C1700E64254 /* ZLGiteeAppKey.swift */; };
 		31460EA8284892DD00E64254 /* ZLUserStarsListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31460EA7284892DD00E64254 /* ZLUserStarsListController.swift */; };
 		315152702842196D0048DEC6 /* UIView+ShareMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3151526F2842196D0048DEC6 /* UIView+ShareMenu.swift */; };
@@ -26,7 +27,6 @@
 		31D69B462838DE73009DAEEE /* ZLUserTableViewCellData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31D69B452838DE73009DAEEE /* ZLUserTableViewCellData.swift */; };
 		31E1E501284AEE6100CE3CFC /* ZLWorkboardTableViewCellData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31E1E500284AEE6100CE3CFC /* ZLWorkboardTableViewCellData.swift */; };
 		31F160832848DC61009176A7 /* ZLWorkboardTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31F160822848DC61009176A7 /* ZLWorkboardTableViewCell.swift */; };
-		48578C2D30E34696B288D039 /* Pods_ZLGiteeClient.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD642EFD1273D29D13C69438 /* Pods_ZLGiteeClient.framework */; };
 		740C2F642837C49400DAFF0E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 740C2F632837C49400DAFF0E /* AppDelegate.swift */; };
 		740C2F6D2837C49600DAFF0E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 740C2F6C2837C49600DAFF0E /* Assets.xcassets */; };
 		740C2F782837C80A00DAFF0E /* ZLMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 740C2F772837C80A00DAFF0E /* ZLMainViewController.swift */; };
@@ -45,9 +45,6 @@
 		74AAE5BE284206DB0030DA01 /* ZLCommonTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74AAE5BD284206DB0030DA01 /* ZLCommonTableViewCell.swift */; };
 		74AAE5C0284207400030DA01 /* ZLCommonTableViewCellData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74AAE5BF284207400030DA01 /* ZLCommonTableViewCellData.swift */; };
 		74AAE5C2284207EC0030DA01 /* ZLUserInfoHeaderCellData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74AAE5C1284207EC0030DA01 /* ZLUserInfoHeaderCellData.swift */; };
-		74AAE5CB2843B03F0030DA01 /* ZLIconFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74AAE5C82843B03F0030DA01 /* ZLIconFont.swift */; };
-		74AAE5CC2843B03F0030DA01 /* UIFont+IconFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74AAE5C92843B03F0030DA01 /* UIFont+IconFont.swift */; };
-		74AAE5CD2843B03F0030DA01 /* UIImage+IconFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74AAE5CA2843B03F0030DA01 /* UIImage+IconFont.swift */; };
 		74AAE5CF2843B5E50030DA01 /* iconfont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 74AAE5CE2843B5E50030DA01 /* iconfont.ttf */; };
 		74AAE5D12843B95C0030DA01 /* ZLCommonSectionHeaderFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74AAE5D02843B95C0030DA01 /* ZLCommonSectionHeaderFooterView.swift */; };
 		74AAE5D32843BA780030DA01 /* ZLCommonSectionHeaderFooterViewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74AAE5D22843BA780030DA01 /* ZLCommonSectionHeaderFooterViewData.swift */; };
@@ -74,6 +71,7 @@
 		31E1E500284AEE6100CE3CFC /* ZLWorkboardTableViewCellData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZLWorkboardTableViewCellData.swift; sourceTree = "<group>"; };
 		31F160822848DC61009176A7 /* ZLWorkboardTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZLWorkboardTableViewCell.swift; sourceTree = "<group>"; };
 		52B1746A4644250B6B6B1241 /* Pods-ZLGiteeClient.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZLGiteeClient.debug.xcconfig"; path = "Target Support Files/Pods-ZLGiteeClient/Pods-ZLGiteeClient.debug.xcconfig"; sourceTree = "<group>"; };
+		729C778147D1FA3E2D617FAB /* libPods-ZLGiteeClient.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ZLGiteeClient.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		740C2F602837C49400DAFF0E /* ZLGiteeClient.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ZLGiteeClient.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		740C2F632837C49400DAFF0E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		740C2F6C2837C49600DAFF0E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -94,14 +92,10 @@
 		74AAE5BD284206DB0030DA01 /* ZLCommonTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZLCommonTableViewCell.swift; sourceTree = "<group>"; };
 		74AAE5BF284207400030DA01 /* ZLCommonTableViewCellData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZLCommonTableViewCellData.swift; sourceTree = "<group>"; };
 		74AAE5C1284207EC0030DA01 /* ZLUserInfoHeaderCellData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZLUserInfoHeaderCellData.swift; sourceTree = "<group>"; };
-		74AAE5C82843B03F0030DA01 /* ZLIconFont.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZLIconFont.swift; sourceTree = "<group>"; };
-		74AAE5C92843B03F0030DA01 /* UIFont+IconFont.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIFont+IconFont.swift"; sourceTree = "<group>"; };
-		74AAE5CA2843B03F0030DA01 /* UIImage+IconFont.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+IconFont.swift"; sourceTree = "<group>"; };
 		74AAE5CE2843B5E50030DA01 /* iconfont.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = iconfont.ttf; sourceTree = "<group>"; };
 		74AAE5D02843B95C0030DA01 /* ZLCommonSectionHeaderFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZLCommonSectionHeaderFooterView.swift; sourceTree = "<group>"; };
 		74AAE5D22843BA780030DA01 /* ZLCommonSectionHeaderFooterViewData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZLCommonSectionHeaderFooterViewData.swift; sourceTree = "<group>"; };
 		7A7D211429EFF5EF4F067B6B /* Pods-ZLGiteeClient.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZLGiteeClient.release.xcconfig"; path = "Target Support Files/Pods-ZLGiteeClient/Pods-ZLGiteeClient.release.xcconfig"; sourceTree = "<group>"; };
-		CD642EFD1273D29D13C69438 /* Pods_ZLGiteeClient.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ZLGiteeClient.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -109,7 +103,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				48578C2D30E34696B288D039 /* Pods_ZLGiteeClient.framework in Frameworks */,
+				0251B3525D755171B717C966 /* libPods-ZLGiteeClient.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -215,7 +209,6 @@
 				31719203284CA56700B1EED4 /* Presenter */,
 				31460EA428488B0800E64254 /* ZLSupportFiles */,
 				74AAE5CE2843B5E50030DA01 /* iconfont.ttf */,
-				74AAE5C72843B03F0030DA01 /* IconFont */,
 				3151527D28423C570048DEC6 /* ZLURLManager */,
 				315152732842399E0048DEC6 /* ZLWebContentController */,
 				3151526E2842194E0048DEC6 /* Extension */,
@@ -296,20 +289,10 @@
 			path = CellData;
 			sourceTree = "<group>";
 		};
-		74AAE5C72843B03F0030DA01 /* IconFont */ = {
-			isa = PBXGroup;
-			children = (
-				74AAE5C82843B03F0030DA01 /* ZLIconFont.swift */,
-				74AAE5C92843B03F0030DA01 /* UIFont+IconFont.swift */,
-				74AAE5CA2843B03F0030DA01 /* UIImage+IconFont.swift */,
-			);
-			path = IconFont;
-			sourceTree = "<group>";
-		};
 		EA749D56DFD48638617DEFB5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				CD642EFD1273D29D13C69438 /* Pods_ZLGiteeClient.framework */,
+				729C778147D1FA3E2D617FAB /* libPods-ZLGiteeClient.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -325,7 +308,7 @@
 				740C2F5C2837C49400DAFF0E /* Sources */,
 				740C2F5D2837C49400DAFF0E /* Frameworks */,
 				740C2F5E2837C49400DAFF0E /* Resources */,
-				1A91963D711653CDC8610BD2 /* [CP] Embed Pods Frameworks */,
+				FDFD4D4FB5AE7B4C699B180B /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -382,21 +365,21 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		1A91963D711653CDC8610BD2 /* [CP] Embed Pods Frameworks */ = {
+		FDFD4D4FB5AE7B4C699B180B /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-ZLGiteeClient/Pods-ZLGiteeClient-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-ZLGiteeClient/Pods-ZLGiteeClient-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			name = "[CP] Embed Pods Frameworks";
+			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-ZLGiteeClient/Pods-ZLGiteeClient-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-ZLGiteeClient/Pods-ZLGiteeClient-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ZLGiteeClient/Pods-ZLGiteeClient-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ZLGiteeClient/Pods-ZLGiteeClient-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FF028417CE71C252A2F694B9 /* [CP] Check Pods Manifest.lock */ = {
@@ -431,7 +414,6 @@
 				3151527A2842399E0048DEC6 /* ZLWebContentViewModel.swift in Sources */,
 				3171920F284CAC5C00B1EED4 /* ZLRepoHeaderCellData.swift in Sources */,
 				74AAE5D12843B95C0030DA01 /* ZLCommonSectionHeaderFooterView.swift in Sources */,
-				74AAE5CD2843B03F0030DA01 /* UIImage+IconFont.swift in Sources */,
 				31719213284CAC7100B1EED4 /* ZLRepoInfoController.swift in Sources */,
 				31F160832848DC61009176A7 /* ZLWorkboardTableViewCell.swift in Sources */,
 				740C2F642837C49400DAFF0E /* AppDelegate.swift in Sources */,
@@ -439,7 +421,6 @@
 				31D69B442838DDC0009DAEEE /* ZLUserTableViewCell.swift in Sources */,
 				740C2F7B2837CC8D00DAFF0E /* ZLWorkBoardController.swift in Sources */,
 				740C2F7D2837CCA500DAFF0E /* ZLNotificationsController.swift in Sources */,
-				74AAE5CB2843B03F0030DA01 /* ZLIconFont.swift in Sources */,
 				74AAE5C0284207400030DA01 /* ZLCommonTableViewCellData.swift in Sources */,
 				316BA9EA283E429000E83CC0 /* ZLUserFollowingListController.swift in Sources */,
 				3151527C2842399E0048DEC6 /* ZLWebContentView.swift in Sources */,
@@ -448,7 +429,6 @@
 				31719211284CAC6500B1EED4 /* ZLRepoInfoHeaderCell.swift in Sources */,
 				74AAE5C2284207EC0030DA01 /* ZLUserInfoHeaderCellData.swift in Sources */,
 				740C2F782837C80A00DAFF0E /* ZLMainViewController.swift in Sources */,
-				74AAE5CC2843B03F0030DA01 /* UIFont+IconFont.swift in Sources */,
 				31E1E501284AEE6100CE3CFC /* ZLWorkboardTableViewCellData.swift in Sources */,
 				74AAE5BE284206DB0030DA01 /* ZLCommonTableViewCell.swift in Sources */,
 				31D69B462838DE73009DAEEE /* ZLUserTableViewCellData.swift in Sources */,
@@ -597,8 +577,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 24LG5QVBPR;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -615,7 +595,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.zm.ZLGiteeClient;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "match Development com.zm.*";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -628,8 +608,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 24LG5QVBPR;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -645,7 +625,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.zm.ZLGiteeClient;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "match Development com.zm.*";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

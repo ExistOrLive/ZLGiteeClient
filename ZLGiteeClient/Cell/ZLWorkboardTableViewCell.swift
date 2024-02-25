@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import ZLUtilities
 
 enum ZLWorkboardType {
     case issues

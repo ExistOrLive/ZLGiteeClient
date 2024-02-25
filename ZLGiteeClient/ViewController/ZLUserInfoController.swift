@@ -9,6 +9,7 @@ import UIKit
 import ZLBaseUI
 import Moya
 import ZLUIUtilities
+import ZLUtilities
 
 class ZLUserInfoController: ZLBaseViewController {
     

@@ -10,6 +10,7 @@ import UIKit
 import SnapKit
 import SDWebImage
 import ZLUIUtilities
+import ZLUtilities
 
 protocol ZLRepositoryTableViewCellDelegate: NSObjectProtocol {
 

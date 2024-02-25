@@ -11,6 +11,7 @@ import ZLUIUtilities
 import ZLBaseUI
 import ZLBaseExtension
 import RxSwift
+import ZLUtilities
 
 class ZLRepoInfoController: ZLBaseViewController {
     
