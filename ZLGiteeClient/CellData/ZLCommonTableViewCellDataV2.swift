@@ -11,27 +11,27 @@ import ZLUIUtilities
 
 class ZLCommonTableViewCellDataV2: ZLTableViewBaseCellData {
 
-    private var _canClick: Bool = false
-    private var _title: String = ""
-    private var _info: String = ""
-    private var _cellHeight: CGFloat = 0.0
-    private var _actionBlock: (() -> Void)?
+    var canClick: Bool = false
+    var title: String = ""
+    var info: String = ""
+    var _cellHeight: CGFloat = 0.0
+    var actionBlock: (() -> Void)?
 
     init(canClick: Bool,
          title: String,
          info: String,
          cellHeight: CGFloat,
          actionBlock:(() -> Void)? = nil) {
-        _canClick = canClick
-        _title = title
-        _info = info
-        _cellHeight = cellHeight
-        _actionBlock = actionBlock
+        self.canClick = canClick
+        self.title = title
+        self.info = info
+        self._cellHeight = cellHeight
+        self.actionBlock = actionBlock
         super.init()
     }
 
     override func onCellSingleTap() {
-       _actionBlock?()
+        self.actionBlock?()
     }
 
     override var cellReuseIdentifier: String {
@@ -44,17 +44,4 @@ class ZLCommonTableViewCellDataV2: ZLTableViewBaseCellData {
 }
 
 extension ZLCommonTableViewCellDataV2: ZLCommonTableViewCellDataSourceAndDelegate {
-
-    var canClick: Bool {
-        _canClick
-    }
-
-    var title: String {
-        _title
-    }
-
-    var info: String {
-        _info
-    }
-
 }

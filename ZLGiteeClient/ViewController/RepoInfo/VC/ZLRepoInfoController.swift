@@ -10,42 +10,37 @@ import UIKit
 import ZLUIUtilities
 import ZLBaseUI
 import ZLBaseExtension
-import RxSwift
 import ZLUtilities
 
 class ZLRepoInfoController: ZLBaseViewController {
     
-    let disposeBag = DisposeBag()
-    
-    // Entry Params
-    @objc var fullName: String?
-    
-    // Presenter
-    var presenter: ZLRepoInfoPresenter?
-    
+    let stateModel: ZLRepoInfoStateModel
+
     // viewModel
     var sectionDatas: [ZLTableViewBaseSectionData] = []
+    /// 分支cellData
+    weak var branchCellData: ZLCommonTableViewCellDataV2?
+    
+    init(repoFullName: String) {
+        self.stateModel = ZLRepoInfoStateModel(repoFullName: repoFullName)
+        super.init(nibName: nil, bundle: nil)
+        self.stateModel.delegate = self
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        guard let fullName = self.fullName,
-              fullName.contains("/") else {
-                  ZLToastView.showMessage("invalid full name")
-                  return
-              }
-        
-//        analytics.log(.viewItem(name: fullName))
-        
+      
         setupUI()
-        
-        presenter = ZLRepoInfoPresenter(repoFullName: fullName)
-        
+            
         tableContainerView.startLoad()
     }
     
     func setupUI() {
-        title = fullName
+        title = stateModel.repoFullName
         
         contentView.addSubview(tableContainerView)
         tableContainerView.snp.makeConstraints { make in
@@ -86,19 +81,17 @@ extension ZLRepoInfoController {
     
     func generateCellDatas() {
       
-        let model = presenter?.repoModel
-        
-        sectionDatas.removeAll()
-        for sectionData in sectionDatas {
-            sectionData.removeFromSuperViewModel()
-        }
-        
-        guard let model = model else {
+        guard let _ = stateModel.repoInfo else {
             tableContainerView.resetSectionDatas(sectionDatas: sectionDatas, hasMoreData: false)
             return
         }
         
-        let headerCellData = ZLRepoHeaderCellData(repoInfoModel: model, presenter: presenter)
+        for sectionData in sectionDatas {
+            sectionData.removeFromSuperViewModel()
+        }
+        sectionDatas.removeAll()
+        
+        let headerCellData = ZLRepoHeaderCellData(stateModel: stateModel)
         addSubViewModel(headerCellData)
         let headerSectionData = ZLCommonSectionHeaderFooterViewData(cellDatas: [headerCellData], headerHeight: 10, headerColor: .clear, headerReuseIdentifier: "ZLCommonSectionHeaderView")
         addSubViewModel(headerSectionData)
@@ -113,19 +106,19 @@ extension ZLRepoInfoController {
         })
     
         let branchCellData = ZLCommonTableViewCellDataV2(canClick: true,
-                                                       title: "分支",
-                                                         info: presenter?.currentBranch ?? "",
-                                                       cellHeight: 50,
-                                                       actionBlock: { [weak self] in
+                                                         title: "分支",
+                                                         info: stateModel.currentBranch ?? "",
+                                                         cellHeight: 50,
+                                                         actionBlock: { [weak self] in
             self?.onBranchClicked()
             
         })
         
         let languageCellData = ZLCommonTableViewCellDataV2(canClick: true,
-                                                         title: "语言",
-                                                         info: model.language ?? "" ,
-                                                         cellHeight: 50,
-                                                         actionBlock: { [weak self] in
+                                                           title: "语言",
+                                                           info: stateModel.repoInfo?.language ?? "" ,
+                                                           cellHeight: 50,
+                                                           actionBlock: { [weak self] in
             self?.onLanguageClicked()
         })
         
@@ -231,9 +224,7 @@ extension ZLRepoInfoController {
     
     // action
     @objc func onMoreButtonClick(button: UIButton) {
-
-        guard let _ = fullName,
-              let htmlUrl = presenter?.repoModel?.html_url,
+        guard let htmlUrl = stateModel.repoInfo?.html_url,
               let url = URL(string: htmlUrl) else { return }
         button.showShareMenu(title: url.absoluteString, url: url, sourceViewController: self)
     }
@@ -246,29 +237,39 @@ extension ZLRepoInfoController: ZLTableContainerViewDelegate {
     
     func zlLoadNewData() {
         
-        presenter?.loadRepoRequest().subscribe(onNext: { [weak self] message in
-            
+        stateModel.loadRepoRequest { [weak self] result, msg in
             guard let self = self else { return }
-            if message.result {
-                
+            if result {
                 self.generateCellDatas()
-                
-            } else if !message.result,
-               !message.error.isEmpty {
-                
-                ZLToastView.showMessage(message.error, sourceView: self.view)
-                self.tableContainerView.endRefresh()
+            } else if !result, !msg.isEmpty {
+                ZLToastView.showMessage(msg,sourceView: self.view)
             }
-            
-        }).disposed(by: disposeBag)
+            self.tableContainerView.endRefresh()
+        }
         
-//        presenter?.getRepoWatchStatus()
-//        
-//        presenter?.getRepoStarStatus()
+        stateModel.getRepoStarStatus()
+        
+        stateModel.getRepoWatchStatus()
         
     }
     
     func zlLoadMoreData() {
         // No Implementation
+    }
+}
+
+// MARK: - ZLRepoInfoStateModelDelegate
+extension ZLRepoInfoController: ZLRepoInfoStateModelDelegate {
+    func onNeedReloadData() {
+        tableContainerView.reloadData()
+    }
+    
+    func onWatchStatusUpdate() {
+        tableContainerView.reloadData()
+        zlLoadNewData()
+    }
+    func onStarStatusUpdate() {
+        tableContainerView.reloadData()
+        zlLoadNewData()
     }
 }

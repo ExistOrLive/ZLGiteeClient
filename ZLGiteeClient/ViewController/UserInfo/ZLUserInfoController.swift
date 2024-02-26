@@ -14,13 +14,22 @@ import ZLUtilities
 class ZLUserInfoController: ZLBaseViewController {
     
     // Entry Params
-    var login: String?
+    let login: String
     
     // model
     var model: ZLGiteeUserModel?
     // viewModel
     var sectionDatas: [ZLTableViewBaseSectionData] = []
-
+    
+    init(login: String) {
+        self.login = login
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
@@ -53,8 +62,7 @@ class ZLUserInfoController: ZLBaseViewController {
     // action
     @objc func onMoreButtonClick(button: UIButton) {
 
-        guard let _ = login,
-              let url = URL(string: model?.html_url ?? "") else { return }
+        guard let url = URL(string: model?.html_url ?? "") else { return }
         button.showShareMenu(title: url.absoluteString, url: url, sourceViewController: self)
     }
     
@@ -172,7 +180,7 @@ extension ZLUserInfoController {
     
     func loadRequest() {
         
-        guard let login = self.login, !login.isEmpty else {
+        guard !login.isEmpty else {
             ZLToastView.showMessage("login 为空", sourceView: contentView)
             return
         }

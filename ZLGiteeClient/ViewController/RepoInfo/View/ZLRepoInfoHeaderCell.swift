@@ -192,7 +192,7 @@ class ZLRepoInfoHeaderCell: UITableViewCell {
     private lazy var issuesNumButton: ZLRepoInfoHeaderButton = {
         let button = ZLRepoInfoHeaderButton()
         button.numLabel.text  = "0"
-        button.nameLabel.text = "问题"
+        button.nameLabel.text = "issues"
         button.addTarget(self, action: #selector(onIssuesNumButtonClicked), for: .touchUpInside)
         return button
     }()
@@ -200,7 +200,7 @@ class ZLRepoInfoHeaderCell: UITableViewCell {
     private lazy var starsNumButton: ZLRepoInfoHeaderButton = {
         let button = ZLRepoInfoHeaderButton()
         button.numLabel.text  = "0"
-        button.nameLabel.text = "标星"
+        button.nameLabel.text = "stars"
         button.addTarget(self, action: #selector(onStarsNumButtonClicked), for: .touchUpInside)
         return button
     }()
@@ -208,7 +208,7 @@ class ZLRepoInfoHeaderCell: UITableViewCell {
     private lazy var forksNumButton: ZLRepoInfoHeaderButton = {
         let button = ZLRepoInfoHeaderButton()
         button.numLabel.text  = "0"
-        button.nameLabel.text = "拷贝"
+        button.nameLabel.text = "forks"
         button.addTarget(self, action: #selector(onForksNumButtonClicked), for: .touchUpInside)
         return button
     }()
@@ -216,15 +216,15 @@ class ZLRepoInfoHeaderCell: UITableViewCell {
     private lazy var watchersNumButton: ZLRepoInfoHeaderButton = {
         let button = ZLRepoInfoHeaderButton()
         button.numLabel.text  = "0"
-        button.nameLabel.text = "关注"
+        button.nameLabel.text = "watching"
         button.addTarget(self, action: #selector(onWatchersNumButtonClicked), for: .touchUpInside)
         return button
     }()
 
     private lazy var watchButton: ZLBaseButton = {
         let button = ZLBaseButton()
-        button.setTitle("关注", for: .normal)
-        button.setTitle("取消关注", for: .selected)
+        button.setTitle("Watch", for: .normal)
+        button.setTitle("Watching", for: .selected)
         button.titleLabel?.font = UIFont.zlSemiBoldFont(withSize: 10)
         button.addTarget(self, action: #selector(onWatchButtonClicked), for: .touchUpInside)
         return button
@@ -232,8 +232,8 @@ class ZLRepoInfoHeaderCell: UITableViewCell {
 
     private lazy var starButton: ZLBaseButton = {
         let button = ZLBaseButton()
-        button.setTitle("标星", for: .normal)
-        button.setTitle("取消标星", for: .selected)
+        button.setTitle("Star", for: .normal)
+        button.setTitle("Starred", for: .selected)
         button.titleLabel?.font = UIFont.zlSemiBoldFont(withSize: 10)
         button.addTarget(self, action: #selector(onStarButtonClicked), for: .touchUpInside)
         return button
@@ -241,7 +241,7 @@ class ZLRepoInfoHeaderCell: UITableViewCell {
     
     private lazy var forkButton: ZLBaseButton = {
         let button = ZLBaseButton()
-        button.setTitle("拷贝", for: .normal)
+        button.setTitle("Fork", for: .normal)
         button.titleLabel?.font = UIFont.zlSemiBoldFont(withSize: 10)
         button.addTarget(self, action: #selector(onForkButtonClicked), for: .touchUpInside)
         return button
@@ -292,7 +292,7 @@ extension ZLRepoInfoHeaderCell: ZLViewUpdatableWithViewData {
         guard let data = delegate else { return }
         
         avatarButton.sd_setBackgroundImage(with: URL(string: data.avatarUrl), for: .normal, placeholderImage: UIImage(named: "default_avatar"))
-        timeLabel.text = "更新于 \(data.updatedTime)"
+        timeLabel.text = "\(data.updatedTime)"
         descLabel.text = data.desc
         
         issuesNumButton.numLabel.text = data.issueNum >= 1000 ? String(format: "%.1f", Double(data.issueNum) / 1000.0) + "k" : "\(data.issueNum)"

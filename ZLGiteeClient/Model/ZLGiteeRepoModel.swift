@@ -25,6 +25,7 @@ class ZLGiteePermission: HandyJSON {
     var admin: Bool = false
 }
 
+// MARK: - ZLGiteeRepoModel
 class ZLGiteeRepoModel: HandyJSON {
     required init() {}
     var id: Int = 0
@@ -106,6 +107,31 @@ class ZLGiteeRepoModel: HandyJSON {
 
 
 
+// MARK: - ZLGiteeRepoModelV3
+class ZLGiteeUserBriefModelV3: HandyJSON {
+    required init() {}
+    var id: Int = 0
+    var name, username: String?
+    var new_portrait: String?
+}
 
+
+class ZLGiteeRepoModelV3: HandyJSON {
+    required init() {}
+    var id: Int = 0
+    var name: String?                 // 仓库名
+    var path_with_namespace: String?  // login + 仓库名
+    var language: String?
+    var forks_count: Int = 0
+    var stars_count: Int = 0
+    var description: String?
+    var owner: ZLGiteeUserBriefModelV3?
+    var isPublic: Bool = false
+    // MARK: ----- ZLGiteeUser 格式转换 -----
+    func mapping(mapper: HelpingMapper) {
+        mapper <<<
+                    self.isPublic <-- "public"
+    }
+}
 
 

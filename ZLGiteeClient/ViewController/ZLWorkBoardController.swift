@@ -24,9 +24,7 @@ class ZLWorkBoardController: ZLBaseViewController {
     
     
     @objc func onButtonClicked() {
-        let vc = ZLRepoInfoController()
-        vc.fullName = "existorlive/GithubClient"
-//        vc.login = "existorlive"
+        let vc = ZLRepoInfoController(repoFullName: "existorlive/GithubClient")
         vc.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(vc, animated: true)
     }

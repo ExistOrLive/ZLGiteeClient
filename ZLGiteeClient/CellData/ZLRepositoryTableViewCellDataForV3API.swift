@@ -1,18 +1,18 @@
 //
-//  ZLRepositoryTableViewCellData.swift
+//  ZLRepositoryTableViewCellDataV3.swift
 //  ZLGiteeClient
 //
-//  Created by 朱猛 on 2022/5/20.
+//  Created by 朱猛 on 2024/2/26.
 //
 
 import UIKit
 import ZLUIUtilities
 
-class ZLRepositoryTableViewCellData: ZLTableViewBaseCellData {
+class ZLRepositoryTableViewCellDataForV3API: ZLTableViewBaseCellData {
     
-    let model: ZLGiteeRepoModel
+    let model: ZLGiteeRepoModelV3
     
-    init(model: ZLGiteeRepoModel) {
+    init(model: ZLGiteeRepoModelV3) {
         self.model = model
         super.init()
     }
@@ -30,7 +30,7 @@ class ZLRepositoryTableViewCellData: ZLTableViewBaseCellData {
     }
     
     override func onCellSingleTap() {
-        let repoVC = ZLRepoInfoController(repoFullName: model.full_name ?? "")
+        let repoVC = ZLRepoInfoController(repoFullName: model.path_with_namespace ?? "")
         repoVC.hidesBottomBarWhenPushed = true
         viewController?.navigationController?.pushViewController(repoVC, animated: true)
     }
@@ -41,20 +41,20 @@ class ZLRepositoryTableViewCellData: ZLTableViewBaseCellData {
 }
 
 
-extension ZLRepositoryTableViewCellData: ZLRepositoryTableViewCellDelegate {
+extension ZLRepositoryTableViewCellDataForV3API: ZLRepositoryTableViewCellDelegate {
     
     func onRepoAvaterClicked() {
-        let vc = ZLUserInfoController(login: model.owner?.login ?? "")
+        let vc = ZLUserInfoController(login: model.owner?.name ?? "")
         vc.hidesBottomBarWhenPushed = true
         viewController?.navigationController?.pushViewController(vc, animated: true)
     }
 
     func getOwnerAvatarURL() -> String? {
-        model.owner?.avatar_url
+        model.owner?.new_portrait
     }
 
     func getRepoFullName() -> String? {
-        model.full_name
+        model.path_with_namespace
     }
 
     func getRepoName() -> String? {
@@ -62,7 +62,7 @@ extension ZLRepositoryTableViewCellData: ZLRepositoryTableViewCellDelegate {
     }
 
     func getOwnerName() -> String? {
-        model.owner?.login
+        model.owner?.name
     }
 
     func getRepoMainLanguage() -> String? {
@@ -74,11 +74,11 @@ extension ZLRepositoryTableViewCellData: ZLRepositoryTableViewCellDelegate {
     }
 
     func isPriva() -> Bool {
-        model.isPrivate
+        !model.isPublic
     }
 
     func starNum() -> Int {
-        model.stargazers_count
+        model.stars_count
     }
 
     func forkNum() -> Int {
@@ -93,4 +93,5 @@ extension ZLRepositoryTableViewCellData: ZLRepositoryTableViewCellDelegate {
         
     }
 }
+
 
