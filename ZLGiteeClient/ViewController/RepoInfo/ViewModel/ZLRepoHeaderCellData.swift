@@ -8,7 +8,6 @@
 
 import Foundation
 import ZLUIUtilities
-import RxSwift
 
 class ZLRepoHeaderCellData: ZLTableViewBaseCellData {
     

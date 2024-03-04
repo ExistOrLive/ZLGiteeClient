@@ -49,16 +49,14 @@ pod 'LookinServer', :configurations => ['Debug']
 ##pod 'DoraemonKit/WithGPS', '~> 2.0.0', :configurations => ['Debug']
 #pod 'DoraemonKit/WithMLeaksFinder', '2.0.0', :configurations => ['Debug']
 
-
-# Rx
-pod 'RxSwift'
-pod 'RxCocoa'
-pod 'RxRelay'
-
 # Http Network
 pod 'Moya'
 
 pod 'HandyJSON'
+
+pod 'KeychainAccess'
+
+
 
 end
 

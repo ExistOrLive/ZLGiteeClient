@@ -24,11 +24,23 @@ class ZLWorkBoardController: ZLBaseViewController {
     
     
     @objc func onButtonClicked() {
-        let vc = ZLRepoInfoController(repoFullName: "existorlive/GithubClient")
-        vc.hidesBottomBarWhenPushed = true
-        self.navigationController?.pushViewController(vc, animated: true)
+//        let vc = ZLRepoInfoController(repoFullName: "existorlive/GithubClient")
+//        vc.hidesBottomBarWhenPushed = true
+//        self.navigationController?.pushViewController(vc, animated: true)
+        oauthManager.startOAuth(type: .code,
+                                delegate: self) { [weak self] vc in
+            vc.modalPresentationStyle = .fullScreen
+            self?.viewController?.present(vc, animated: true, completion: nil)
+        }
     }
 
+    lazy var oauthManager: ZLGiteeOAuthManager = {
+        let manager = ZLGiteeOAuthManager(client_id: GiteeClientID,
+                                          client_secret: GiteeClientSecret,
+                                          redirect_uri: GiteeRedirectURL)
+        return manager
+    }()
+    
     /*
     // MARK: - Navigation
 
@@ -39,4 +51,19 @@ class ZLWorkBoardController: ZLBaseViewController {
     }
     */
 
+}
+
+extension ZLWorkBoardController: ZLGiteeOAuthManagerDelegate {
+    
+    func onOAuthStatusChanged(status: ZLGiteeOAuthStatus) {
+        
+    }
+    
+    func onOAuthSuccess(access_token: String,refresh_token: String) {
+        
+    }
+    
+    func onOAuthFail(status: ZLGiteeOAuthStatus, error: String) {
+        print("dasdasdas \(error)")
+    }
 }

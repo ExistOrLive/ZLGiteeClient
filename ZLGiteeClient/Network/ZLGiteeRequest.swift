@@ -38,6 +38,7 @@ enum ZLGiteeRequest {
     case repoStarsList(login: String, repoName: String, page: Int, per_page: Int)
     case repoWatchingsList(login: String, repoName: String, page: Int, per_page: Int)
     case repoForksList(login: String, repoName: String, page: Int, per_page: Int)
+    case repoCommitsList(login: String, repoName: String, page: Int, per_page: Int)
     
     case latestRepoList(page: Int, per_page: Int)
     case popularRepoList(page: Int, per_page: Int)
@@ -104,6 +105,8 @@ extension ZLGiteeRequest: RestTargetType {
             return "/api/\(version)/repos/\(login.urlPathEncoding)/\(repoName.urlPathEncoding)/subscribers"
         case .repoForksList(let login, let repoName, _, _):
             return "/api/\(version)/repos/\(login.urlPathEncoding)/\(repoName.urlPathEncoding)/forks"
+        case .repoCommitsList(let login, let repoName, _, _):
+            return "/api/\(version)/repos/\(login.urlPathEncoding)/\(repoName.urlPathEncoding)/commits"
         case .recommendRepoList:
             return "/api/\(version)/projects/featured"
         case .popularRepoList:
@@ -133,6 +136,7 @@ extension ZLGiteeRequest: RestTargetType {
              .repoIssuesList,
              .repoForksList,
              .repoStarsList,
+             .repoCommitsList,
              .repoWatchingsList,
              .recommendRepoList,
              .popularRepoList,
@@ -174,7 +178,8 @@ extension ZLGiteeRequest: RestTargetType {
              .repoIssuesList(_, _, let page, let per_page),
              .repoWatchingsList(_, _, let page, let per_page),
              .repoForksList(_, _, let page, let per_page),
-             .repoStarsList(_, _, let page, let per_page):
+             .repoStarsList(_, _, let page, let per_page),
+             .repoCommitsList(_, _,let page, let per_page) :
             return .requestParameters(parameters: ["page":page,
                                                    "per_page":per_page,
                                                    "access_token":myClientID],
@@ -255,6 +260,8 @@ extension ZLGiteeRequest: RestTargetType {
                 .recommendRepoList,
                 .latestRepoList:
             return .array(parseWrapper: ZLGiteeRepoModelV3.self)
+        case .repoCommitsList:
+            return .array(parseWrapper: ZLGiteeCommitModel.self)
         default:
             return .data
         }

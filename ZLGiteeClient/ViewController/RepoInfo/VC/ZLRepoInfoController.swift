@@ -173,10 +173,8 @@ extension ZLRepoInfoController {
 extension ZLRepoInfoController {
     
     func onCommitClicked() {
-//        let controller = ZLRepoCommitController()
-//        controller.repoFullName = fullName
-//        controller.branch = presenter?.currentBranch
-//        navigationController?.pushViewController(controller, animated: true)
+        let controller = ZLRepoCommitsListController(repoFullName: stateModel.repoFullName)
+        navigationController?.pushViewController(controller, animated: true)
     }
     
     func onBranchClicked() {
