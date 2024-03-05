@@ -28,7 +28,7 @@ jobs:
       run: |
         pip3 install requests
         python3 DownloadSecretFile/DownloadSecrectFile.py $GITHUBTOKEN
-        mv ZLGiteeAppKey.swift ZLSupportFiles/ZLGiteeAppKey.swift
+        mv ZLGiteeAppKey.swift ZLGiteeClient/ZLSupportFiles/ZLGiteeAppKey.swift
         
     - name: construct build enviroment
       working-directory: ./          # 指定run 的工作目录
