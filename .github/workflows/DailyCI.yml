@@ -45,7 +45,7 @@ jobs:
       env: 
         MATCH_KEYCHAIN_NAME: ${{ secrets.MATCH_KEYCHAIN_NAME }}
         MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
-        MATCH_GITHUB_URL: ${{ secrets.MATCH_GITEE_URL }}
+        MATCH_GITEE_URL: ${{ secrets.MATCH_GITEE_URL }}
         FASTLANE_USER: ${{ secrets.FASTLANE_USER }}                                    
         FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }} 
         APPSTOREAPIISSUERID: ${{ secrets.APPSTOREAPIISSUERID }} 
