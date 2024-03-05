@@ -7,7 +7,7 @@ def main():
 
    token = sys.argv[1]
 
-   result = requests.get("https://api.github.com/repos/ExistOrLive/SecretFile/contents/GiteeClient/ZLGIteeAppKey.swift",
+   result = requests.get("https://api.github.com/repos/ExistOrLive/SecretFile/contents/GIteeClient/ZLGiteeAppKey.swift",
                           headers={"Authorization":"token "+token,"Accept":"application/vnd.github.v3.raw+json"})
    if result.status_code == 200 :
        open("ZLGiteeAppKey.swift",'wb').write(result.content)
