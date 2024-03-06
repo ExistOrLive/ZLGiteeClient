@@ -82,12 +82,12 @@ platform :ios do
     build_num = app_store_build_number(
       app_identifier: "com.zm.ZLGiteeClient",
       live: false,
-      api_key: api_key
+      api_key: api_key,
+      initial_build_number: 1
     )
 
     increment_build_number(
-      build_number: build_num + 1,
-      initial_build_number: 1
+      build_number: build_num + 1
     )
 
     gym(workspace: "ZLGiteeClient.xcworkspace",
