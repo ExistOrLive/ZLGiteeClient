@@ -60,6 +60,7 @@
 		746ADF642B95F2FE0032E2A8 /* ZLGiteeOAuthController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 746ADF612B95F2FE0032E2A8 /* ZLGiteeOAuthController.swift */; };
 		746ADF652B95F2FE0032E2A8 /* ZLGiteeScope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 746ADF622B95F2FE0032E2A8 /* ZLGiteeScope.swift */; };
 		746ADF662B95F2FE0032E2A8 /* ZLGiteeOAuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 746ADF632B95F2FE0032E2A8 /* ZLGiteeOAuthManager.swift */; };
+		746ADF692B98CBEF0032E2A8 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 746ADF682B98CBEF0032E2A8 /* Launch Screen.storyboard */; };
 		74AAE5BA284203EA0030DA01 /* ZLUserInfoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74AAE5B9284203EA0030DA01 /* ZLUserInfoController.swift */; };
 		74AAE5BC284204670030DA01 /* ZLUserInfoHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74AAE5BB284204670030DA01 /* ZLUserInfoHeaderCell.swift */; };
 		74AAE5BE284206DB0030DA01 /* ZLCommonTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74AAE5BD284206DB0030DA01 /* ZLCommonTableViewCell.swift */; };
@@ -126,6 +127,7 @@
 		746ADF612B95F2FE0032E2A8 /* ZLGiteeOAuthController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZLGiteeOAuthController.swift; sourceTree = "<group>"; };
 		746ADF622B95F2FE0032E2A8 /* ZLGiteeScope.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZLGiteeScope.swift; sourceTree = "<group>"; };
 		746ADF632B95F2FE0032E2A8 /* ZLGiteeOAuthManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZLGiteeOAuthManager.swift; sourceTree = "<group>"; };
+		746ADF682B98CBEF0032E2A8 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		74AAE5B9284203EA0030DA01 /* ZLUserInfoController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZLUserInfoController.swift; sourceTree = "<group>"; };
 		74AAE5BB284204670030DA01 /* ZLUserInfoHeaderCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZLUserInfoHeaderCell.swift; sourceTree = "<group>"; };
 		74AAE5BD284206DB0030DA01 /* ZLCommonTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZLCommonTableViewCell.swift; sourceTree = "<group>"; };
@@ -259,6 +261,7 @@
 				740C2F772837C80A00DAFF0E /* ZLMainViewController.swift */,
 				740C2F6C2837C49600DAFF0E /* Assets.xcassets */,
 				740C2F712837C49600DAFF0E /* Info.plist */,
+				746ADF682B98CBEF0032E2A8 /* Launch Screen.storyboard */,
 			);
 			path = ZLGiteeClient;
 			sourceTree = "<group>";
@@ -478,6 +481,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				746ADF692B98CBEF0032E2A8 /* Launch Screen.storyboard in Resources */,
 				74AAE5CF2843B5E50030DA01 /* iconfont.ttf in Resources */,
 				740C2F6D2837C49600DAFF0E /* Assets.xcassets in Resources */,
 			);
