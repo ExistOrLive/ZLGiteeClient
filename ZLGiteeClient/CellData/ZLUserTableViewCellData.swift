@@ -18,15 +18,7 @@ class ZLUserTableViewCellData: ZLTableViewBaseCellData {
     init(userModel: ZLGiteeUserModel) {
         self.userModel = userModel
         super.init()
-    }
-
-
-    override var cellReuseIdentifier: String {
-        "ZLUserTableViewCell"
-    }
-    
-    override var cellHeight: CGFloat {
-        UITableView.automaticDimension
+        self.cellReuseIdentifier = "ZLUserTableViewCell"
     }
 
     override func onCellSingleTap() {

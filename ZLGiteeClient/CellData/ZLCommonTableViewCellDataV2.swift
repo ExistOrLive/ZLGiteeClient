@@ -25,21 +25,14 @@ class ZLCommonTableViewCellDataV2: ZLTableViewBaseCellData {
         self.canClick = canClick
         self.title = title
         self.info = info
-        self._cellHeight = cellHeight
         self.actionBlock = actionBlock
         super.init()
+        self.cellHeight = cellHeight
+        self.cellReuseIdentifier = "ZLCommonTableViewCell"
     }
 
     override func onCellSingleTap() {
         self.actionBlock?()
-    }
-
-    override var cellReuseIdentifier: String {
-        "ZLCommonTableViewCell"
-    }
-    
-    override var cellHeight: CGFloat {
-        _cellHeight
     }
 }
 

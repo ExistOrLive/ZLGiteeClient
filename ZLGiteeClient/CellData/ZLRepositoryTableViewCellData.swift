@@ -15,14 +15,7 @@ class ZLRepositoryTableViewCellData: ZLTableViewBaseCellData {
     init(model: ZLGiteeRepoModel) {
         self.model = model
         super.init()
-    }
-    
-    override var cellReuseIdentifier: String {
-        "ZLRepositoryTableViewCell"
-    }
-    
-    override var cellHeight: CGFloat {
-        UITableView.automaticDimension
+        self.cellReuseIdentifier = "ZLRepositoryTableViewCell"
     }
     
     override var cellSwipeActions: UISwipeActionsConfiguration? {

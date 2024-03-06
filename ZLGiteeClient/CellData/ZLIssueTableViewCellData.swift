@@ -18,10 +18,7 @@ class ZLIssueTableViewCellData: ZLTableViewBaseCellData {
     init(issueModel: ZLGiteeIssueModel) {
         self.issueModel = issueModel
         super.init()
-    }
-
-    override var cellReuseIdentifier: String {
-        "ZLIssueTableViewCell"
+        self.cellReuseIdentifier = "ZLIssueTableViewCell"
     }
   
     override func onCellSingleTap() {

@@ -69,8 +69,7 @@ class ZLRepoInfoController: ZLBaseViewController {
         view.delegate = self
         view.register(ZLRepoInfoHeaderCell.self, forCellReuseIdentifier: "ZLRepoInfoHeaderCell")
         view.register(ZLCommonTableViewCell.self, forCellReuseIdentifier: "ZLCommonTableViewCell")
-        view.register(ZLCommonSectionHeaderView.self, forViewReuseIdentifier: "ZLCommonSectionHeaderView")
-        view.register(ZLCommonSectionFooterView.self, forViewReuseIdentifier: "ZLCommonSectionFooterView")
+        view.register(ZLCommonSectionHeaderFooterView.self, forViewReuseIdentifier: "ZLCommonSectionHeaderFooterView")
         return view
     }()
     
@@ -93,8 +92,8 @@ extension ZLRepoInfoController {
         
         let headerCellData = ZLRepoHeaderCellData(stateModel: stateModel)
         addSubViewModel(headerCellData)
-        let headerSectionData = ZLCommonSectionHeaderFooterViewData(cellDatas: [headerCellData], headerHeight: 10, headerColor: .clear, headerReuseIdentifier: "ZLCommonSectionHeaderView")
-        addSubViewModel(headerSectionData)
+        let headerSectionData = ZLTableViewBaseSectionData(cellDatas: [headerCellData])
+        headerSectionData.sectionHeaderViewData = ZLCommonSectionHeaderFooterViewData(sectionViewHeight: 10)
         sectionDatas.append(headerSectionData)
         
         let commitCellData = ZLCommonTableViewCellDataV2(canClick: true,
@@ -155,14 +154,9 @@ extension ZLRepoInfoController {
                                                         prCellData]
         addSubViewModels(itemCellDatas)
         
-        let itemSectionData = ZLCommonSectionHeaderFooterViewData(cellDatas: itemCellDatas,
-                                                                  headerHeight: 10,
-                                                                  footerHeight: 10,
-                                                                  headerColor: .clear,
-                                                                  footerColor: .clear,
-                                                                  headerReuseIdentifier: "ZLCommonSectionHeaderView",
-                                                                  footerReuseIdentifier: "ZLCommonSectionFooterView")
-        addSubViewModel(itemSectionData)
+        let itemSectionData = ZLTableViewBaseSectionData(cellDatas: itemCellDatas)
+        headerSectionData.sectionHeaderViewData = ZLCommonSectionHeaderFooterViewData(sectionViewHeight: 10)
+        headerSectionData.sectionFooterViewData = ZLCommonSectionHeaderFooterViewData(sectionViewHeight: 10)
         sectionDatas.append(itemSectionData)
         
         tableContainerView.resetSectionDatas(sectionDatas: sectionDatas, hasMoreData: false)

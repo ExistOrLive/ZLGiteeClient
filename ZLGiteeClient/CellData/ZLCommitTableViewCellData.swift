@@ -16,11 +16,8 @@ class ZLCommitTableViewCellData: ZLTableViewBaseCellData {
      init(commitModel: ZLGiteeCommitModel) {
          self.commitModel = commitModel
          super.init()
+         self.cellReuseIdentifier = "ZLCommitTableViewCell"
      }
-
-    override var cellReuseIdentifier: String {
-        "ZLCommitTableViewCell"
-    }
  
     override func onCellSingleTap() {
         let vc = ZLWebContentController()

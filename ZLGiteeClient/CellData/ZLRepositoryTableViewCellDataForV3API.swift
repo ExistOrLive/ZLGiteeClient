@@ -15,28 +15,13 @@ class ZLRepositoryTableViewCellDataForV3API: ZLTableViewBaseCellData {
     init(model: ZLGiteeRepoModelV3) {
         self.model = model
         super.init()
+        self.cellReuseIdentifier = "ZLRepositoryTableViewCell"
     }
-    
-    override var cellReuseIdentifier: String {
-        "ZLRepositoryTableViewCell"
-    }
-    
-    override var cellHeight: CGFloat {
-        UITableView.automaticDimension
-    }
-    
-    override var cellSwipeActions: UISwipeActionsConfiguration? {
-        nil
-    }
-    
+
     override func onCellSingleTap() {
         let repoVC = ZLRepoInfoController(repoFullName: model.path_with_namespace ?? "")
         repoVC.hidesBottomBarWhenPushed = true
         viewController?.navigationController?.pushViewController(repoVC, animated: true)
-    }
-    
-    override func clearCache() {
-        
     }
 }
 

@@ -79,8 +79,8 @@ class ZLUserInfoController: ZLBaseViewController {
         
         let headerCellData = ZLUserInfoHeaderCellData(model: model)
         addSubViewModel(headerCellData)
-        let headerSectionData = ZLCommonSectionHeaderFooterViewData(cellDatas: [headerCellData], headerHeight: 10, headerColor: .clear, headerReuseIdentifier: "ZLCommonSectionHeaderView")
-        addSubViewModel(headerSectionData)
+        let headerSectionData = ZLTableViewBaseSectionData(cellDatas: [headerCellData])
+        headerSectionData.sectionHeaderViewData = ZLCommonSectionHeaderFooterViewData(sectionViewHeight: 10)
         sectionDatas.append(headerSectionData)
         
         var itemCellDatas: [ZLTableViewBaseCellData] = []
@@ -144,8 +144,8 @@ class ZLUserInfoController: ZLBaseViewController {
             addSubViewModel(blogCellData)
             itemCellDatas.append(blogCellData)
         }
-        let itemSectionData = ZLCommonSectionHeaderFooterViewData(cellDatas: itemCellDatas, headerHeight: 10, headerColor: .clear, headerReuseIdentifier: "ZLCommonSectionHeaderView")
-        addSubViewModel(itemSectionData)
+        let itemSectionData = ZLTableViewBaseSectionData(cellDatas: itemCellDatas)
+        itemSectionData.sectionHeaderViewData = ZLCommonSectionHeaderFooterViewData(sectionViewHeight: 10)
         sectionDatas.append(itemSectionData)
         
         tableContainerView.resetSectionDatas(sectionDatas: sectionDatas, hasMoreData: false)
@@ -157,7 +157,7 @@ class ZLUserInfoController: ZLBaseViewController {
         tableView.setTableViewHeader()
         tableView.register(ZLUserInfoHeaderCell.self, forCellReuseIdentifier: "ZLUserInfoHeaderCell")
         tableView.register(ZLCommonTableViewCell.self, forCellReuseIdentifier: "ZLCommonTableViewCell")
-        tableView.register(ZLCommonSectionHeaderView.self, forViewReuseIdentifier: "ZLCommonSectionHeaderView")
+        tableView.register(ZLCommonSectionHeaderFooterView.self, forViewReuseIdentifier: "ZLCommonSectionHeaderFooterView")
         tableView.delegate = self
         return tableView
     }()

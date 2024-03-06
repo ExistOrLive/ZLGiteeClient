@@ -20,11 +20,7 @@ class ZLRepoHeaderCellData: ZLTableViewBaseCellData {
     init(stateModel: ZLRepoInfoStateModel) {
         self.stateModel = stateModel
         super.init()
-    }
-    
-    
-    override var cellReuseIdentifier: String {
-        "ZLRepoInfoHeaderCell"
+        self.cellReuseIdentifier = "ZLRepoInfoHeaderCell"
     }
 }
 

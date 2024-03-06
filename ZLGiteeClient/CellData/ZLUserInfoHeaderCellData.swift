@@ -16,12 +16,8 @@ class ZLUserInfoHeaderCellData: ZLTableViewBaseCellData {
     init(model: ZLGiteeUserModel) {
         self.model = model
         super.init()
+        self.cellReuseIdentifier = "ZLUserInfoHeaderCell"
     }
-    
-    override var cellReuseIdentifier: String {
-        "ZLUserInfoHeaderCell"
-    }
-    
 }
 
 extension ZLUserInfoHeaderCellData: ZLUserInfoHeaderCellDataSourceAndDelegate {
