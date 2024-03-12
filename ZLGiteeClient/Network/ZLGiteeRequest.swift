@@ -8,6 +8,11 @@
 import Foundation
 import Moya
 
+
+func GiteeAccessToken() -> String {
+    ZLGiteeOAuthUserManager.manager.access_token
+}
+
 extension String {
     var urlPathEncoding: String {
         return addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -165,7 +170,7 @@ extension ZLGiteeRequest: RestTargetType {
     var task: Task {
         switch self {
         case .user:
-            return .requestParameters(parameters: ["access_token":myClientID],
+            return .requestParameters(parameters: ["access_token":GiteeAccessToken()],
                                       encoding: URLEncoding())
         case .userPublicRepos(_, let page, let per_page):
             return .requestParameters(parameters: ["type":"all",
@@ -182,10 +187,10 @@ extension ZLGiteeRequest: RestTargetType {
              .repoCommitsList(_, _,let page, let per_page) :
             return .requestParameters(parameters: ["page":page,
                                                    "per_page":per_page,
-                                                   "access_token":myClientID],
+                                                   "access_token":GiteeAccessToken()],
                                       encoding: URLEncoding())
         case .userStars:
-            return .requestParameters(parameters: ["access_token":myClientID,
+            return .requestParameters(parameters: ["access_token":GiteeAccessToken(),
                                                    "limit":20,
                                                    "sort":"created"],
                                       encoding: URLEncoding())
@@ -194,21 +199,21 @@ extension ZLGiteeRequest: RestTargetType {
              .isStarRepo,
              .unwatchRepo,
              .isWatchRepo:
-            return .requestParameters(parameters: ["access_token":myClientID],
+            return .requestParameters(parameters: ["access_token":GiteeAccessToken()],
                                       encoding: URLEncoding())
         case .recommendRepoList(let page, let per_page),
                 .latestRepoList(let page, let per_page),
                 .popularRepoList(let page, let per_page):
             return .requestParameters(parameters: ["page":page,
                                                    "per_page":per_page,
-                                                   "access_token":myClientID],
+                                                   "access_token":GiteeAccessToken()],
                                       encoding: URLEncoding())
         case .starRepo,
              .forkRepo:
-            return .requestParameters(parameters: ["access_token":myClientID],
+            return .requestParameters(parameters: ["access_token":GiteeAccessToken()],
                                       encoding: JSONEncoding())
         case .watchRepo(_,_,let watchType):
-            return .requestParameters(parameters: ["access_token":myClientID,
+            return .requestParameters(parameters: ["access_token":GiteeAccessToken(),
                                                    "watch_type": watchType],
                                       encoding: JSONEncoding())
         case .searchIssues(let q, let page, let per_page),
@@ -217,7 +222,7 @@ extension ZLGiteeRequest: RestTargetType {
             return .requestParameters(parameters: ["q":q,
                                                    "page":page,
                                                    "per_page":per_page,
-                                                   "access_token":myClientID],
+                                                   "access_token":GiteeAccessToken()],
                                       encoding: URLEncoding())
             
         }

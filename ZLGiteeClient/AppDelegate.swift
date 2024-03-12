@@ -23,8 +23,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.window = UIWindow(frame: UIScreen.main.bounds)
         self.window?.backgroundColor = UIColor(named: "ZLVCBackColor")
         self.window?.makeKeyAndVisible()
-        self.window?.rootViewController = ZLMainViewController()
         
+        if ZLGiteeOAuthUserManager.manager.isLogined {
+            self.window?.rootViewController = ZLMainViewController()
+        } else {
+            self.window?.rootViewController = ZLGiteeLoginController()
+        }
+         
         return true
     }
     
@@ -44,6 +49,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         ZLViewStatusPresenter.set {
             UIImage.iconFontImage(withText: ZLIconFont.NoData.rawValue, fontSize: 45, imageSize: CGSize(width: 60, height: 70), color: ZLRGBValue_H(colorValue: 0x999999)) ?? UIImage(color: UIColor.clear)
         }
+    }
+    
+    func switchWithLoginStatus(animated: Bool) {
+        guard let window = self.window else { return }
+        let block = {
+            if ZLGiteeOAuthUserManager.manager.isLogined {
+                window.rootViewController = ZLMainViewController()
+            } else {
+                window.rootViewController = ZLGiteeLoginController()
+            }
+        }
+        if animated {
+            UIView.transition(with: window,
+                              duration: 0.5,
+                              options: .transitionFlipFromLeft,
+                              animations: block)
+        } else {
+            block()
+        }
+        
     }
 }
 

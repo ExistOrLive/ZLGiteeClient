@@ -52,11 +52,11 @@ public enum ZLGiteeOAuthError: Error {
 
 public protocol ZLGiteeOAuthManagerDelegate: NSObjectProtocol {
     
-    func onOAuthStatusChanged(status: ZLGiteeOAuthStatus)
+    func onOAuthStatusChanged(status: ZLGiteeOAuthStatus, serialNumber: String)
     
-    func onOAuthSuccess(access_token: String,refresh_token: String)
+    func onOAuthSuccess(access_token: String,refresh_token: String, serialNumber: String)
     
-    func onOAuthFail(status: ZLGiteeOAuthStatus, error: String)
+    func onOAuthFail(status: ZLGiteeOAuthStatus, error: String, serialNumber: String)
 }
 
 
@@ -79,7 +79,7 @@ public class ZLGiteeOAuthManager: NSObject {
     private var vc: ZLGiteeOAuthController?
     
     // serialNumer 跟踪一次OAuth流程
-    private var serialNumber: String?
+    fileprivate var serialNumber: String?
     
     // Alamofire Session
     private lazy var session: Session = {
@@ -108,7 +108,7 @@ public class ZLGiteeOAuthManager: NSObject {
         
         if !force &&
             oauthStatus != .initialized {
-            delegate.onOAuthFail(status: .initialized, error: "another oauth progress is running")
+            delegate.onOAuthFail(status: .initialized, error: "another oauth progress is running", serialNumber: "")
             return
         }
         
@@ -191,11 +191,11 @@ extension ZLGiteeOAuthManager {
     /// 修改状态
     private func onStatusChange(status: ZLGiteeOAuthStatus) {
         self.oauthStatus = status
-        self.delegate?.onOAuthStatusChanged(status: status)
+        self.delegate?.onOAuthStatusChanged(status: status, serialNumber: serialNumber ?? "")
     }
     
     /// 重置状态
-    private func reset() {
+    func reset() {
         oauthStatus = .initialized
         delegate = nil
         vc = nil
@@ -204,13 +204,13 @@ extension ZLGiteeOAuthManager {
     
     ///
     private func onOAuthSuccess(access_token: String,refresh_token: String ) {
-        self.delegate?.onOAuthSuccess(access_token: access_token, refresh_token: refresh_token)
+        self.delegate?.onOAuthSuccess(access_token: access_token, refresh_token: refresh_token, serialNumber: serialNumber ?? "")
         self.onStatusChange(status: .success)
         self.reset()
     }
     
     private func onOAuthFail(status: ZLGiteeOAuthStatus, error: String) {
-        self.delegate?.onOAuthFail(status: status, error: error)
+        self.delegate?.onOAuthFail(status: status, error: error, serialNumber: serialNumber ?? "")
         self.onStatusChange(status: .fail)
         self.reset()
     }

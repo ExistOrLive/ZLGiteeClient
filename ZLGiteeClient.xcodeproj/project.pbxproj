@@ -68,6 +68,8 @@
 		74AAE5C2284207EC0030DA01 /* ZLUserInfoHeaderCellData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74AAE5C1284207EC0030DA01 /* ZLUserInfoHeaderCellData.swift */; };
 		74AAE5CF2843B5E50030DA01 /* iconfont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 74AAE5CE2843B5E50030DA01 /* iconfont.ttf */; };
 		74AAE5D12843B95C0030DA01 /* ZLCommonSectionHeaderFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74AAE5D02843B95C0030DA01 /* ZLCommonSectionHeaderFooterView.swift */; };
+		74CC74C72BA09983002C93DE /* ZLGiteeLoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74CC74C62BA09983002C93DE /* ZLGiteeLoginController.swift */; };
+		74CC74C92BA0A540002C93DE /* ZLGiteeOAuthUserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74CC74C82BA0A540002C93DE /* ZLGiteeOAuthUserManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -135,6 +137,8 @@
 		74AAE5C1284207EC0030DA01 /* ZLUserInfoHeaderCellData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZLUserInfoHeaderCellData.swift; sourceTree = "<group>"; };
 		74AAE5CE2843B5E50030DA01 /* iconfont.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = iconfont.ttf; sourceTree = "<group>"; };
 		74AAE5D02843B95C0030DA01 /* ZLCommonSectionHeaderFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZLCommonSectionHeaderFooterView.swift; sourceTree = "<group>"; };
+		74CC74C62BA09983002C93DE /* ZLGiteeLoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZLGiteeLoginController.swift; sourceTree = "<group>"; };
+		74CC74C82BA0A540002C93DE /* ZLGiteeOAuthUserManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZLGiteeOAuthUserManager.swift; sourceTree = "<group>"; };
 		7A7D211429EFF5EF4F067B6B /* Pods-ZLGiteeClient.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZLGiteeClient.release.xcconfig"; path = "Target Support Files/Pods-ZLGiteeClient/Pods-ZLGiteeClient.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -285,6 +289,7 @@
 			children = (
 				740C2F832837D0AF00DAFF0E /* ZLGiteeRequest.swift */,
 				746719D42B8C472E003E1D4B /* RestTargetType.swift */,
+				74CC74C82BA0A540002C93DE /* ZLGiteeOAuthUserManager.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -409,6 +414,7 @@
 				746ADF612B95F2FE0032E2A8 /* ZLGiteeOAuthController.swift */,
 				746ADF632B95F2FE0032E2A8 /* ZLGiteeOAuthManager.swift */,
 				746ADF622B95F2FE0032E2A8 /* ZLGiteeScope.swift */,
+				74CC74C62BA09983002C93DE /* ZLGiteeLoginController.swift */,
 			);
 			path = OAuth;
 			sourceTree = "<group>";
@@ -558,6 +564,7 @@
 				74AAE5BA284203EA0030DA01 /* ZLUserInfoController.swift in Sources */,
 				3151527B2842399E0048DEC6 /* ZLWebContentController.swift in Sources */,
 				31719211284CAC6500B1EED4 /* ZLRepoInfoHeaderCell.swift in Sources */,
+				74CC74C92BA0A540002C93DE /* ZLGiteeOAuthUserManager.swift in Sources */,
 				746719F02B8CC3F7003E1D4B /* ZLRepositoryTableViewCellDataForV3API.swift in Sources */,
 				746ADF642B95F2FE0032E2A8 /* ZLGiteeOAuthController.swift in Sources */,
 				746719E42B8C8CF6003E1D4B /* ZLIssueTableViewCellData.swift in Sources */,
@@ -586,6 +593,7 @@
 				746ADF592B94D41B0032E2A8 /* ZLRepoCommitsListController.swift in Sources */,
 				740C2F812837CCC400DAFF0E /* ZLProfileController.swift in Sources */,
 				315152702842196D0048DEC6 /* UIView+ShareMenu.swift in Sources */,
+				74CC74C72BA09983002C93DE /* ZLGiteeLoginController.swift in Sources */,
 				746ADF5D2B94D5900032E2A8 /* ZLGiteeCommitModel.swift in Sources */,
 				31460EA8284892DD00E64254 /* ZLUserStarsListController.swift in Sources */,
 				31719217284CAD2400B1EED4 /* ZLCommonTableViewCellDataV2.swift in Sources */,
