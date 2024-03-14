@@ -10,7 +10,7 @@ import Moya
 
 
 func GiteeAccessToken() -> String {
-    ZLGiteeOAuthUserManager.manager.access_token
+    ZLGiteeOAuthUserServiceModel.sharedService.access_token
 }
 
 extension String {

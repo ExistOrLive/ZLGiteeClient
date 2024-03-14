@@ -94,6 +94,14 @@ extension MoyaProviderType {
                 callbackQueue: callbackQueue,
                 progress: progress) { result in
             
+            if case .success(let response) = result,
+               response.statusCode == 401 {
+                /// 401 token 失效
+                NotificationCenter.default.post(name: AccessTokenInvalidNotification,
+                                                object: nil)
+            }
+            
+        
             if let restTargetType = target as? RestTargetType {
                 
                 let (result,data,errorMsg) = restTargetType.resultType.parseResult(result)

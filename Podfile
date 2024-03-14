@@ -28,6 +28,8 @@ pod 'MBProgressHUD'
 pod 'Toast'
 # pageView控件 https://github.com/pujiaxin33/JXSegmentedView
 pod 'JXSegmentedView'
+# JXPagingView
+pod 'JXPagingView/Paging'
 # 键盘 https://github.com/hackiftekhar/IQKeyboardManager
 pod 'IQKeyboardManager'
 # 图表

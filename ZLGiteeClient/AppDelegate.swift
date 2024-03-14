@@ -17,14 +17,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     @objc dynamic var window: UIWindow?
     
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
         initUI()
+        
+        registerNotification() 
+        
         self.window = UIWindow(frame: UIScreen.main.bounds)
         self.window?.backgroundColor = UIColor(named: "ZLVCBackColor")
         self.window?.makeKeyAndVisible()
         
-        if ZLGiteeOAuthUserManager.manager.isLogined {
+        if ZLGiteeOAuthUserServiceModel.sharedService.isLogined {
             self.window?.rootViewController = ZLMainViewController()
         } else {
             self.window?.rootViewController = ZLGiteeLoginController()
@@ -54,7 +61,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func switchWithLoginStatus(animated: Bool) {
         guard let window = self.window else { return }
         let block = {
-            if ZLGiteeOAuthUserManager.manager.isLogined {
+            if ZLGiteeOAuthUserServiceModel.sharedService.isLogined {
                 window.rootViewController = ZLMainViewController()
             } else {
                 window.rootViewController = ZLGiteeLoginController()
@@ -69,6 +76,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             block()
         }
         
+    }
+}
+
+// MARK: - Notifiction
+extension AppDelegate {
+    
+    func registerNotification() {
+        NotificationCenter.default.addObserver(self, selector: #selector(onLoginStatusChanged), name:OAuthSuccessNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(onLoginStatusChanged), name:AccessAndRefreshTokenInvalidNotification, object: nil)
+    }
+    
+    
+    @objc func onLoginStatusChanged() {
+        switchWithLoginStatus(animated: true)
     }
 }
 

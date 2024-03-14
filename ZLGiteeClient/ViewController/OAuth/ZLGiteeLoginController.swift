@@ -236,14 +236,13 @@ extension ZLGiteeLoginController: ZLGiteeOAuthManagerDelegate {
         step = .checktoken
         reloadView()
         
-        ZLGiteeOAuthUserManager.manager.checkToken(access_token: access_token,
+        ZLGiteeOAuthUserServiceModel.sharedService.checkToken(access_token: access_token,
                                                    refresh_token: refresh_token) { [weak self] result, msg in
             guard let self else { return }
             self.step = .initialize
             self.reloadView()
             if result {
-                guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
-                appDelegate.switchWithLoginStatus(animated: true)
+                ZLToastView.showMessage("登录成功")
             } else {
                 ZLToastView.showMessage(msg)
             }

@@ -17,6 +17,7 @@ PODS:
     - AGConnectCredential
   - HMFoundation (1.9.0.302)
   - IQKeyboardManager (6.5.9)
+  - JXPagingView/Paging (2.1.2)
   - JXSegmentedView (1.3.0)
   - KeychainAccess (4.2.2)
   - LookinServer (1.0.4)
@@ -54,6 +55,7 @@ DEPENDENCIES:
   - FWPopupView
   - HandyJSON
   - IQKeyboardManager
+  - JXPagingView/Paging
   - JXSegmentedView
   - KeychainAccess
   - LookinServer
@@ -82,6 +84,7 @@ SPEC REPOS:
     - HiAnalytics
     - HMFoundation
     - IQKeyboardManager
+    - JXPagingView
     - JXSegmentedView
     - KeychainAccess
     - LookinServer
@@ -130,6 +133,7 @@ SPEC CHECKSUMS:
   HiAnalytics: 07a774c560885f699db1d25af9e0cfc3fcf315e3
   HMFoundation: 07a5cc092dc728e13400df5d24648f03ded00a95
   IQKeyboardManager: 241cc94ccabc9deb8f8bd7d12f00d73288d13ecc
+  JXPagingView: 90924b364a2ff7e94db534fad1fa50925ff69ee4
   JXSegmentedView: fec0d335355b6e019c494fe2e030bde8a36d2df6
   KeychainAccess: c0c4f7f38f6fc7bbe58f5702e25f7bd2f65abf51
   LookinServer: 743c1681771d0a8dcc38825325a080c3186404a5
@@ -146,6 +150,6 @@ SPEC CHECKSUMS:
   ZLUIUtilities: 58cc312400e93051b01ab73e77998865ee43f53a
   ZLUtilities: 65a433eda88c05edb4a48f9209c8736e2a5d3b0a
 
-PODFILE CHECKSUM: f4eddcd6877178dd54d58245d4bcffe0556d15eb
+PODFILE CHECKSUM: f86badef5c03dc6cbb822b6de978ee33eda9a019
 
 COCOAPODS: 1.15.2

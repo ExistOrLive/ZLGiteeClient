@@ -13,9 +13,22 @@ class ZLNotificationsController: ZLBaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        contentView.addSubview(button)
+        button.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
     }
     
 
+    lazy var button: UIButton = {
+       let button = UIButton()
+        button.addTarget(self, action: #selector(logout), for: .touchUpInside)
+        return button
+    }()
+    
+    @objc func logout() {
+        ZLGiteeOAuthUserServiceModel.sharedService.logout()
+    }
     /*
     // MARK: - Navigation
 
