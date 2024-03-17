@@ -351,7 +351,7 @@ extension ZLGiteeOAuthUserServiceModel {
                 self.reset()
                 NotificationCenter.default.post(name: AccessAndRefreshTokenInvalidNotification, object: nil)
             }
-            isRefreshToken = false
+            self.isRefreshToken = false
         }
     }
 }
