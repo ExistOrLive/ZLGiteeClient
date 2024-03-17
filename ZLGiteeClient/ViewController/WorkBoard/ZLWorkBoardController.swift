@@ -29,14 +29,14 @@ class ZLWorkBoardController: ZLBaseViewController {
         }
         pagingView.reloadData()
         
-        /// 授权用户的issue
-         https://gitee.com/api/v5/user/issues
-        
-        组织
-    https://gitee.com/api/v5/user/orgs
-        
-        所有仓库
-    https://gitee.com/api/v5/user/repos
+//        /// 授权用户的issue
+//         https://gitee.com/api/v5/user/issues
+//        
+//        组织
+//    https://gitee.com/api/v5/user/orgs
+//        
+//        所有仓库
+//    https://gitee.com/api/v5/user/repos
     }
     
 

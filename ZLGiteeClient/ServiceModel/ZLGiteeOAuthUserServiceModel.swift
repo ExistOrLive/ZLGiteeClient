@@ -347,8 +347,8 @@ extension ZLGiteeOAuthUserServiceModel {
                 self.resetCurrentUserToken(access_token: access_token, refresh_token: refresh_token)
                 NotificationCenter.default.post(name: RefreshTokenNotification, object: nil)
             } else {
-                removeUserAndToken(login: currentLogin)
-                reset()
+                self.removeUserAndToken(login: self.currentLogin)
+                self.reset()
                 NotificationCenter.default.post(name: AccessAndRefreshTokenInvalidNotification, object: nil)
             }
             isRefreshToken = false
