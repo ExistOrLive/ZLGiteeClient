@@ -131,7 +131,7 @@ extension ZLRepoInfoStateModel {
     
     func forkRepo(callBack: @escaping (Bool,ZLGiteeRepoModel?,String) -> Void)  {
         ZLGiteeRequest.sharedProvider.requestRest(.forkRepo(login: loginName, repoName: repoName), completion: { [weak self] (result, model, msg) in
-            guard let self else { return }
+            guard let _ = self else { return }
             callBack(result, model as? ZLGiteeRepoModel, msg)
         })
     }

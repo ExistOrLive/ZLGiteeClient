@@ -19,6 +19,7 @@ PODS:
   - IQKeyboardManager (6.5.9)
   - JXPagingView/Paging (2.1.2)
   - JXSegmentedView (1.3.0)
+  - Kanna (5.3.0)
   - KeychainAccess (4.2.2)
   - LookinServer (1.0.4)
   - Masonry (1.1.0)
@@ -45,6 +46,7 @@ PODS:
     - Toast
     - ZLBaseExtension
     - ZLBaseUI
+    - ZLUtilities
   - ZLUtilities (0.1.0):
     - AGConnectCore
     - AGConnectRemoteConfig
@@ -57,6 +59,7 @@ DEPENDENCIES:
   - IQKeyboardManager
   - JXPagingView/Paging
   - JXSegmentedView
+  - Kanna
   - KeychainAccess
   - LookinServer
   - MBProgressHUD
@@ -86,6 +89,7 @@ SPEC REPOS:
     - IQKeyboardManager
     - JXPagingView
     - JXSegmentedView
+    - Kanna
     - KeychainAccess
     - LookinServer
     - Masonry
@@ -115,10 +119,10 @@ CHECKOUT OPTIONS:
     :commit: 8188110c5cb63e01397a588ff76b478cbc0bfe17
     :git: https://github.com/ExistOrLive/ZLBaseUI.git
   ZLUIUtilities:
-    :commit: bb955210ad7b1f0c28a3d9f3b6e66beeed8bf614
+    :commit: 12e73e47a97aaf8f5fb179ccbfd39884092c9a55
     :git: https://github.com/ExistOrLive/ZLUIUtilities.git
   ZLUtilities:
-    :commit: ffb5f032f2ecf9fd09f28cf517fcf709cc777189
+    :commit: e3a3d69d667329e337711d18ef99dfd4774b064f
     :git: https://github.com/ExistOrLive/ZLUtilities.git
 
 SPEC CHECKSUMS:
@@ -135,6 +139,7 @@ SPEC CHECKSUMS:
   IQKeyboardManager: 241cc94ccabc9deb8f8bd7d12f00d73288d13ecc
   JXPagingView: 90924b364a2ff7e94db534fad1fa50925ff69ee4
   JXSegmentedView: fec0d335355b6e019c494fe2e030bde8a36d2df6
+  Kanna: 6ecbd674bcbef2766a2acf80e99d1174440c5b9c
   KeychainAccess: c0c4f7f38f6fc7bbe58f5702e25f7bd2f65abf51
   LookinServer: 743c1681771d0a8dcc38825325a080c3186404a5
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
@@ -147,9 +152,9 @@ SPEC CHECKSUMS:
   YYText: 5c461d709e24d55a182d1441c41dc639a18a4849
   ZLBaseExtension: 90e59e26595222fb11628a97f4b2951ab843e4f1
   ZLBaseUI: 2815898555602f9bebb23ca0277ff5352d2a2952
-  ZLUIUtilities: 58cc312400e93051b01ab73e77998865ee43f53a
+  ZLUIUtilities: c913a60f5ffdd89f3e84325f850dc2a2d2e52838
   ZLUtilities: 65a433eda88c05edb4a48f9209c8736e2a5d3b0a
 
-PODFILE CHECKSUM: f86badef5c03dc6cbb822b6de978ee33eda9a019
+PODFILE CHECKSUM: 5a4c2dd67b4cf9e925cb91c567a21578ddc240e5
 
 COCOAPODS: 1.15.2

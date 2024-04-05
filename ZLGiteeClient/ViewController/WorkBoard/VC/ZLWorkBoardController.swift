@@ -11,6 +11,10 @@ import JXPagingView
 import JXSegmentedView
 
 class ZLWorkBoardController: ZLBaseViewController {
+    
+    var vcArray: [JXPagingViewListViewDelegate] = []
+    
+    var headerViewData: ZLWorkBoardHeaderViewData?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,8 +29,12 @@ class ZLWorkBoardController: ZLBaseViewController {
         }
         
         if let userModel = ZLGiteeOAuthUserServiceModel.sharedService.currentUserModel {
-            headerView.fillWithData(data: userModel)
+            let headerViewData = ZLWorkBoardHeaderViewData(model: userModel)
+            addSubViewModel(headerViewData)
+            self.headerViewData = headerViewData
+            headerView.fillWithData(data: headerViewData)
         }
+        vcArray = [ZLWorkBoardItemController(), ZLWorkBoardEventController(), ZLWorkBoardEventController()]
         pagingView.reloadData()
         
 //        /// 授权用户的issue
@@ -47,15 +55,16 @@ class ZLWorkBoardController: ZLBaseViewController {
     
     lazy var pagingView: JXPagingView = {
         let pagingView = JXPagingView(delegate: self)
+        pagingView.mainTableView.bounces = false
         return pagingView
     }()
     
     
     lazy var segmentedViewDataSource: JXSegmentedTitleDataSource = {
         let dataSource = JXSegmentedTitleDataSource()
-        dataSource.titles = ["动态","仓库","星选集"]
-        dataSource.titleSelectedFont = .zlMediumFont(withSize: 12)
-        dataSource.titleNormalFont = .zlRegularFont(withSize: 12)
+        dataSource.titles = ["主页","仓库","星选集"]
+        dataSource.titleSelectedFont = .zlMediumFont(withSize: 18)
+        dataSource.titleNormalFont = .zlRegularFont(withSize: 16)
         dataSource.titleSelectedColor = .black
         dataSource.titleNormalColor = .gray
         dataSource.itemWidth = floor(UIScreen.main.bounds.size.width / 3.0)
@@ -69,31 +78,18 @@ class ZLWorkBoardController: ZLBaseViewController {
         view.listContainer = pagingView.listContainerView
         return view
     }()
-    
-    
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
 
 // MARK: - JXPagingViewDelegate
 extension ZLWorkBoardController: JXPagingViewDelegate {
     
     func pagingView(_ pagingView: JXPagingView, initListAtIndex index: Int) -> any JXPagingViewListViewDelegate {
-        ZLWorkBoardEventController()
+        vcArray[index]
     }
-    
     
     /// tableHeaderView的高度，因为内部需要比对判断，只能是整型数
     func tableHeaderViewHeight(in pagingView: JXPagingView) -> Int {
-        70
+        Int(headerViewData?.height ?? 0)
     }
     
     /// 返回tableHeaderView
@@ -102,7 +98,7 @@ extension ZLWorkBoardController: JXPagingViewDelegate {
     }
     /// 返回悬浮HeaderView的高度，因为内部需要比对判断，只能是整型数
     func heightForPinSectionHeader(in pagingView: JXPagingView) -> Int {
-        60
+        45
     }
     /// 返回悬浮HeaderView
     func viewForPinSectionHeader(in pagingView: JXPagingView) -> UIView {
@@ -111,7 +107,7 @@ extension ZLWorkBoardController: JXPagingViewDelegate {
     
     /// 返回列表的数量
     func numberOfLists(in pagingView: JXPagingView) -> Int {
-        3
+        vcArray.count
     }
 }
 

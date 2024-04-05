@@ -116,7 +116,7 @@ extension ZLGiteeOAuthUserServiceModel {
                                       headers:httpHeaders)
         
         request.responseDecodable(of: ZLGiteeOAuthResult.self) { [weak self] response in
-            guard let self = self else { return }
+            guard let _ = self else { return }
             
             switch(response.result) {
             case .success(let result):
@@ -126,7 +126,7 @@ extension ZLGiteeOAuthUserServiceModel {
                 } else {
                     callBack(false, "", "")
                 }
-            case .failure(let error):
+            case .failure(let _):
                 callBack(false, "", "")
             }
         }

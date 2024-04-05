@@ -8,9 +8,37 @@
 import Foundation
 import ZLBaseUI
 import ZLUIUtilities
+import ZLUtilities
+
+class ZLWorkBoardHeaderViewData: ZLBaseViewModel {
+    
+    let height: CGFloat = 450
+    
+    let model: ZLGiteeUserBriefModel
+    
+    init(model: ZLGiteeUserBriefModel) {
+        self.model = model
+        super.init()
+    }
+    
+    func onRepoButtonClicked() {
+        let vc = ZLMyRepoListController()
+        vc.hidesBottomBarWhenPushed = true
+        viewController?.navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    func onOrgButtonClicked() {
+        let vc = ZLMyOrgListController()
+        vc.hidesBottomBarWhenPushed = true
+        viewController?.navigationController?.pushViewController(vc, animated: true)
+    }
+    
+}
 
 
 class ZLWorkBoardHeaderView: UIView {
+    
+    weak var delegate: ZLWorkBoardHeaderViewData?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -22,48 +50,114 @@ class ZLWorkBoardHeaderView: UIView {
     }
     
     func setupUI() {
-        backgroundColor = UIColor(named: "ZLCellBack")
-        addSubview(imageView)
-        addSubview(nameLabel)
-        addSubview(loginLabel)
+        backgroundColor = UIColor(named: "ZLVCBackColor")
+        addSubview(stackView)
         
-        imageView.snp.makeConstraints { make in
-            make.left.equalTo(10)
-            make.top.equalTo(10)
+        stackView.addArrangedSubview(baseInfoView)
+    
+        stackView.addArrangedSubview(repoItemView)
+        stackView.addArrangedSubview(orgItemView)
+        stackView.addArrangedSubview(companyItemView)
+        
+        stackView.addArrangedSubview(contributionContainerView)
+        
+        stackView.setCustomSpacing(10, after: baseInfoView)
+        stackView.setCustomSpacing(10, after: companyItemView)
+        
+        stackView.snp.makeConstraints { make in
+            make.top.left.right.equalToSuperview()
             make.bottom.equalTo(-10)
-            make.size.equalTo(50)
         }
-        nameLabel.snp.makeConstraints { make in
-            make.top.equalTo(imageView)
-            make.left.equalTo(imageView.snp.right).offset(10)
+        
+        repoItemView.snp.makeConstraints { make in
+            make.height.equalTo(50)
         }
-        loginLabel.snp.makeConstraints { make in
-            make.bottom.equalTo(imageView)
-            make.left.equalTo(imageView.snp.right).offset(10)
+        
+        orgItemView.snp.makeConstraints { make in
+            make.height.equalTo(50)
+        }
+        
+        companyItemView.snp.makeConstraints { make in
+            make.height.equalTo(50)
         }
     }
     
-    lazy var imageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.cornerRadius = 25
-        imageView.clipsToBounds = true
-        imageView.contentMode = .scaleAspectFit
-        return imageView
+    lazy var stackView: UIStackView = {
+       let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.alignment = .fill
+        stackView.distribution = .fill
+        stackView.spacing = 0
+        return stackView
     }()
     
-    lazy var nameLabel: UILabel = {
+    lazy var baseInfoView: ZLWorkBoardBaseInfoView = {
+       let view = ZLWorkBoardBaseInfoView()
+        return view
+    }()
+    
+    lazy var repoItemView: ZLWorkBoardBaseItemView = {
+        let view = ZLWorkBoardBaseItemView()
+        view.titleLabel.text = "仓库"
+        view.avatarImageView.image = UIImage.iconFontImage(withText: "\u{e74f}", fontSize: 20 , imageSize: CGSize(width: 30, height: 30), color: .iconColor(withName: "ZLLabelColor1"))
+        view.clickBlock = { [weak self] in
+            self?.delegate?.onRepoButtonClicked()
+        }
+        return view
+    }()
+    
+    lazy var orgItemView: ZLWorkBoardBaseItemView = {
+        let view = ZLWorkBoardBaseItemView()
+        view.titleLabel.text = "组织"
+        view.avatarImageView.image = UIImage.iconFontImage(withText: "\u{e6dd}", fontSize: 20 , imageSize: CGSize(width: 30, height: 30), color: .iconColor(withName: "ZLLabelColor1"))
+        view.clickBlock = { [weak self] in
+            self?.delegate?.onOrgButtonClicked()
+        }
+        return view
+    }()
+    
+    lazy var companyItemView: ZLWorkBoardBaseItemView = {
+        let view = ZLWorkBoardBaseItemView()
+        view.titleLabel.text = "企业"
+        view.avatarImageView.image = UIImage.iconFontImage(withText: "\u{e61f}", fontSize: 20 , imageSize: CGSize(width: 30, height: 30), color: .iconColor(withName: "ZLLabelColor1"))
+        return view
+    }()
+    
+    lazy var contributionContainerView: UIView = {
+       let view = UIView()
+        view.backgroundColor = .white
+        view.addSubview(contributionLabel)
+        
+        view.addSubview(contributionView)
+        
+        contributionLabel.snp.makeConstraints { make in
+            make.left.equalTo(20)
+            make.top.equalTo(10)
+        }
+        
+        contributionView.snp.makeConstraints { make in
+            make.left.equalTo(20)
+            make.right.equalTo(-20)
+            make.top.equalTo(40)
+            make.bottom.equalTo(-10)
+            make.height.equalTo(100)
+        }
+        return view
+    }()
+        
+    lazy var contributionLabel: UILabel = {
         let label = UILabel()
-        label.font = .zlMediumFont(withSize: 15)
         label.textColor = UIColor(named: "ZLLabelColor1")
+        label.font = .zlMediumFont(withSize: 16)
+        label.text = "贡献度"
         return label
     }()
     
-    lazy var loginLabel: UILabel = {
-        let label = UILabel()
-        label.font = .zlRegularFont(withSize: 12)
-        label.textColor = UIColor(named: "ZLLabelColor2")
-        return label
+    lazy var contributionView: ZLGiteeContributionsView = {
+       let view = ZLGiteeContributionsView()
+        return view
     }()
+    
 }
 
 extension ZLWorkBoardHeaderView: ZLViewUpdatableWithViewData {
@@ -71,9 +165,13 @@ extension ZLWorkBoardHeaderView: ZLViewUpdatableWithViewData {
         
     }
     
-    func fillWithViewData(viewData: ZLGiteeUserBriefModel) {
-        imageView.sd_setImage(with: URL(string: viewData.avatar_url ?? ""), placeholderImage: UIImage(named: "default_avatar"))
-        nameLabel.text = viewData.name
-        loginLabel.text = viewData.login
+    func fillWithViewData(viewData: ZLWorkBoardHeaderViewData) {
+        let model = viewData.model
+        baseInfoView.imageView.sd_setImage(with: URL(string: model.avatar_url ?? ""), placeholderImage: UIImage(named: "default_avatar"))
+        baseInfoView.nameLabel.text = model.name
+        baseInfoView.loginLabel.text = model.login
+        contributionView.startLoad(loginName: model.login ?? "")
+        
+        delegate = viewData
     }
 }

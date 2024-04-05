@@ -14,10 +14,13 @@ target 'ZLGiteeClient' do
   #pod 'ZLBaseExtension', :path => "../../ZLBaseExtension"
 
   pod 'ZLUIUtilities', :git => "https://github.com/ExistOrLive/ZLUIUtilities.git"
-  #pod 'ZLUIUtilities', :path => "../../ZLUIUtilities"
+  #pod 'ZLUIUtilities', :path => "../ZLUIUtilities"
   
   pod 'ZLUtilities', :git => "https://github.com/ExistOrLive/ZLUtilities.git"
-
+  #pod 'ZLUtilities', :path => "../ZLUtilities"
+  
+# HTML Parser
+pod 'Kanna'
 # 弹出框 弹出菜单
 pod 'FWPopupView'
 # 刷新控件

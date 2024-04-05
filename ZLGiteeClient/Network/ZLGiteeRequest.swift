@@ -19,6 +19,14 @@ extension String {
     }
 }
 
+extension Dictionary where Key == String, Value == Any? {
+    func toParameters() -> [String: Any] {
+        self.compactMapValues { value in
+            return value
+        }
+    }
+}
+
 enum ZLGiteeRequest {
     
     // user
@@ -52,6 +60,21 @@ enum ZLGiteeRequest {
     case searchRepos(q: String, page: Int, per_page: Int)
     case searchUsers(q: String, page: Int, per_page: Int)
     case searchIssues(q: String, page: Int, per_page: Int)
+    
+    
+    case oauthUserRepoList(page: Int,
+                           per_page: Int,
+                           sort: String = "full_name",
+                           q: String? = nil ,
+                           direction: String? = nil ,
+                           visibility: String? = nil ,
+                           affiliation: String? = nil)
+    
+    case oauthUserOrgList(page: Int,
+                          per_page: Int,
+                          admin: Bool = false)
+    
+    case userContributionData(login: String)
 }
 
 extension ZLGiteeRequest {
@@ -124,6 +147,12 @@ extension ZLGiteeRequest: RestTargetType {
             return "/api/\(version)/search/users"
         case .searchIssues:
             return "/api/\(version)/search/issues"
+        case .oauthUserRepoList:
+            return "/api/\(version)/user/repos"
+        case .oauthUserOrgList:
+            return "/api/\(version)/user/orgs"
+        case .userContributionData(let login):
+            return "/\(login.urlPathEncoding)"
         }
     }
 
@@ -148,7 +177,10 @@ extension ZLGiteeRequest: RestTargetType {
              .latestRepoList,
              .searchRepos,
              .searchUsers,
-             .searchIssues:
+             .searchIssues,
+             .oauthUserRepoList,
+             .oauthUserOrgList,
+             .userContributionData:
             return .get
         case .forkRepo:
             return .post
@@ -224,6 +256,24 @@ extension ZLGiteeRequest: RestTargetType {
                                                    "per_page":per_page,
                                                    "access_token":GiteeAccessToken()],
                                       encoding: URLEncoding())
+        case .oauthUserRepoList(let page,let per_page,let sort,let q,let direction,let visibility,let affiliation):
+            return .requestParameters(parameters: ["q":q,
+                                                   "page":page,
+                                                   "per_page":per_page,
+                                                   "sort": sort,
+                                                   "direction": direction,
+                                                   "visibility": visibility,
+                                                   "affiliation": affiliation,
+                                                   "access_token":GiteeAccessToken()].toParameters(),
+                                      encoding: URLEncoding())
+        case .oauthUserOrgList(let page,let per_page,let admin):
+            return .requestParameters(parameters: ["page":page,
+                                                   "per_page":per_page,
+                                                   "admin": admin,
+                                                   "access_token":GiteeAccessToken()].toParameters(),
+                                      encoding: URLEncoding())
+        case .userContributionData:
+            return .requestPlain
             
         }
        
@@ -239,7 +289,13 @@ extension ZLGiteeRequest: RestTargetType {
 
     /// The headers to be used in the request.
     var headers: [String: String]? {
-        return ["Content-Type": "application/json;charset=UTF-8"]
+        switch self {
+        case .userContributionData:
+            return nil
+        default:
+            return ["Content-Type": "application/json;charset=UTF-8"]
+        }
+        
     }
     
     /// resultType
@@ -259,7 +315,8 @@ extension ZLGiteeRequest: RestTargetType {
              .searchUsers:
             return .array(parseWrapper: ZLGiteeUserModel.self)
         case .repoForksList,
-                .searchRepos:
+                .searchRepos,
+                .oauthUserRepoList:
             return .array(parseWrapper: ZLGiteeRepoModel.self)
         case .popularRepoList,
                 .recommendRepoList,
@@ -267,6 +324,8 @@ extension ZLGiteeRequest: RestTargetType {
             return .array(parseWrapper: ZLGiteeRepoModelV3.self)
         case .repoCommitsList:
             return .array(parseWrapper: ZLGiteeCommitModel.self)
+        case .oauthUserOrgList:
+            return .array(parseWrapper: ZLGiteeOrgModel.self)
         default:
             return .data
         }
