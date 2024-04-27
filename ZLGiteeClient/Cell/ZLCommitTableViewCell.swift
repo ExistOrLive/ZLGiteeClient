@@ -12,7 +12,6 @@ import ZLUtilities
 import ZLUIUtilities
 
 @objc protocol ZLCommitTableViewCellDelegate: NSObjectProtocol {
-    func getCommiterAvaterURL() -> String?
 
     func getCommiterLogin() -> String
     
@@ -47,13 +46,6 @@ class ZLCommitTableViewCell: UITableViewCell {
         return label
     }()
 
-    private lazy var avatarImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.layer.cornerRadius = 15
-        imageView.layer.masksToBounds = true
-        return imageView
-    }()
-
     private lazy var assitLabel: UILabel = {
         let label = UILabel()
         label.font = .zlRegularFont(withSize: 11)
@@ -84,7 +76,6 @@ class ZLCommitTableViewCell: UITableViewCell {
 
         containerView.addSubview(titleLabel)
         containerView.addSubview(shaButton)
-        containerView.addSubview(avatarImageView)
         containerView.addSubview(assitLabel)
 
         titleLabel.snp.makeConstraints { make in
@@ -99,16 +90,11 @@ class ZLCommitTableViewCell: UITableViewCell {
             make.left.equalTo(titleLabel.snp.right).offset(10)
         }
 
-        avatarImageView.snp.makeConstraints { make in
+
+        assitLabel.snp.makeConstraints { make in
             make.left.equalTo(15)
             make.top.equalTo(titleLabel.snp.bottom).offset(20)
             make.bottom.equalTo(-10)
-            make.size.equalTo(CGSize(width: 30, height: 30))
-        }
-
-        assitLabel.snp.makeConstraints { make in
-            make.left.equalTo(avatarImageView.snp.right).offset(10)
-            make.centerY.equalTo(avatarImageView)
             make.right.equalTo(-20)
         }
 
@@ -144,7 +130,6 @@ extension ZLCommitTableViewCell: ZLViewUpdatableWithViewData {
     
     func fillWithViewData(viewData cellData: ZLCommitTableViewCellData) {
         self.titleLabel.text = cellData.getCommitTitle()
-        self.avatarImageView.sd_setImage(with: URL(string: delegate?.getCommiterAvaterURL() ?? ""), placeholderImage: UIImage(named: "default_avatar"))
         self.assitLabel.text = cellData.getAssistInfo()
         self.shaButton.setTitle(cellData.getCommitSha(), for: .normal)
     }

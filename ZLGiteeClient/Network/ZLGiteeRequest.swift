@@ -53,6 +53,13 @@ enum ZLGiteeRequest {
     case repoForksList(login: String, repoName: String, page: Int, per_page: Int)
     case repoCommitsList(login: String, repoName: String, page: Int, per_page: Int)
     
+    case repoBranchList(login: String,
+                        repoName: String,
+                        page: Int,
+                        per_page: Int = 20,
+                        sort: String = "updated",
+                        direction: String = "desc")
+    
     case latestRepoList(page: Int, per_page: Int)
     case popularRepoList(page: Int, per_page: Int)
     case recommendRepoList(page: Int, per_page: Int)
@@ -61,6 +68,9 @@ enum ZLGiteeRequest {
     case searchUsers(q: String, page: Int, per_page: Int)
     case searchIssues(q: String, page: Int, per_page: Int)
     
+    case repoReadMe(login: String, repoName: String, ref: String?)
+    
+    case markdownRender(markdown: String)
     
     case oauthUserRepoList(page: Int,
                            per_page: Int,
@@ -135,6 +145,9 @@ extension ZLGiteeRequest: RestTargetType {
             return "/api/\(version)/repos/\(login.urlPathEncoding)/\(repoName.urlPathEncoding)/forks"
         case .repoCommitsList(let login, let repoName, _, _):
             return "/api/\(version)/repos/\(login.urlPathEncoding)/\(repoName.urlPathEncoding)/commits"
+        case .repoBranchList(let login,
+                             let repoName, _, _ , _, _ ):
+            return "/api/\(version)/repos/\(login.urlPathEncoding)/\(repoName.urlPathEncoding)/branches"
         case .recommendRepoList:
             return "/api/\(version)/projects/featured"
         case .popularRepoList:
@@ -153,36 +166,18 @@ extension ZLGiteeRequest: RestTargetType {
             return "/api/\(version)/user/orgs"
         case .userContributionData(let login):
             return "/\(login.urlPathEncoding)"
+        case .repoReadMe(let login,let repoName,let ref):
+            return "/api/\(version)/repos/\(login.urlPathEncoding)/\(repoName.urlPathEncoding)/readme"
+        case .markdownRender:
+            return "/api/\(version)/markdown"
         }
     }
 
     /// The HTTP method used in the request.
     var method: Moya.Method {
         switch self {
-        case .user,
-             .userPublicRepos,
-             .userFollower,
-             .userFollowing,
-             .userStars,
-             .repoInfo,
-             .isStarRepo,
-             .isWatchRepo,
-             .repoIssuesList,
-             .repoForksList,
-             .repoStarsList,
-             .repoCommitsList,
-             .repoWatchingsList,
-             .recommendRepoList,
-             .popularRepoList,
-             .latestRepoList,
-             .searchRepos,
-             .searchUsers,
-             .searchIssues,
-             .oauthUserRepoList,
-             .oauthUserOrgList,
-             .userContributionData:
-            return .get
-        case .forkRepo:
+        case .forkRepo,
+                .markdownRender:
             return .post
         case .starRepo,
              .watchRepo:
@@ -190,6 +185,8 @@ extension ZLGiteeRequest: RestTargetType {
         case .unstarRepo,
              .unwatchRepo:
             return .delete
+        default:
+            return .get
         }
     }
 
@@ -221,6 +218,14 @@ extension ZLGiteeRequest: RestTargetType {
                                                    "per_page":per_page,
                                                    "access_token":GiteeAccessToken()],
                                       encoding: URLEncoding())
+        case .repoBranchList(_, _, let page,let per_page,let sort,let direction):
+            return .requestParameters(parameters: ["page":page,
+                                                   "per_page":per_page,
+                                                   "sort": sort,
+                                                   "direction": direction,
+                                                   "access_token":GiteeAccessToken()],
+                                      encoding: URLEncoding())
+
         case .userStars:
             return .requestParameters(parameters: ["access_token":GiteeAccessToken(),
                                                    "limit":20,
@@ -274,6 +279,14 @@ extension ZLGiteeRequest: RestTargetType {
                                       encoding: URLEncoding())
         case .userContributionData:
             return .requestPlain
+        case .repoReadMe(_, _ ,let ref):
+            return .requestParameters(parameters: ["ref": ref,
+                                                   "access_token":GiteeAccessToken()].toParameters(),
+                                      encoding: URLEncoding())
+        case .markdownRender(let markdown):
+            return .requestParameters(parameters: ["access_token":GiteeAccessToken(),
+                                                   "text": markdown],
+                                      encoding: JSONEncoding())
             
         }
        
@@ -326,6 +339,12 @@ extension ZLGiteeRequest: RestTargetType {
             return .array(parseWrapper: ZLGiteeCommitModel.self)
         case .oauthUserOrgList:
             return .array(parseWrapper: ZLGiteeOrgModel.self)
+        case .repoReadMe:
+            return .object(parseWrapper: ZLGiteeFileContentModel.self)
+        case .markdownRender:
+            return .string
+        case .repoBranchList:
+            return .array(parseWrapper: ZLGiteeBranchModel.self)
         default:
             return .data
         }

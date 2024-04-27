@@ -27,16 +27,13 @@ class ZLCommitTableViewCellData: ZLTableViewBaseCellData {
 }
 
 extension ZLCommitTableViewCellData: ZLCommitTableViewCellDelegate {
-    func getCommiterAvaterURL() -> String? {
-        return self.commitModel.committer?.avatar_url
-    }
-
+    
     func getCommiterLogin() -> String {
-        return self.commitModel.committer?.login ?? ""
+        return self.commitModel.commit?.author?.name ?? ""
     }
     
     func getCommitTitle() -> String {
-        return self.commitModel.commit?.message ?? ""
+        return (self.commitModel.commit?.message ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
     }
 
     func getCommitSha() -> String {

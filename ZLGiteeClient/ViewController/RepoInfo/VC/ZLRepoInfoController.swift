@@ -70,7 +70,14 @@ class ZLRepoInfoController: ZLBaseViewController {
         view.register(ZLRepoInfoHeaderCell.self, forCellReuseIdentifier: "ZLRepoInfoHeaderCell")
         view.register(ZLCommonTableViewCell.self, forCellReuseIdentifier: "ZLCommonTableViewCell")
         view.register(ZLCommonSectionHeaderFooterView.self, forViewReuseIdentifier: "ZLCommonSectionHeaderFooterView")
+        view.tableViewFooter = readMeView
         return view
+    }()
+    
+    lazy var readMeView: ZLReadMeView = {
+        let readMeView: ZLReadMeView = ZLReadMeView()
+        readMeView.delegate = self
+        return readMeView
     }()
     
 }
@@ -90,12 +97,14 @@ extension ZLRepoInfoController {
         }
         sectionDatas.removeAll()
         
+        /// header
         let headerCellData = ZLRepoHeaderCellData(stateModel: stateModel)
         addSubViewModel(headerCellData)
         let headerSectionData = ZLTableViewBaseSectionData(cellDatas: [headerCellData])
         headerSectionData.sectionHeaderViewData = ZLCommonSectionHeaderFooterViewData(sectionViewHeight: 10)
         sectionDatas.append(headerSectionData)
         
+        /// item
         let commitCellData = ZLCommonTableViewCellDataV2(canClick: true,
                                                        title: "提交",
                                                        info: "",
@@ -130,15 +139,7 @@ extension ZLRepoInfoController {
             
         })
         
-        let actionCellData = ZLCommonTableViewCellDataV2(canClick: true,
-                                                       title: "action",
-                                                       info: "",
-                                                       cellHeight: 50,
-                                                       actionBlock: { [weak self] in
-            self?.onActionClicked()
-        })
-        
-        
+   
         let prCellData = ZLCommonTableViewCellDataV2(canClick: true,
                                                    title: "合并请求",
                                                    info:"",
@@ -150,7 +151,6 @@ extension ZLRepoInfoController {
                                                         branchCellData,
                                                         languageCellData,
                                                         codeCellData,
-                                                        actionCellData,
                                                         prCellData]
         addSubViewModels(itemCellDatas)
         
@@ -172,15 +172,12 @@ extension ZLRepoInfoController {
     }
     
     func onBranchClicked() {
-        
-//        guard let fullName = fullName else { return }
-//
-//        ZLRepoBranchesView.showRepoBranchedView(repoFullName: fullName,
-//                                                currentBranch: presenter?.currentBranch ?? "" ) { [weak self] (branch: String) in
-//            guard let self = self else { return }
-//            self.presenter?.changeBranch(newBranch: branch)
-//            self.generateCellDatas()
-//        }
+        ZLRepoBranchesView.showRepoBranchedView(login: stateModel.loginName,
+                                                repoName: stateModel.repoName,
+                                                currentBranch: stateModel.currentBranch ?? "") { [weak self] newBranch in
+            self?.stateModel.changeBranch(newBranch: newBranch)
+            self?.generateCellDatas()
+        }
     }
     
     func onLanguageClicked() {
@@ -199,13 +196,6 @@ extension ZLRepoInfoController {
 //        controller.repoFullName = fullName
 //        controller.path = ""
 //        self.viewController?.navigationController?.pushViewController(controller, animated: true)
-    }
-
-    
-    func onActionClicked() {
-//        let workflowVC = ZLRepoWorkflowsController()
-//        workflowVC.repoFullName = fullName
-//        self.viewController?.navigationController?.pushViewController(workflowVC, animated: true)
     }
     
     func onPrClicked() {
@@ -243,6 +233,7 @@ extension ZLRepoInfoController: ZLTableContainerViewDelegate {
         
         stateModel.getRepoWatchStatus()
         
+        readMeView.startLoad(fullName: stateModel.repoFullName, ref: nil)
     }
     
     func zlLoadMoreData() {
@@ -263,5 +254,20 @@ extension ZLRepoInfoController: ZLRepoInfoStateModelDelegate {
     func onStarStatusUpdate() {
         tableContainerView.reloadData()
         zlLoadNewData()
+    }
+}
+
+// MARK: - ZLReadMeViewDelegate
+extension ZLRepoInfoController: ZLReadMeViewDelegate {
+    
+    @objc func onLinkClicked(url: URL?) {
+      
+    }
+
+    @objc func notifyNewHeight(height: CGFloat) {
+        if tableContainerView.tableViewFooter != nil {
+            readMeView.frame = CGRect(x: 0, y: 0, width: 0, height: height)
+            tableContainerView.tableViewFooter = readMeView
+        }
     }
 }
