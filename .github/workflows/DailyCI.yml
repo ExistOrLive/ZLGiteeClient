@@ -26,7 +26,7 @@ jobs:
       env: 
         GITHUBTOKEN: ${{ secrets.GITHUBTOKEN }}
       run: |
-        pip3 install requests
+        pip3 install requests --break-system-packages
         python3 DownloadSecretFile/DownloadSecrectFile.py $GITHUBTOKEN
         mv ZLGiteeAppKey.swift ZLGiteeClient/ZLSupportFiles/ZLGiteeAppKey.swift
         
