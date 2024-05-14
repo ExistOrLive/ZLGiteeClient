@@ -191,11 +191,10 @@ extension ZLRepoInfoController {
     }
     
     func onCodeClicked() {
-//        let controller = ZLRepoContentController()
-//        controller.branch = presenter?.currentBranch
-//        controller.repoFullName = fullName
-//        controller.path = ""
-//        self.viewController?.navigationController?.pushViewController(controller, animated: true)
+        let controller = ZLRepoContentController(loginName: stateModel.loginName,
+                                                 repoName: stateModel.repoName,
+                                                 ref: stateModel.currentBranch)
+        self.viewController?.navigationController?.pushViewController(controller, animated: true)
     }
     
     func onPrClicked() {

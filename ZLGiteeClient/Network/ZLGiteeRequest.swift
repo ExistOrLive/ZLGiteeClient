@@ -60,6 +60,11 @@ enum ZLGiteeRequest {
                         sort: String = "updated",
                         direction: String = "desc")
     
+    case repoContentList(login: String,
+                         repoName: String,
+                         path: String,
+                         ref: String?)
+    
     case latestRepoList(page: Int, per_page: Int)
     case popularRepoList(page: Int, per_page: Int)
     case recommendRepoList(page: Int, per_page: Int)
@@ -168,6 +173,8 @@ extension ZLGiteeRequest: RestTargetType {
             return "/\(login.urlPathEncoding)"
         case .repoReadMe(let login,let repoName,let ref):
             return "/api/\(version)/repos/\(login.urlPathEncoding)/\(repoName.urlPathEncoding)/readme"
+        case .repoContentList(let login, let repoName, let path, _):
+            return "/api/\(version)/repos/\(login.urlPathEncoding)/\(repoName.urlPathEncoding)/contents/\(path.urlPathEncoding)"
         case .markdownRender:
             return "/api/\(version)/markdown"
         }
@@ -283,6 +290,10 @@ extension ZLGiteeRequest: RestTargetType {
             return .requestParameters(parameters: ["ref": ref,
                                                    "access_token":GiteeAccessToken()].toParameters(),
                                       encoding: URLEncoding())
+        case .repoContentList(_, _ , _ , let ref):
+            return .requestParameters(parameters: ["ref": ref,
+                                                   "access_token":GiteeAccessToken()].toParameters(),
+                                      encoding: URLEncoding())
         case .markdownRender(let markdown):
             return .requestParameters(parameters: ["access_token":GiteeAccessToken(),
                                                    "text": markdown],
@@ -345,6 +356,8 @@ extension ZLGiteeRequest: RestTargetType {
             return .string
         case .repoBranchList:
             return .array(parseWrapper: ZLGiteeBranchModel.self)
+        case .repoContentList:
+            return .array(parseWrapper: ZLGiteeFileContentModel.self)
         default:
             return .data
         }
