@@ -90,6 +90,10 @@ enum ZLGiteeRequest {
                           admin: Bool = false)
     
     case userContributionData(login: String)
+    
+    case userReceivedEvent(loginName: String,
+                           limit: Int = 20,
+                           prev_id: Int? = nil)
 }
 
 extension ZLGiteeRequest {
@@ -171,12 +175,14 @@ extension ZLGiteeRequest: RestTargetType {
             return "/api/\(version)/user/orgs"
         case .userContributionData(let login):
             return "/\(login.urlPathEncoding)"
-        case .repoReadMe(let login,let repoName,let ref):
+        case .repoReadMe(let login,let repoName,_):
             return "/api/\(version)/repos/\(login.urlPathEncoding)/\(repoName.urlPathEncoding)/readme"
         case .repoContentList(let login, let repoName, let path, _):
             return "/api/\(version)/repos/\(login.urlPathEncoding)/\(repoName.urlPathEncoding)/contents/\(path.urlPathEncoding)"
         case .markdownRender:
             return "/api/\(version)/markdown"
+        case .userReceivedEvent(let loginName,_, _):
+            return "/api/\(version)/users/\(loginName.urlPathEncoding)/received_events"
         }
     }
 
@@ -298,6 +304,11 @@ extension ZLGiteeRequest: RestTargetType {
             return .requestParameters(parameters: ["access_token":GiteeAccessToken(),
                                                    "text": markdown],
                                       encoding: JSONEncoding())
+        case .userReceivedEvent(_, let limit, let prev_id) :
+            return .requestParameters(parameters: ["access_token":GiteeAccessToken(),
+                                                   "limit":limit,
+                                                   "prev_id": prev_id].toParameters(),
+                                      encoding: URLEncoding())
             
         }
        
@@ -358,6 +369,8 @@ extension ZLGiteeRequest: RestTargetType {
             return .array(parseWrapper: ZLGiteeBranchModel.self)
         case .repoContentList:
             return .array(parseWrapper: ZLGiteeFileContentModel.self)
+        case .userReceivedEvent:
+            return .array(parseWrapper: ZLGiteeEventModel.self)
         default:
             return .data
         }

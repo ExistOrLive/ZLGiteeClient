@@ -247,7 +247,7 @@ extension ZLReadMeView {
     
     func transferMarkDownToHTML() {
         guard let fileModel = readMeModel,
-              let data = Data(base64Encoded: fileModel.content),
+              let data = Data(base64Encoded: fileModel.content ?? ""),
               let content = String(data: data, encoding: .utf8) else { return }
   
 

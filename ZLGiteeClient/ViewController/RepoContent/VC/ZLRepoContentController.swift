@@ -186,8 +186,8 @@ extension ZLRepoContentController {
                 var fileArray: [ZLRepoContentNode] = []
                 for tmpData in array {
                     let contentNode = ZLRepoContentNode()
-                    contentNode.name = tmpData.name
-                    contentNode.path = tmpData.path
+                    contentNode.name = tmpData.name ?? ""
+                    contentNode.path = tmpData.path ?? ""
                     contentNode.parentNode = self.currentContentNode
                     contentNode.content = tmpData
                     if tmpData.type == "dir" {

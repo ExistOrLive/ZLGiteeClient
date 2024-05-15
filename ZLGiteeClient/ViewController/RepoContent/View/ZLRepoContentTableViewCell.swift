@@ -29,7 +29,7 @@ class ZLRepoContentTableViewCellData: ZLTableViewBaseCellData {
             vc.enterDir(model: model)
         case "file":
             let vc = ZLWebContentController()
-            vc.requestURL = URL(string: content.html_url)
+            vc.requestURL = URL(string: content.html_url ?? "")
             viewController?.navigationController?.pushViewController(vc, animated: true)
         default:
             break 
@@ -39,7 +39,7 @@ class ZLRepoContentTableViewCellData: ZLTableViewBaseCellData {
     func onLongPressAction(view: UIView) {
         guard let content = model.content,
               let vc = viewController,
-              let url = URL(string: content.html_url) else { return }
+              let url = URL(string: content.html_url ?? "") else { return }
         view.showShareMenu(title: url.absoluteString, url: url, sourceViewController: vc)
     }
 }
@@ -152,7 +152,8 @@ extension ZLRepoContentTableViewCell: ZLViewUpdatableWithViewData {
         }
         self.titleLabel.text = content.name
 
-        if let _ = URL(string: content.html_url) {
+        if let html_url = content.html_url,
+            let _ = URL(string: html_url) {
             longPressGesture.isEnabled = true
         } else {
             longPressGesture.isEnabled = false

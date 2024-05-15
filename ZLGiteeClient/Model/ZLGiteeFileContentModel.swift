@@ -14,10 +14,10 @@ class ZLGiteeFileContentModel: HandyJSON {
     var type: String = "file"        // file dir
     var encoding: String = "base64"
     var size: Int = 0
-    var name: String = ""
-    var path: String = ""
-    var content: String = ""
-    var sha: String = ""
-    var html_url: String = ""
-    var download_url: String = ""
+    var name: String?
+    var path: String?
+    var content: String?
+    var sha: String?
+    var html_url: String?
+    var download_url: String?
 }

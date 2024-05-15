@@ -25,6 +25,16 @@ class ZLGiteePermission: HandyJSON {
     var admin: Bool = false
 }
 
+// MARK: - ZLGiteeRepoBriefModel
+class ZLGiteeRepoBriefModel: HandyJSON {
+    required init() {}
+    var id: Int = 0
+    var full_name: String? // 用户名 + 仓库名
+    var human_name: String? // 用户名 + 仓库名
+    var url: String?
+    var namespace: ZLGiteeNamespace? //命名空间
+}
+
 // MARK: - ZLGiteeRepoModel
 class ZLGiteeRepoModel: HandyJSON {
     required init() {}
