@@ -45,8 +45,17 @@ extension ZLRepoHeaderCellData: ZLRepoInfoHeaderCellDataSourceAndDelegate {
     var repoName: String {
         repoInfoModel?.full_name ?? ""
     }
+    
+    var repoHumanName: String {
+        repoInfoModel?.human_name ?? ""
+    }
+    
     var sourceRepoName: String? {
         repoInfoModel?.parent?.full_name
+    }
+    
+    var sourceRepoHumanName: String? {
+        repoInfoModel?.parent?.human_name
     }
     
     var updatedTime: String {

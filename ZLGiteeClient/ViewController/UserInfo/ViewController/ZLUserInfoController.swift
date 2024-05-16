@@ -198,6 +198,7 @@ extension ZLUserInfoController {
                         return
                     }
                     self.model = model
+                    self.title = model.name
                     self.generateCellDatas()
                 } else {
                     self.tableContainerView.endRefresh()

@@ -221,6 +221,7 @@ extension ZLRepoInfoController: ZLTableContainerViewDelegate {
         stateModel.loadRepoRequest { [weak self] result, msg in
             guard let self = self else { return }
             if result {
+                self.title = self.stateModel.repoInfo?.human_name
                 self.generateCellDatas()
             } else if !result, !msg.isEmpty {
                 ZLToastView.showMessage(msg,sourceView: self.view)

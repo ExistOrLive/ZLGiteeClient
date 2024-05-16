@@ -71,7 +71,7 @@ extension ZLReceivedEventController {
                                                                      prev_id: loadNew ? nil : prev_id)) { [weak self] result, data, msg in
             guard let self else { return }
             if result, let eventArray = data as? [ZLGiteeEventModel] {
-                let cellDatas = eventArray.map { ZLEventTableViewCellData(model: $0)}
+                let cellDatas = eventArray.map { ZLEventTableViewCellData.generateEventCellData(model: $0)}
                 self.prev_id = eventArray.last?.id
                 if loadNew {
                     self.removeAllSubViewModels()

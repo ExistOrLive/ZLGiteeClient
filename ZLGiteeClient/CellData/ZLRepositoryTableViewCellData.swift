@@ -47,7 +47,7 @@ extension ZLRepositoryTableViewCellData: ZLRepositoryTableViewCellDelegate {
     }
 
     func getRepoFullName() -> String? {
-        model.full_name
+        model.human_name
     }
 
     func getRepoName() -> String? {
@@ -55,7 +55,7 @@ extension ZLRepositoryTableViewCellData: ZLRepositoryTableViewCellDelegate {
     }
 
     func getOwnerName() -> String? {
-        model.owner?.login
+        model.owner?.name
     }
 
     func getRepoMainLanguage() -> String? {

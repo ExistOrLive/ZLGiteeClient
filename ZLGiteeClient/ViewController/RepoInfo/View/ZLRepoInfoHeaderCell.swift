@@ -18,7 +18,9 @@ protocol ZLRepoInfoHeaderCellDataSourceAndDelegate: NSObjectProtocol {
     
     var avatarUrl: String {get}
     var repoName: String {get}
+    var repoHumanName: String {get}
     var sourceRepoName: String? {get}
+    var sourceRepoHumanName: String? {get}
     var updatedTime: String {get}
     var desc: String {get}
     
@@ -307,12 +309,12 @@ extension ZLRepoInfoHeaderCell: ZLViewUpdatableWithViewData {
         let tmpColor1 = (getRealUserInterfaceStyle() == .light) ? ZLRGBValue_H(colorValue: 0x333333) : ZLRGBValue_H(colorValue: 0xCCCCCC)
         let tmpColor2 = (getRealUserInterfaceStyle() == .light) ? ZLRGBValue_H(colorValue: 0x666666) : ZLRGBValue_H(colorValue: 0x999999)
         
-        if let sourceRepoName = data.sourceRepoName,
-           !sourceRepoName.isEmpty {
+        if let sourceRepoHumanName = data.sourceRepoHumanName,
+           !sourceRepoHumanName.isEmpty {
 
             let attributedStr = NSASCContainer(
                 
-                data.repoName
+                data.repoHumanName
                     .asMutableAttributedString()
                     .foregroundColor(tmpColor1)
                     .font(.zlMediumFont(withSize: 16)),
@@ -322,7 +324,7 @@ extension ZLRepoInfoHeaderCell: ZLViewUpdatableWithViewData {
                     .foregroundColor(tmpColor2)
                     .font(.zlMediumFont(withSize: 13)),
                 
-                sourceRepoName
+                sourceRepoHumanName
                     .asMutableAttributedString()
                     .font(.zlMediumFont(withSize: 13))
                     .yy_highlight(ZLRawColor(name: "ZLLinkLabelColor1"),
@@ -336,7 +338,7 @@ extension ZLRepoInfoHeaderCell: ZLViewUpdatableWithViewData {
             nameLabel.attributedText = attributedStr
     
         } else {
-            let attributedStr = data.repoName
+            let attributedStr = data.repoHumanName
                 .asMutableAttributedString()
                 .foregroundColor(tmpColor1)
                 .font(.zlMediumFont(withSize: 16))

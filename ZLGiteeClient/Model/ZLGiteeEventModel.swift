@@ -8,6 +8,7 @@
 import Foundation
 import HandyJSON
 
+// MARK: - ZLGiteeEventModel
 class ZLGiteeEventModel: HandyJSON {
     required init() {}
     var id: Int = 0
@@ -26,4 +27,16 @@ class ZLGiteeEventModel: HandyJSON {
             self.created_at <-- CustomDateFormatTransform(formatString: "yyyy-MM-dd'T'HH:mm:ssZ")
     }
 }
+
+// MARK: - ZLGiteeCreateEventPayloadModel
+class ZLGiteeCreateEventPayloadModel: HandyJSON {
+    required init() {}
+    var ref_type: String?
+    var ref: String?
+    var default_branch: String?
+    var description: String?
+}
+
+
+
 

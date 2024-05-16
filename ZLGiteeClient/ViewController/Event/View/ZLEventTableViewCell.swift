@@ -152,10 +152,11 @@ class ZLEventTableViewCell: UITableViewCell {
 extension ZLEventTableViewCell: ZLViewUpdatableWithViewData {
     func fillWithViewData(viewData: ZLEventTableViewCellData) {
         delegate = viewData
-        headImageButton.sd_setImage(with: URL(string: viewData.actorAvatar()),
-                                    for: .normal,
-                                    placeholderImage: UIImage(named: "default_avatar"))
-        actorNameLabel.text = viewData.actorLoginName()
+        headImageButton.sd_setBackgroundImage(with: URL(string: viewData.actorAvatar()),
+                                              for: .normal,
+                                              placeholderImage: UIImage(named: "default_avatar"))
+        
+        actorNameLabel.text = viewData.actorName()
         timeLabel.text = viewData.eventTimerStr()
         eventDesLabel.attributedText = viewData.eventDescription()
     }

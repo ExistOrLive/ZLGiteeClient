@@ -22,16 +22,17 @@ class ZLEventTableViewCellData: ZLTableViewBaseCellData{
     override func onCellSingleTap() {
         
     }
-}
-
-extension ZLEventTableViewCellData {
-   
+    
     func actorAvatar() ->  String {
         model.actor?.avatar_url ?? ""
     }
     
     func actorLoginName() ->  String {
         model.actor?.login ?? ""
+    }
+    
+    func actorName() ->  String {
+        model.actor?.name ?? ""
     }
     
     func eventTimerStr() -> String {
@@ -51,5 +52,16 @@ extension ZLEventTableViewCellData {
     }
 
     func onReportClicked() {
+    }
+}
+
+extension ZLEventTableViewCellData {
+    static func generateEventCellData(model: ZLGiteeEventModel) -> ZLEventTableViewCellData {
+        switch model.type {
+        case "CreateEvent":
+            return ZLCreateEventTableViewCellData(model: model)
+        default:
+            return ZLEventTableViewCellData(model: model)
+        }
     }
 }
