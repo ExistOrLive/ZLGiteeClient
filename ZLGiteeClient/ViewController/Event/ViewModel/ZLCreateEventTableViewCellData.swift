@@ -45,7 +45,7 @@ class ZLCreateEventTableViewCellData: ZLEventTableViewCellData {
                                       self.goRepoVC()
                                   })
             ).foregroundColor(.label(withName: "ZLLabelColor3"))
-                .font(.zlRegularFont(withSize: 15))
+                .font(.zlMediumFont(withSize: 15))
                 .asAttributedString()
         
         } else if payload.ref_type == "tag" {
@@ -70,7 +70,7 @@ class ZLCreateEventTableViewCellData: ZLEventTableViewCellData {
                                       self.goRepoVC()
                                   })
             ).foregroundColor(.label(withName: "ZLLabelColor3"))
-                .font(.zlRegularFont(withSize: 15))
+                .font(.zlMediumFont(withSize: 15))
                 .asAttributedString()
     
         } else if payload.ref_type == "branch" {
@@ -95,7 +95,7 @@ class ZLCreateEventTableViewCellData: ZLEventTableViewCellData {
                                       self.goRepoVC()
                                   })
             ).foregroundColor(.label(withName: "ZLLabelColor3"))
-                .font(.zlRegularFont(withSize: 15))
+                .font(.zlMediumFont(withSize: 15))
                 .asAttributedString()
         } else {
             return super.eventDescription()

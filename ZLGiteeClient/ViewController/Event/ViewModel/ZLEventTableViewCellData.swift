@@ -55,13 +55,26 @@ class ZLEventTableViewCellData: ZLTableViewBaseCellData{
     }
 }
 
+// MARK: - Generate Cell Data 
 extension ZLEventTableViewCellData {
     static func generateEventCellData(model: ZLGiteeEventModel) -> ZLEventTableViewCellData {
         switch model.type {
-        case "CreateEvent":
+        case .CreateEvent:
             return ZLCreateEventTableViewCellData(model: model)
+        case .ForkEvent:
+            return ZLForkEventTableViewCellData(model: model)
+        case .StarEvent:
+            return ZLStarEventTableViewCellData(model: model)
         default:
             return ZLEventTableViewCellData(model: model)
         }
     }
+}
+
+// MARK:
+typealias ZLEventType = String
+extension ZLEventType {
+    static let CreateEvent: ZLEventType = "CreateEvent"
+    static let StarEvent: ZLEventType = "StarEvent"
+    static let ForkEvent: ZLEventType = "ForkEvent"
 }

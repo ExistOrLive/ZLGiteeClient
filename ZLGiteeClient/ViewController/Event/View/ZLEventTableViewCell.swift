@@ -12,7 +12,7 @@ import ZLUtilities
 import ZLUIUtilities
 import SDWebImage
 
-class ZLEventTableViewCell: UITableViewCell {
+class ZLEventTableViewCell: UITableViewCell, ZLViewUpdatableWithViewData {
 
     weak var delegate: ZLEventTableViewCellData?
     
@@ -146,10 +146,8 @@ class ZLEventTableViewCell: UITableViewCell {
         button.setAttributedTitle(str, for: .normal)
         return button
     }()
-}
-
-// MARK: - action
-extension ZLEventTableViewCell: ZLViewUpdatableWithViewData {
+    
+    
     func fillWithViewData(viewData: ZLEventTableViewCellData) {
         delegate = viewData
         headImageButton.sd_setBackgroundImage(with: URL(string: viewData.actorAvatar()),
