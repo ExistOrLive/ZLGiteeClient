@@ -63,6 +63,9 @@
 		748CE9F62BF664C300EEE893 /* ZLCreateEventTableViewCellData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 748CE9F52BF664C300EEE893 /* ZLCreateEventTableViewCellData.swift */; };
 		749515852BFBA1280011534F /* ZLRepoEventTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 749515842BFBA1280011534F /* ZLRepoEventTableViewCell.swift */; };
 		749515872BFBAF290011534F /* ZLStarEventTableViewCellData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 749515862BFBAF290011534F /* ZLStarEventTableViewCellData.swift */; };
+		749515892BFCE4450011534F /* ZLPushEventTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 749515882BFCE4450011534F /* ZLPushEventTableViewCell.swift */; };
+		749515942BFCE5D90011534F /* ZLPushEventTableViewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 749515932BFCE5D90011534F /* ZLPushEventTableViewData.swift */; };
+		749515962BFCFEF20011534F /* ZLFollowEventTableViewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 749515952BFCFEF20011534F /* ZLFollowEventTableViewData.swift */; };
 		749544852BFB9B4900A94E36 /* ZLForkEventTableViewCellData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 749544842BFB9B4900A94E36 /* ZLForkEventTableViewCellData.swift */; };
 		74AAB0332BB03392005609A4 /* ZLWorkBoardItemController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74AAB0322BB03392005609A4 /* ZLWorkBoardItemController.swift */; };
 		74AAB03A2BB063D9005609A4 /* ZLWorkBoardItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74AAB0392BB063D9005609A4 /* ZLWorkBoardItemCell.swift */; };
@@ -162,6 +165,9 @@
 		748CE9F52BF664C300EEE893 /* ZLCreateEventTableViewCellData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZLCreateEventTableViewCellData.swift; sourceTree = "<group>"; };
 		749515842BFBA1280011534F /* ZLRepoEventTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZLRepoEventTableViewCell.swift; sourceTree = "<group>"; };
 		749515862BFBAF290011534F /* ZLStarEventTableViewCellData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZLStarEventTableViewCellData.swift; sourceTree = "<group>"; };
+		749515882BFCE4450011534F /* ZLPushEventTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZLPushEventTableViewCell.swift; sourceTree = "<group>"; };
+		749515932BFCE5D90011534F /* ZLPushEventTableViewData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZLPushEventTableViewData.swift; sourceTree = "<group>"; };
+		749515952BFCFEF20011534F /* ZLFollowEventTableViewData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZLFollowEventTableViewData.swift; sourceTree = "<group>"; };
 		749544842BFB9B4900A94E36 /* ZLForkEventTableViewCellData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZLForkEventTableViewCellData.swift; sourceTree = "<group>"; };
 		74AAB0322BB03392005609A4 /* ZLWorkBoardItemController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZLWorkBoardItemController.swift; sourceTree = "<group>"; };
 		74AAB0392BB063D9005609A4 /* ZLWorkBoardItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZLWorkBoardItemCell.swift; sourceTree = "<group>"; };
@@ -657,6 +663,7 @@
 			children = (
 				74FAFF532BF50E4E002E74E1 /* ZLEventTableViewCell.swift */,
 				749515842BFBA1280011534F /* ZLRepoEventTableViewCell.swift */,
+				749515882BFCE4450011534F /* ZLPushEventTableViewCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -668,6 +675,8 @@
 				748CE9F52BF664C300EEE893 /* ZLCreateEventTableViewCellData.swift */,
 				749544842BFB9B4900A94E36 /* ZLForkEventTableViewCellData.swift */,
 				749515862BFBAF290011534F /* ZLStarEventTableViewCellData.swift */,
+				749515932BFCE5D90011534F /* ZLPushEventTableViewData.swift */,
+				749515952BFCFEF20011534F /* ZLFollowEventTableViewData.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -830,6 +839,7 @@
 				746ADF5F2B94D7DC0032E2A8 /* ZLCommitTableViewCellData.swift in Sources */,
 				31D69B442838DDC0009DAEEE /* ZLUserTableViewCell.swift in Sources */,
 				740C2F7B2837CC8D00DAFF0E /* ZLWorkBoardController.swift in Sources */,
+				749515942BFCE5D90011534F /* ZLPushEventTableViewData.swift in Sources */,
 				740C2F7D2837CCA500DAFF0E /* ZLNotificationsController.swift in Sources */,
 				74FAFF482BF3AEE1002E74E1 /* ZLRepoContentController.swift in Sources */,
 				74AAE5C0284207400030DA01 /* ZLCommonTableViewCellData.swift in Sources */,
@@ -854,6 +864,7 @@
 				740C2F782837C80A00DAFF0E /* ZLMainViewController.swift in Sources */,
 				74AAE5BE284206DB0030DA01 /* ZLCommonTableViewCell.swift in Sources */,
 				746719F22B8CC794003E1D4B /* ZLSearchController.swift in Sources */,
+				749515962BFCFEF20011534F /* ZLFollowEventTableViewData.swift in Sources */,
 				74B2DC392BDD3F5000FADC21 /* ZLRepoBranchesView.swift in Sources */,
 				746719E22B8C7C52003E1D4B /* ZLGiteeIssueModel.swift in Sources */,
 				31D69B462838DE73009DAEEE /* ZLUserTableViewCellData.swift in Sources */,
@@ -864,6 +875,7 @@
 				74AAE5BC284204670030DA01 /* ZLUserInfoHeaderCell.swift in Sources */,
 				74B124682BA20B0B00E41838 /* ZLWorkBoardEventController.swift in Sources */,
 				74AAB04F2BB47DA6005609A4 /* ZLMyOrgListController.swift in Sources */,
+				749515892BFCE4450011534F /* ZLPushEventTableViewCell.swift in Sources */,
 				740C2F872837D6B500DAFF0E /* ZLGiteeUserModel.swift in Sources */,
 				74B2DC3B2BDD429900FADC21 /* ZLGiteeBranchModel.swift in Sources */,
 				74B2DC372BC7035400FADC21 /* ZLMainThreadDispatch.swift in Sources */,

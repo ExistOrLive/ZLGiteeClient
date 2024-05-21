@@ -11,11 +11,18 @@ import ZLBaseExtension
 import ZLUtilities
 import ZLUIUtilities
 
+/// StarEvent, ForkEvent
+
 protocol ZLRepoEventTableViewCellDelegate: AnyObject {
     func repoName() -> String
     func sourceRepoName() -> String
     func onSourceRepoButtonClicked()
 }
+extension ZLRepoEventTableViewCellDelegate {
+    func onSourceRepoButtonClicked() { }
+    func sourceRepoName() -> String { "" }
+}
+
 
 class ZLRepoEventTableViewCell: ZLEventTableViewCell {
     

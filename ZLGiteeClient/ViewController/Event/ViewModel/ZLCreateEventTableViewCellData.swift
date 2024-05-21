@@ -10,22 +10,11 @@ import ZLBaseExtension
 import HandyJSON
 import ZLUtilities
 
-/**
- master_branch = "master";
- pusher_type = "user";
- description = "Github客户端 iOS";
- ref_type = "tag";
- ref = "V1.0.1.7";
- */
 class ZLCreateEventTableViewCellData: ZLEventTableViewCellData {
     
     lazy var createPayload: ZLGiteeCreateEventPayloadModel? = {
         ZLGiteeCreateEventPayloadModel.deserialize(from: model.payload)
     }()
-
-    override func onCellSingleTap() {
-        goRepoVC()
-    }
 
     override func eventDescription() -> NSAttributedString {
         guard let payload = createPayload else {
@@ -42,7 +31,7 @@ class ZLCreateEventTableViewCellData: ZLEventTableViewCellData {
                                   backgroudColor: .clear,
                                   tapAction: { [weak self] _,_,_,_ in
                                       guard let self else { return }
-                                      self.goRepoVC()
+                                      self.navigationToRepoVC()
                                   })
             ).foregroundColor(.label(withName: "ZLLabelColor3"))
                 .font(.zlMediumFont(withSize: 15))
@@ -58,16 +47,16 @@ class ZLCreateEventTableViewCellData: ZLEventTableViewCellData {
                                   backgroudColor: .clear,
                                   tapAction: { [weak self] _,_,_,_ in
                                       guard let self else { return }
-                                      self.goRepoVC()
+                                      self.navigationToRepoVC()
                                   }),
-                "\n\nin ",
+                "\n\n在 ",
                 (model.repo?.human_name ?? "")
                     .asMutableAttributedString()
                     .yy_highlight(.linkColor(withName: "ZLLinkLabelColor1"),
                                   backgroudColor: .clear,
                                   tapAction: { [weak self] _,_,_,_ in
                                       guard let self else { return }
-                                      self.goRepoVC()
+                                      self.navigationToRepoVC()
                                   })
             ).foregroundColor(.label(withName: "ZLLabelColor3"))
                 .font(.zlMediumFont(withSize: 15))
@@ -83,16 +72,16 @@ class ZLCreateEventTableViewCellData: ZLEventTableViewCellData {
                                   backgroudColor: .clear,
                                   tapAction: { [weak self] _,_,_,_ in
                                       guard let self else { return }
-                                      self.goRepoVC()
+                                      self.navigationToRepoVC()
                                   }),
-                "\n\nin ",
+                "\n\n在 ",
                 (model.repo?.human_name ?? "")
                     .asMutableAttributedString()
                     .yy_highlight(.linkColor(withName: "ZLLinkLabelColor1"),
                                   backgroudColor: .clear,
                                   tapAction: { [weak self] _,_,_,_ in
                                       guard let self else { return }
-                                      self.goRepoVC()
+                                      self.navigationToRepoVC()
                                   })
             ).foregroundColor(.label(withName: "ZLLabelColor3"))
                 .font(.zlMediumFont(withSize: 15))
@@ -100,12 +89,6 @@ class ZLCreateEventTableViewCellData: ZLEventTableViewCellData {
         } else {
             return super.eventDescription()
         }
-    }
-    
-    func goRepoVC() {
-        let repoVc = ZLRepoInfoController(repoFullName: self.model.repo?.full_name ?? "")
-        repoVc.hidesBottomBarWhenPushed = true
-        self.viewController?.navigationController?.pushViewController(repoVc, animated: true)
     }
 }
 

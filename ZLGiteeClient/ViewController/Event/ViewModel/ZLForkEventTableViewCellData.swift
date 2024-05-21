@@ -31,18 +31,14 @@ class ZLForkEventTableViewCellData: ZLEventTableViewCellData, ZLRepoEventTableVi
     }
     
     // MARK: - Action
-    override func onCellSingleTap() {
-        goRepoVC()
-    }
-    
-    func goRepoVC() {
+    override func navigationToRepoVC() {
         guard let full_name = repoPayload?.full_name else { return }
         let repoVc = ZLRepoInfoController(repoFullName: full_name)
         repoVc.hidesBottomBarWhenPushed = true
         self.viewController?.navigationController?.pushViewController(repoVc, animated: true)
     }
     
-    func goSourceRepoVC() {
+    func navigationToSourceRepoVC() {
         guard let full_name = repoPayload?.parent?.full_name else { return }
         let repoVc = ZLRepoInfoController(repoFullName:full_name)
         repoVc.hidesBottomBarWhenPushed = true
@@ -50,7 +46,11 @@ class ZLForkEventTableViewCellData: ZLEventTableViewCellData, ZLRepoEventTableVi
     }
     
     func repoName() -> String {
-        repoPayload?.human_name ?? ""
+        if let human_name = repoPayload?.human_name {
+            return human_name
+        } else {
+            return "(仓库已删除)"
+        }
     }
     
     func sourceRepoName() -> String {
@@ -58,7 +58,7 @@ class ZLForkEventTableViewCellData: ZLEventTableViewCellData, ZLRepoEventTableVi
     }
 
     func onSourceRepoButtonClicked() {
-        goSourceRepoVC()
+        navigationToSourceRepoVC()
     }
 }
 

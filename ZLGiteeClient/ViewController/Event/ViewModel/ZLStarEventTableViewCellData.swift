@@ -25,32 +25,10 @@ class ZLStarEventTableViewCellData: ZLEventTableViewCellData, ZLRepoEventTableVi
             .foregroundColor(.label(withName: "ZLLabelColor3"))
             .font(.zlMediumFont(withSize: 15))
     }
-    
-    // MARK: - Action
-    override func onCellSingleTap() {
-        goRepoVC()
-    }
-    
-    func goRepoVC() {
-        guard let full_name = model.repo?.full_name else { return }
-        let repoVc = ZLRepoInfoController(repoFullName: full_name)
-        repoVc.hidesBottomBarWhenPushed = true
-        self.viewController?.navigationController?.pushViewController(repoVc, animated: true)
-    }
-   
-    
+      
     func repoName() -> String {
         return model.repo?.human_name ?? ""
     }
-    
-    func sourceRepoName() -> String {
-        ""
-    }
-    
-    func onSourceRepoButtonClicked() {
-     
-    }
-
 }
 
 

@@ -41,6 +41,7 @@ class ZLReceivedEventController: ZLBaseViewController {
         view.setTableViewFooter()
         view.register(ZLEventTableViewCell.self, forCellReuseIdentifier: "ZLEventTableViewCell")
         view.register(ZLRepoEventTableViewCell.self, forCellReuseIdentifier: "ZLRepoEventTableViewCell")
+        view.register(ZLPushEventTableViewCell.self, forCellReuseIdentifier: "ZLPushEventTableViewCell")
         view.delegate = self
         return view
     }()

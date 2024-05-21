@@ -18,9 +18,9 @@ class ZLEventTableViewCellData: ZLTableViewBaseCellData{
         super.init()
         cellReuseIdentifier = "ZLEventTableViewCell"
     }
-
+    
     override func onCellSingleTap() {
-        
+        navigationToRepoVC() 
     }
     
     func actorAvatar() ->  String {
@@ -44,15 +44,31 @@ class ZLEventTableViewCellData: ZLTableViewBaseCellData{
     func eventDescription() -> NSAttributedString {
         return (model.type ?? "").asMutableAttributedString()
     }
-
+    
     func onAvatarClicked() {
-        let vc = ZLUserInfoController(login: actorLoginName())
+        navigationToUserInfoVC() 
+    }
+    
+    func onReportClicked() {
+        
+    }
+    
+    
+    /// navigation
+    func navigationToRepoVC() {
+        guard let fullName = self.model.repo?.full_name else { return }
+        let repoVc = ZLRepoInfoController(repoFullName: fullName)
+        repoVc.hidesBottomBarWhenPushed = true
+        self.viewController?.navigationController?.pushViewController(repoVc, animated: true)
+    }
+    
+    func navigationToUserInfoVC() {
+        guard let login = model.actor?.login else { return }
+        let vc = ZLUserInfoController(login: login)
         vc.hidesBottomBarWhenPushed = true
         viewController?.navigationController?.pushViewController(vc, animated: true)
     }
-
-    func onReportClicked() {
-    }
+    
 }
 
 // MARK: - Generate Cell Data 
@@ -65,6 +81,10 @@ extension ZLEventTableViewCellData {
             return ZLForkEventTableViewCellData(model: model)
         case .StarEvent:
             return ZLStarEventTableViewCellData(model: model)
+        case .PushEvent:
+            return ZLPushEventTableViewCellData(model: model)
+        case .FollowEvent:
+            return ZLFollowEventTableViewData(model: model)
         default:
             return ZLEventTableViewCellData(model: model)
         }
@@ -77,4 +97,6 @@ extension ZLEventType {
     static let CreateEvent: ZLEventType = "CreateEvent"
     static let StarEvent: ZLEventType = "StarEvent"
     static let ForkEvent: ZLEventType = "ForkEvent"
+    static let PushEvent: ZLEventType = "PushEvent"
+    static let FollowEvent: ZLEventType = "FollowEvent"
 }
