@@ -1,8 +1,8 @@
 //
-//  ZLReceivedEventController.swift
+//  ZLMyEventController.swift
 //  ZLGiteeClient
 //
-//  Created by 朱猛 on 2024/5/15.
+//  Created by 朱猛 on 2024/5/23.
 //
 
 import Foundation
@@ -10,7 +10,7 @@ import ZLBaseUI
 import ZLUIUtilities
 import JXPagingView
 
-class ZLReceivedEventController: ZLBaseViewController {
+class ZLMyEventController: ZLBaseViewController {
     
     /// lastId
     var prev_id: Int? = nil
@@ -49,7 +49,7 @@ class ZLReceivedEventController: ZLBaseViewController {
 }
 
 // MARK: - ZLTableContainerViewDelegate
-extension ZLReceivedEventController: ZLTableContainerViewDelegate {
+extension ZLMyEventController: ZLTableContainerViewDelegate {
     
     func zlLoadNewData() {
         requestReceivedEvent(loadNew: true)
@@ -65,11 +65,11 @@ extension ZLReceivedEventController: ZLTableContainerViewDelegate {
 }
 
 // MARK: - Request
-extension ZLReceivedEventController {
+extension ZLMyEventController {
     
     func requestReceivedEvent(loadNew: Bool) {
         let currentLogin = ZLGiteeOAuthUserServiceModel.sharedService.currentUserModel?.login ?? ""
-        ZLGiteeRequest.sharedProvider.requestRest(.userReceivedEvent(loginName:currentLogin, 
+        ZLGiteeRequest.sharedProvider.requestRest(.userEvent(loginName:currentLogin,
                                                                      limit: 20,
                                                                      prev_id: loadNew ? nil : prev_id)) { [weak self] result, data, msg in
             guard let self else { return }
@@ -79,7 +79,7 @@ extension ZLReceivedEventController {
                 if loadNew {
                     self.removeAllSubViewModels()
                     self.addSubViewModels(cellDatas)
-                    self.tableContainerView.resetCellDatas(cellDatas: cellDatas, 
+                    self.tableContainerView.resetCellDatas(cellDatas: cellDatas,
                                                            hasMoreData: self.prev_id != nil )
                 } else {
                     self.addSubViewModels(cellDatas)
@@ -95,7 +95,7 @@ extension ZLReceivedEventController {
 }
 
 // MARK: - JXPagingViewListViewDelegate
-extension ZLReceivedEventController : JXPagingViewListViewDelegate {
+extension ZLMyEventController : JXPagingViewListViewDelegate {
     func listView() -> UIView {
         view
     }
@@ -108,4 +108,5 @@ extension ZLReceivedEventController : JXPagingViewListViewDelegate {
         scrollCallback = callback
     }
 }
+
 

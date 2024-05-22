@@ -34,7 +34,7 @@ class ZLWorkBoardController: ZLBaseViewController {
             self.headerViewData = headerViewData
             headerView.fillWithData(data: headerViewData)
         }
-        vcArray = [ZLWorkBoardItemController(), ZLReceivedEventController(), ZLWorkBoardEventController()]
+        vcArray = [ZLWorkBoardItemController(), ZLReceivedEventController(), ZLMyEventController()]
         pagingView.reloadData()
         
 //        /// 授权用户的issue
@@ -62,7 +62,7 @@ class ZLWorkBoardController: ZLBaseViewController {
     
     lazy var segmentedViewDataSource: JXSegmentedTitleDataSource = {
         let dataSource = JXSegmentedTitleDataSource()
-        dataSource.titles = ["主页","动态","星选集"]
+        dataSource.titles = ["主页","动态","我的动态"]
         dataSource.titleSelectedFont = .zlMediumFont(withSize: 18)
         dataSource.titleNormalFont = .zlRegularFont(withSize: 16)
         dataSource.titleSelectedColor = .black

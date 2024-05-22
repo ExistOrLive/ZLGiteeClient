@@ -94,6 +94,10 @@ enum ZLGiteeRequest {
     case userReceivedEvent(loginName: String,
                            limit: Int = 20,
                            prev_id: Int? = nil)
+    
+    case userEvent(loginName: String,
+                   limit: Int = 20,
+                   prev_id: Int? = nil)
 }
 
 extension ZLGiteeRequest {
@@ -183,6 +187,8 @@ extension ZLGiteeRequest: RestTargetType {
             return "/api/\(version)/markdown"
         case .userReceivedEvent(let loginName,_, _):
             return "/api/\(version)/users/\(loginName.urlPathEncoding)/received_events"
+        case .userEvent(let loginName,_, _):
+            return "/api/\(version)/users/\(loginName.urlPathEncoding)/events"
         }
     }
 
@@ -304,7 +310,8 @@ extension ZLGiteeRequest: RestTargetType {
             return .requestParameters(parameters: ["access_token":GiteeAccessToken(),
                                                    "text": markdown],
                                       encoding: JSONEncoding())
-        case .userReceivedEvent(_, let limit, let prev_id) :
+        case .userReceivedEvent(_, let limit, let prev_id),
+                .userEvent(_,let limit, let prev_id) :
             return .requestParameters(parameters: ["access_token":GiteeAccessToken(),
                                                    "limit":limit,
                                                    "prev_id": prev_id].toParameters(),
@@ -369,7 +376,8 @@ extension ZLGiteeRequest: RestTargetType {
             return .array(parseWrapper: ZLGiteeBranchModel.self)
         case .repoContentList:
             return .array(parseWrapper: ZLGiteeFileContentModel.self)
-        case .userReceivedEvent:
+        case .userReceivedEvent,
+                .userEvent:
             return .array(parseWrapper: ZLGiteeEventModel.self)
         default:
             return .data

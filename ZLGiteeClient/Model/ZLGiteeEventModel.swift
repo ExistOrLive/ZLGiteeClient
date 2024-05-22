@@ -82,3 +82,43 @@ class ZLGiteeFollowEventTargetModel: HandyJSON {
     var html_url: String?
     var remark: String?
 }
+
+// MARK: - ZLGiteeIssueCommentEventPayloadModel
+class ZLGiteeIssueCommentEventPayloadModel: HandyJSON {
+    required init() {}
+    var issue: ZLGiteeIssueModel?
+    var comment: ZLGiteeIssueCommentModel?
+    var repository: ZLGiteeRepoModel?
+}
+
+class ZLGiteeIssueCommentModel: HandyJSON {
+    required init() {}
+    var url: String?
+    var html_url: String?
+    var body: String?
+    var created_at: Date?
+    var updated_at: Date?
+    var user: ZLGiteeUserModel? 
+    // MARK: ----- ZLGiteeUser 格式转换 -----
+    func mapping(mapper: HelpingMapper) {
+        mapper <<<
+            self.created_at <-- CustomDateFormatTransform(formatString: "yyyy-MM-dd'T'HH:mm:ssZ")
+        
+        mapper <<<
+            self.updated_at <-- CustomDateFormatTransform(formatString: "yyyy-MM-dd'T'HH:mm:ssZ")
+    }
+}
+
+// MARK: - ZLGiteeIssueEventPayloadModel
+class ZLGiteeIssueEventPayloadModel: HandyJSON {
+    required init() {}
+    var action: String?         // open/ rejected / close / progressing
+    var title: String?
+    var html_url: String?
+    var number: String?
+    var state: String?
+    var issue_state: String?
+    var body: String?
+    var repository: ZLGiteeRepoBriefModel?
+}
+
