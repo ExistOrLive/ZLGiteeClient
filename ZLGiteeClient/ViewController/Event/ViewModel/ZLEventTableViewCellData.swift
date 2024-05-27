@@ -92,6 +92,10 @@ extension ZLEventTableViewCellData {
             return ZLIssueCommentEventTableViewCellData(model: model)
         case .IssueEvent:
             return ZLIssueEventTableViewCellData(model:model)
+        case .PullRequestEvent:
+            return ZLPullRequestEventTableViewCellData(model:model)
+        case .PullRequestCommentEvent:
+            return ZLPullRequestCommentEventTableViewCellData(model: model)
         default:
             return ZLEventTableViewCellData(model: model)
         }
@@ -108,4 +112,6 @@ extension ZLEventType {
     static let FollowEvent: ZLEventType = "FollowEvent"
     static let IssueCommentEvent: ZLEventType = "IssueCommentEvent"
     static let IssueEvent: ZLEventType = "IssueEvent"
+    static let PullRequestCommentEvent: ZLEventType = "PullRequestCommentEvent"
+    static let PullRequestEvent: ZLEventType = "PullRequestEvent"
 }

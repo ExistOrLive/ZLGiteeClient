@@ -122,3 +122,44 @@ class ZLGiteeIssueEventPayloadModel: HandyJSON {
     var repository: ZLGiteeRepoBriefModel?
 }
 
+
+// MARK: - ZLGiteePullRequestEventPayloadModel
+
+class ZLGiteePullRequestEventPayloadModel: HandyJSON {
+    required init() {}
+    var action: String?         // opened / closed / reopened/ merged
+    var state: String?          // open / closed / merged
+    var number: Int = 0
+    var title: String?
+    var body: String?
+    var html_url: String?
+    var head: ZLGiteePullRequestRefModel?
+    var base: ZLGiteePullRequestRefModel?  // head -> base
+}
+
+// MARK: - ZLGiteePullRequestCommentEventPayloadModel
+
+class ZLGiteePullRequestCommentEventPayloadModel: HandyJSON {
+    required init() {}
+    var pull_request: ZLGiteePullRequestModel?
+    var comment: ZLGiteePullRequestCommentModel?
+    var repository: ZLGiteeRepoModel?
+}
+
+class ZLGiteePullRequestCommentModel: HandyJSON {
+    required init() {}
+    var url: String?
+    var html_url: String?
+    var body: String?
+    var created_at: Date?
+    var updated_at: Date?
+    var user: ZLGiteeUserModel?
+    // MARK: ----- ZLGiteeUser 格式转换 -----
+    func mapping(mapper: HelpingMapper) {
+        mapper <<<
+            self.created_at <-- CustomDateFormatTransform(formatString: "yyyy-MM-dd'T'HH:mm:ssZ")
+        
+        mapper <<<
+            self.updated_at <-- CustomDateFormatTransform(formatString: "yyyy-MM-dd'T'HH:mm:ssZ")
+    }
+}
