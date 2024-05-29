@@ -15,7 +15,7 @@ class ZLPullRequestEventTableViewCellData: ZLEventTableViewCellData, ZLPullRequs
   
     override init(model: ZLGiteeEventModel) {
         super.init(model: model)
-        cellReuseIdentifier = "ZLPullRequstTableViewCell"
+        cellReuseIdentifier = "ZLPullRequestEventTableViewCell"
     }
     
     lazy var pullRequestPayload: ZLGiteePullRequestEventPayloadModel? = {
@@ -47,6 +47,14 @@ class ZLPullRequestEventTableViewCellData: ZLEventTableViewCellData, ZLPullRequs
         default:
             return super.eventDescription()
         }
+    }
+    
+    override func onCellSingleTap() {
+        guard let url = pullRequestPayload?.html_url else { return }
+        let vc = ZLWebContentController()
+        vc.hidesBottomBarWhenPushed = true
+        vc.requestURL = URL(string: url)
+        viewController?.navigationController?.pushViewController(vc, animated: true)
     }
     
     

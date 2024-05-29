@@ -77,7 +77,7 @@ class ZLGiteeLoginController: ZLBaseViewController {
             make.height.equalTo(45)
             make.left.equalTo(40)
             make.right.equalTo(-40)
-            make.bottom.equalToSuperview().offset(-100)
+            make.bottom.equalTo(contentView.safeAreaLayoutGuide.snp.bottom).offset(-100)
         }
         
         loginInfoLabel.snp.makeConstraints { make in
@@ -92,7 +92,7 @@ class ZLGiteeLoginController: ZLBaseViewController {
         
         accessTokenButton.snp.makeConstraints { make in
             make.right.equalTo(-40)
-            make.bottom.equalToSuperview().offset(-10)
+            make.bottom.equalTo(contentView.safeAreaLayoutGuide.snp.bottom).offset(-10)
             make.width.equalTo(100)
             make.height.equalTo(33)
         }
@@ -191,21 +191,27 @@ extension ZLGiteeLoginController {
     }
 
     @objc func onAccessTokenButtonClicked() {
-        ZLToastView.showMessage("输入 access Token")
-//        ZLInputAccessTokenView.showInputAccessTokenView(resultBlock: {(token: String?) in
-//            guard let token = token else {
-//                ZLToastView.showMessage(ZLLocalizedString(string: "token is nil", comment: ""))
-//                return
-//            }
-//
-//            let serialNumber = NSString.generateSerialNumber()
-//            self.loginSerialNumber = serialNumber
-//            
-//            ZLServiceManager.sharedInstance.loginServiceModel?.setAccessToken(token,
-//                                                                              serialNumber: serialNumber)
-//            self.step = .checktoken
-//            self.reloadView()
-//        })
+        ZLInputAccessTokenView.showInputAccessTokenView(resultBlock: {[weak self] (token: String?) in
+            guard let self, let token, !token.isEmpty else {
+                ZLToastView.showMessage("请输入token")
+                return
+            }
+            
+            ZLGiteeOAuthUserServiceModel.sharedService.checkToken(access_token: token,
+                                                                  refresh_token: "") { [weak self] result, msg in
+                guard let self else { return }
+                self.step = .initialize
+                self.reloadView()
+                if result {
+                    ZLToastView.showMessage("登录成功")
+                } else {
+                    ZLToastView.showMessage(msg)
+                }
+            }
+            
+            self.step = .checktoken
+            self.reloadView()
+        })
     }
 }
 

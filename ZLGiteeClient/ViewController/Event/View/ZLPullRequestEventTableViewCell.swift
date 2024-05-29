@@ -24,7 +24,7 @@ protocol ZLPullRequstEventTableViewCellDelegate: AnyObject {
     func onPullRequestHeadRepoClicked()
 }
 
-class ZLPullRequstTableViewCell: ZLEventTableViewCell {
+class ZLPullRequestEventTableViewCell: ZLEventTableViewCell {
     
     weak var eventDelegate: ZLPullRequstEventTableViewCellDelegate? {
         delegate as? ZLPullRequstEventTableViewCellDelegate
@@ -171,7 +171,7 @@ class ZLPullRequstTableViewCell: ZLEventTableViewCell {
     }
 }
 
-extension ZLPullRequstTableViewCell {
+extension ZLPullRequestEventTableViewCell {
     @objc dynamic func onBaseRepoClicked() {
         eventDelegate?.onPullRequestBaseRepoClicked()
     }

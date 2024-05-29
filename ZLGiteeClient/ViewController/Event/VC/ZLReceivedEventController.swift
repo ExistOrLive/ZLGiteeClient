@@ -43,7 +43,8 @@ class ZLReceivedEventController: ZLBaseViewController {
         view.register(ZLRepoEventTableViewCell.self, forCellReuseIdentifier: "ZLRepoEventTableViewCell")
         view.register(ZLPushEventTableViewCell.self, forCellReuseIdentifier: "ZLPushEventTableViewCell")
         view.register(ZLIssueEventTableViewCell.self, forCellReuseIdentifier: "ZLIssueEventTableViewCell")
-        view.register(ZLPullRequstTableViewCell.self, forCellReuseIdentifier: "ZLPullRequstTableViewCell")
+        view.register(ZLPullRequestEventTableViewCell.self, forCellReuseIdentifier: "ZLPullRequestEventTableViewCell")
+        view.register(ZLCommitCommentEventTableViewCell.self, forCellReuseIdentifier: "ZLCommitCommentEventTableViewCell")
         view.delegate = self
         return view
     }()
@@ -75,7 +76,9 @@ extension ZLReceivedEventController {
                                                                      prev_id: loadNew ? nil : prev_id)) { [weak self] result, data, msg in
             guard let self else { return }
             if result, let eventArray = data as? [ZLGiteeEventModel] {
-                let cellDatas = eventArray.map { ZLEventTableViewCellData.generateEventCellData(model: $0)}
+                let cellDatas = eventArray.compactMap({
+                    ZLEventTableViewCellData.generateEventCellData(model: $0)
+                })
                 self.prev_id = eventArray.last?.id
                 if loadNew {
                     self.removeAllSubViewModels()

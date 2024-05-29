@@ -68,7 +68,7 @@ class ZLProfileController: ZLBaseViewController {
     
     private lazy var repoListButton: UIButton = {
         let button = UIButton(type: .custom)
-        button.setTitle("仓库", for: .normal)
+        button.setTitle("登出", for: .normal)
         button.addTarget(self, action: #selector(repoListButtonClicked), for: .touchUpInside)
         return button
     }()
@@ -86,9 +86,7 @@ class ZLProfileController: ZLBaseViewController {
     }
     
     @objc func repoListButtonClicked() {
-        let vc = ZLUserReposListController()
-        vc.login = "ZXHubs"
-        self.navigationController?.pushViewController(vc, animated: true)
+
     }
     
     @objc func followingButtonClicked() {

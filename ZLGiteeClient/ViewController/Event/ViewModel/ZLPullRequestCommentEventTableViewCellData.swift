@@ -15,7 +15,7 @@ class ZLPullRequestCommentEventTableViewCellData: ZLEventTableViewCellData, ZLPu
     
     override init(model: ZLGiteeEventModel) {
         super.init(model: model)
-        cellReuseIdentifier = "ZLPullRequstTableViewCell"
+        cellReuseIdentifier = "ZLPullRequestEventTableViewCell"
     }
     
     lazy var pullRequestCommentPayload: ZLGiteePullRequestCommentEventPayloadModel? = {
@@ -33,6 +33,15 @@ class ZLPullRequestCommentEventTableViewCellData: ZLEventTableViewCellData, ZLPu
                 .font(.zlRegularFont(withSize: 12))
         ).asAttributedString()
     }
+    
+    override func onCellSingleTap() {
+        guard let url = pullRequestCommentPayload?.pull_request?.html_url else { return }
+        let vc = ZLWebContentController()
+        vc.hidesBottomBarWhenPushed = true
+        vc.requestURL = URL(string: url)
+        viewController?.navigationController?.pushViewController(vc, animated: true)
+    }
+    
     
     func pullRequestNumber() -> String {
         "\(pullRequestCommentPayload?.pull_request?.number ?? 0)"

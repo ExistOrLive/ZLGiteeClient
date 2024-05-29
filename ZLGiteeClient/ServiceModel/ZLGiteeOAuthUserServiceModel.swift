@@ -126,7 +126,7 @@ extension ZLGiteeOAuthUserServiceModel {
                 } else {
                     callBack(false, "", "")
                 }
-            case .failure(let _):
+            case .failure(_):
                 callBack(false, "", "")
             }
         }
@@ -198,10 +198,7 @@ extension ZLGiteeOAuthUserServiceModel {
         
         setOAuthUserModelArray(array: userModelArray)
         setOAuthUserTokenArray(array: userTokenArray)
-        
-        UserDefaults.standard.setValue(login, forKey: "ZLGiteeCurrentUser")
-        UserDefaults.standard.synchronize()
-        
+                
         /// 重置token
         if let currentLogin = UserDefaults.standard.string(forKey: "ZLGiteeCurrentUser"),
            currentLogin == login {
@@ -221,6 +218,7 @@ extension ZLGiteeOAuthUserServiceModel {
         var userTokenArray = readOAuthUserTokenArray()
         userTokenArray.removeAll { $0.login == currentLogin }
         userTokenArray.append(tokenModel)
+        setOAuthUserTokenArray(array: userTokenArray)
        
         self.access_token = access_token
         self.refresh_token = refresh_token

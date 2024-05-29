@@ -154,7 +154,7 @@ class ZLGiteePullRequestCommentModel: HandyJSON {
     var created_at: Date?
     var updated_at: Date?
     var user: ZLGiteeUserModel?
-    // MARK: ----- ZLGiteeUser 格式转换 -----
+
     func mapping(mapper: HelpingMapper) {
         mapper <<<
             self.created_at <-- CustomDateFormatTransform(formatString: "yyyy-MM-dd'T'HH:mm:ssZ")
@@ -162,4 +162,41 @@ class ZLGiteePullRequestCommentModel: HandyJSON {
         mapper <<<
             self.updated_at <-- CustomDateFormatTransform(formatString: "yyyy-MM-dd'T'HH:mm:ssZ")
     }
+}
+
+// MARK: - ZLGiteeCommitCommentEventPayloadModel
+class ZLGiteeCommitCommentEventPayloadModel: HandyJSON {
+    required init() {}
+    var comment: ZLGiteeCommitCommentModel?
+    var repository: ZLGiteeRepoModel?
+}
+
+class ZLGiteeCommitCommentModel: HandyJSON {
+    required init() {}
+    var url: String?
+    var html_url: String?
+    var user: ZLGiteeUserModel?
+    var commit_id: String?
+    var body: String?
+    var created_at: Date?
+    var updated_at: Date?
+    
+    func mapping(mapper: HelpingMapper) {
+        mapper <<<
+            self.created_at <-- CustomDateFormatTransform(formatString: "yyyy-MM-dd'T'HH:mm:ssZ")
+        
+        mapper <<<
+            self.updated_at <-- CustomDateFormatTransform(formatString: "yyyy-MM-dd'T'HH:mm:ssZ")
+    }
+}
+
+// MARK: - ZLGiteeMemberEventPayloadModel
+class ZLGiteeMemberEventPayloadModel: HandyJSON {
+    required init() {}
+    var action: String?                 // added / deleted
+    var login: String?
+    var name: String?
+    var avatar_url: String?
+    var type: String?
+    var repository: ZLGiteeRepoModel?
 }

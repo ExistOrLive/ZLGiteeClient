@@ -73,9 +73,9 @@ class ZLEventTableViewCellData: ZLTableViewBaseCellData{
 
 // MARK: - Generate Cell Data 
 extension ZLEventTableViewCellData {
-    static func generateEventCellData(model: ZLGiteeEventModel) -> ZLEventTableViewCellData {
+    static func generateEventCellData(model: ZLGiteeEventModel) -> ZLEventTableViewCellData? {
         guard let type = model.type else {
-            return ZLEventTableViewCellData(model: model)
+            return nil
         }
         switch type {
         case .CreateEvent:
@@ -96,6 +96,10 @@ extension ZLEventTableViewCellData {
             return ZLPullRequestEventTableViewCellData(model:model)
         case .PullRequestCommentEvent:
             return ZLPullRequestCommentEventTableViewCellData(model: model)
+        case .CommitCommentEvent:
+            return ZLCommitCommentEventTableViewCellData(model: model)
+        case .MemberEvent:
+            return ZLMemberEventTableViewCellData(model: model)
         default:
             return ZLEventTableViewCellData(model: model)
         }
@@ -114,4 +118,6 @@ extension ZLEventType {
     static let IssueEvent: ZLEventType = "IssueEvent"
     static let PullRequestCommentEvent: ZLEventType = "PullRequestCommentEvent"
     static let PullRequestEvent: ZLEventType = "PullRequestEvent"
+    static let CommitCommentEvent: ZLEventType = "CommitCommentEvent"
+    static let MemberEvent: ZLEventType = "MemberEvent"
 }
