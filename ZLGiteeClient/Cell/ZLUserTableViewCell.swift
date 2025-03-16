@@ -8,6 +8,7 @@
 
 import UIKit
 import ZLUIUtilities
+import ZMMVVM
 
 protocol ZLUserTableViewCellDelegate: NSObjectProtocol {
 
@@ -49,7 +50,9 @@ extension ZLUserTableViewCellDelegate {
 
 class ZLUserTableViewCell: UITableViewCell {
 
-    weak var delegate: ZLUserTableViewCellDelegate?
+    var delegate: ZLUserTableViewCellDelegate? {
+        zm_viewModel as? ZLUserTableViewCellDelegate
+    }
 
     lazy var containerView: UIView = {
         let view = UIView()
@@ -171,20 +174,13 @@ class ZLUserTableViewCell: UITableViewCell {
     }
 }
 
-extension ZLUserTableViewCell: ZLViewUpdatableWithViewData {
-    func fillWithViewData(viewData data: ZLUserTableViewCellDelegate) {
+extension ZLUserTableViewCell: ZMBaseViewUpdatableWithViewData {
+    func zm_fillWithViewData(viewData: ZLUserTableViewCellDelegate) {
+        headImageView.sd_setImage(with: URL.init(string: viewData.getAvatarUrl() ?? ""), placeholderImage: UIImage.init(named: "default_avatar"))
+        loginNameLabel.text = viewData.getLoginName()
+        nameLabel.text = "\(viewData.getName() ?? "")"
+        descLabel.text = viewData.desc()
 
-        delegate = data
-
-        headImageView.sd_setImage(with: URL.init(string: data.getAvatarUrl() ?? ""), placeholderImage: UIImage.init(named: "default_avatar"))
-        loginNameLabel.text = data.getLoginName()
-        nameLabel.text = "\(data.getName() ?? "")"
-        descLabel.text = data.desc()
-
-        longPressGesture.isEnabled = data.hasLongPressAction()
-    }
-    
-    func justUpdateView() {
-        
+        longPressGesture.isEnabled = viewData.hasLongPressAction()
     }
 }

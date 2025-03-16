@@ -6,12 +6,12 @@
 //
 
 import UIKit
-import ZLBaseUI
 import SnapKit
 import Moya
 import ZLUIUtilities
+import ZMMVVM
 
-class ZLUserFollowingListController: ZLBaseViewController {
+class ZLUserFollowingListController: ZMTableViewController {
     
     // Entry Params
     var login: String?
@@ -19,51 +19,40 @@ class ZLUserFollowingListController: ZLBaseViewController {
     private var page: Int = 1
     private var per_page: Int = 20
     
-    // ViewModel
-    private var cellDatas: [ZLTableViewBaseCellData] = []
-        
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-        tableContainerView.startLoad()
+        viewStatus = .loading
+        refreshLoadNewData()
     }
     
-    func setupUI() {
+    override func setupUI() {
+        super.setupUI()
         title = "关注"
-        
-        contentView.addSubview(tableContainerView)
-        tableContainerView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
+        setRefreshView(type: .header)
+        setRefreshView(type: .footer)
+        tableView.register(ZLUserTableViewCell.self,
+                           forCellReuseIdentifier: "ZLUserTableViewCell")
     }
     
-    lazy var tableContainerView: ZLTableContainerView =  {
-        let tableView = ZLTableContainerView()
-        tableView.setTableViewHeader()
-        tableView.setTableViewFooter()
-        tableView.register(ZLUserTableViewCell.self, forCellReuseIdentifier: "ZLUserTableViewCell")
-        tableView.delegate = self
-        return tableView
-    }()
-}
-extension ZLUserFollowingListController: ZLTableContainerViewDelegate {
-    func zlLoadNewData() {
+    
+    override func refreshLoadNewData() {
         loadData(loadNewData: true)
     }
     
-    func zlLoadMoreData() {
+    override func refreshLoadMoreData() {
         loadData(loadNewData: false)
     }
+    
 }
-
 // request
 extension ZLUserFollowingListController {
     func loadData(loadNewData: Bool) {
         
         guard let login = self.login,
            !login.isEmpty else {
-            ZLToastView.showMessage("login 为空", sourceView:view)
-            tableContainerView.endRefresh()
+            self.viewStatus = .normal
+            self.endRefreshViews(noMoreData: true)
             return
         }
 
@@ -89,26 +78,29 @@ extension ZLUserFollowingListController {
                         return ZLUserTableViewCellData(userModel: model)
                     }
                     if loadNewData {
-                        for cellData in self.cellDatas {
-                            cellData.removeFromSuperViewModel()
-                        }
-                        self.addSubViewModels(cellDatas)
-                        self.cellDatas = cellDatas
-                        self.tableContainerView.resetCellDatas(cellDatas: self.cellDatas, hasMoreData: cellDatas.count >= self.per_page)
+                        self.sectionDataArray.forEach { $0.zm_removeFromSuperViewModel() }
+                        self.zm_addSubViewModels(cellDatas)
+                        self.sectionDataArray = [ZMBaseTableViewSectionData(cellDatas: cellDatas)]
+                        self.tableViewProxy.reloadData()
                         
                     } else {
-                        self.addSubViewModels(cellDatas)
-                        self.cellDatas.append(contentsOf: cellDatas)
-                        self.tableContainerView.resetCellDatas(cellDatas: self.cellDatas, hasMoreData: cellDatas.count >= self.per_page)
+                        self.zm_addSubViewModels(cellDatas)
+                        self.sectionDataArray.first?.cellDatas.append(contentsOf: cellDatas)
+                        self.tableViewProxy.reloadData()
                     }
+                    
+                    self.viewStatus = self.tableViewProxy.isEmpty ? .empty : .normal
+                    self.endRefreshViews(noMoreData: cellDatas.count < 20)
             
                 } else {
-                    self.tableContainerView.endRefresh()
+                    self.endRefreshViews()
+                    self.viewStatus = self.tableViewProxy.isEmpty ? .error : .normal
                     ZLToastView.showMessage(dataStr ?? "", sourceView: self.contentView)
                 }
                 
             case .failure(let error):
-                self.tableContainerView.endRefresh()
+                self.endRefreshViews()
+                self.viewStatus = self.tableViewProxy.isEmpty ? .error : .normal
                 ZLToastView.showMessage(error.localizedDescription, sourceView: self.contentView)
             }
         }

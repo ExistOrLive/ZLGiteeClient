@@ -8,6 +8,7 @@
 import UIKit
 import ZLUIUtilities
 import ZLUtilities
+import ZMMVVM
 
 
 protocol ZLOrgTableViewCellDelegate: NSObjectProtocol {
@@ -30,7 +31,9 @@ protocol ZLOrgTableViewCellDelegate: NSObjectProtocol {
 
 class ZLOrgTableViewCell: UITableViewCell {
 
-    weak var delegate: ZLOrgTableViewCellDelegate?
+    var delegate: ZLOrgTableViewCellDelegate? {
+        zm_viewModel as? ZLOrgTableViewCellDelegate
+    }
 
     lazy var containerView: UIView = {
         let view = UIView()
@@ -167,21 +170,15 @@ class ZLOrgTableViewCell: UITableViewCell {
     }
 }
 
-extension ZLOrgTableViewCell: ZLViewUpdatableWithViewData {
-    func fillWithViewData(viewData data: ZLOrgTableViewCellDelegate) {
-
-        delegate = data
-
+extension ZLOrgTableViewCell: ZMBaseViewUpdatableWithViewData {
+    
+    func zm_fillWithViewData(viewData data: ZLOrgTableViewCellDelegate) {
         headImageView.sd_setImage(with: URL.init(string: data.getAvatarUrl() ?? ""),
                                   placeholderImage: UIImage.placeHolderImage(placeHolder: "组织"))
         loginNameLabel.text = data.getLoginName()
         nameLabel.text = "\(data.getName() ?? "")"
         descLabel.text = data.desc()
         longPressGesture.isEnabled = data.hasLongPressAction()
-    }
-    
-    func justUpdateView() {
-        
     }
 }
 

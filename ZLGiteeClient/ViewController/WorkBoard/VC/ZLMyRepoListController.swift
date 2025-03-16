@@ -6,15 +6,15 @@
 //
 
 import Foundation
-import ZLBaseUI
 import SnapKit
 import Moya
 import ZLUIUtilities
+import ZMMVVM
 import JXPagingView
 import ZLBaseExtension
 import ZLUtilities
 
-class ZLMyRepoListController: ZLBaseViewController {
+class ZLMyRepoListController: ZMTableViewController {
      
     // data
     private var affiliationType: ZLGiteeMyRepoAffiliationType = .all
@@ -23,20 +23,25 @@ class ZLMyRepoListController: ZLBaseViewController {
     
     private var page: Int = 1
     private var per_page: Int = 20
-    
-    // ViewModel
-    private var cellDatas: [ZLTableViewBaseCellData] = []
-    
-    var scrollCallback: ((UIScrollView) -> Void)?
-    
+        
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupUI()
-        tableContainerView.startLoad()
+        viewStatus = .loading
+        refreshLoadNewData()
     }
     
-    func setupUI() {
+    override func setupUI() {
+        super.setupUI()
         title = "我的仓库"
+        setRefreshView(type: .header)
+        setRefreshView(type: .footer)
+        hiddenRefreshView(type: .footer)
+        
+        tableView.removeFromSuperview()
+        tableView.register(ZLRepositoryTableViewCell.self, forCellReuseIdentifier: "ZLRepositoryTableViewCell")
+        tableView.contentInset = UIEdgeInsets(top: 5, left: 0, bottom: 0, right: 0)
+        
         contentView.addSubview(verticalStackView)
         verticalStackView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
@@ -51,21 +56,11 @@ class ZLMyRepoListController: ZLBaseViewController {
         stackView.distribution = .fill
         stackView.alignment = .fill
         stackView.addArrangedSubview(headerView)
-        stackView.addArrangedSubview(tableContainerView)
+        stackView.addArrangedSubview(tableView)
         headerView.snp.makeConstraints { make in
             make.height.equalTo(40)
         }
         return stackView
-    }()
-    
-    lazy var tableContainerView: ZLTableContainerView =  {
-        let tableView = ZLTableContainerView()
-        tableView.tableView.contentInset = UIEdgeInsets(top: 5, left: 0, bottom: 0, right: 0)
-        tableView.setTableViewHeader()
-        tableView.setTableViewFooter()
-        tableView.register(ZLRepositoryTableViewCell.self, forCellReuseIdentifier: "ZLRepositoryTableViewCell")
-        tableView.delegate = self
-        return tableView
     }()
     
     lazy var headerView: UIView = {
@@ -79,7 +74,7 @@ class ZLMyRepoListController: ZLBaseViewController {
     }()
     
     lazy var affiliationButton: UIButton = {
-        let button = ZLBaseButton(type: .custom)
+        let button = ZMButton(type: .custom)
         button.titleLabel?.font = UIFont.zlMediumFont(withSize: 11)
         button.addTarget(self, action: #selector(onAffiliationButtonClicked), for: .touchUpInside)
         button.snp.makeConstraints { make in
@@ -90,7 +85,7 @@ class ZLMyRepoListController: ZLBaseViewController {
     }()
     
     lazy var visibilityButton: UIButton = {
-        let button = ZLBaseButton(type: .custom)
+        let button = ZMButton(type: .custom)
         button.titleLabel?.font = UIFont.zlMediumFont(withSize: 11)
         button.addTarget(self, action: #selector(onVisibilityButtonClicked), for: .touchUpInside)
         button.snp.makeConstraints { make in
@@ -101,7 +96,7 @@ class ZLMyRepoListController: ZLBaseViewController {
     }()
     
     lazy var sortButton: UIButton = {
-        let button = ZLBaseButton(type: .custom)
+        let button = ZMButton(type: .custom)
         button.titleLabel?.font = UIFont.zlMediumFont(withSize: 11)
         button.addTarget(self, action: #selector(onSortButtonClicked), for: .touchUpInside)
         button.snp.makeConstraints { make in
@@ -169,6 +164,13 @@ class ZLMyRepoListController: ZLBaseViewController {
         return popView
     }
     
+    override func refreshLoadNewData() {
+        loadData(loadNewData: true)
+    }
+    
+    override func refreshLoadMoreData() {
+        loadData(loadNewData: false)
+    }
 }
 
 // MARK: - Action
@@ -322,22 +324,6 @@ extension ZLMyRepoListController {
     }
 }
 
-// MARK: - ZLTableContainerViewDelegate
-extension ZLMyRepoListController: ZLTableContainerViewDelegate {
-    func zlLoadNewData() {
-        loadData(loadNewData: true)
-    }
-    
-    func zlLoadMoreData() {
-        loadData(loadNewData: false)
-    }
-    
-    func zlScrollViewDidScroll(_ scrollView: UIScrollView) {
-        scrollCallback?(scrollView)
-    }
-}
-
-
 // MARK: - request
 extension ZLMyRepoListController {
     func loadData(loadNewData: Bool) {
@@ -355,23 +341,30 @@ extension ZLMyRepoListController {
                                                                      affiliation: affiliationType.value),
                                                   completion: { [weak self] (result, model, msg) in
             guard let self else { return }
-            self.contentView.dismissProgressHUD()
+            self.viewStatus = .normal
+            self.endRefreshView(type: .header)
+            self.endRefreshView(type: .footer)
             if result, let array = model as? [ZLGiteeRepoModel] {
                 let newCellDatas = array.map { ZLRepositoryTableViewCellData(model: $0) }
+                self.zm_addSubViewModels(newCellDatas)
                 if loadNewData {
-                    let cellDatas = self.subViewModels
-                    cellDatas.forEach { $0.removeFromSuperViewModel() }
-                    self.addSubViewModels(newCellDatas)
-                    self.tableContainerView.resetCellDatas(cellDatas: newCellDatas, hasMoreData: newCellDatas.count >= 20 )
+                    for sectionData in self.sectionDataArray {
+                        sectionData.zm_removeFromSuperViewModel()
+                    }
+                    let sectionData = ZMBaseTableViewSectionData(zm_sectionID: "", cellDatas: newCellDatas)
+                    self.sectionDataArray = [sectionData]
+                    self.tableViewProxy.reloadData()
+                    self.viewStatus = newCellDatas.isEmpty ? .empty : .normal
                     self.page = 2
                 } else {
-                    self.addSubViewModels(newCellDatas)
-                    self.tableContainerView.appendCellDatas(cellDatas: newCellDatas, hasMoreData: newCellDatas.count >= 20 )
+                    self.sectionDataArray.first?.cellDatas.append(contentsOf: newCellDatas)
+                    self.tableViewProxy.reloadData()
                     self.page = self.page + 1
                 }
                 
             } else {
-                self.tableContainerView.endRefresh()
+                self.viewStatus = self.tableViewProxy.isEmpty ? .error : .normal
+                self.endRefreshView(type: loadNewData ? .header : .footer)
             }
         })
     }

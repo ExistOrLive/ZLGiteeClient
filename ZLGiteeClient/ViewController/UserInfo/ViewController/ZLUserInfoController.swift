@@ -6,24 +6,23 @@
 //
 
 import UIKit
-import ZLBaseUI
 import Moya
 import ZLUIUtilities
 import ZLUtilities
+import ZMMVVM
 
-class ZLUserInfoController: ZLBaseViewController {
+class ZLUserInfoController: ZMTableViewController {
     
     // Entry Params
     let login: String
     
     // model
     var model: ZLGiteeUserModel?
-    // viewModel
-    var sectionDatas: [ZLTableViewBaseSectionData] = []
+
     
     init(login: String) {
         self.login = login
-        super.init(nibName: nil, bundle: nil)
+        super.init()
     }
     
     required init?(coder: NSCoder) {
@@ -32,18 +31,20 @@ class ZLUserInfoController: ZLBaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupUI()
-        tableContainerView.startLoad()
-        setSharedButton()
+        viewStatus = .loading
+        refreshLoadNewData()
     }
     
-    func setupUI() {
-        title = login 
+    // MARK: - UI
+    override func setupUI() {
+        super.setupUI()
+        title = login
+        setSharedButton()
         
-        contentView.addSubview(tableContainerView)
-        tableContainerView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
+        setRefreshViews(types: [.header])
+        tableView.register(ZLUserInfoHeaderCell.self, forCellReuseIdentifier: "ZLUserInfoHeaderCell")
+        tableView.register(ZLCommonTableViewCell.self, forCellReuseIdentifier: "ZLCommonTableViewCell")
+        tableView.register(ZLCommonSectionHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: "ZLCommonSectionHeaderFooterView")
     }
     
     func setSharedButton() {
@@ -56,49 +57,51 @@ class ZLUserInfoController: ZLBaseViewController {
         button.frame = CGRect.init(x: 0, y: 0, width: 60, height: 60)
         button.addTarget(self, action: #selector(onMoreButtonClick(button:)), for: .touchUpInside)
 
-        self.zlNavigationBar.rightButton = button
+        self.zmNavigationBar.addSubview(button)
+    }
+    
+    // MARK: - ZLRefreshProtocol
+    override func refreshLoadNewData()  {
+        loadData()
     }
 
-    // action
+    // MARK: - action
     @objc func onMoreButtonClick(button: UIButton) {
 
         guard let url = URL(string: model?.html_url ?? "") else { return }
         button.showShareMenu(title: url.absoluteString, url: url, sourceViewController: self)
     }
     
+    // MARK: - cell Data
     func generateCellDatas() {
-        sectionDatas.removeAll()
-        for sectionData in sectionDatas {
-            sectionData.removeFromSuperViewModel()
-        }
-        
+    
         guard let model = model else {
-            tableContainerView.resetSectionDatas(sectionDatas: sectionDatas, hasMoreData: false)
             return
         }
         
-        let headerCellData = ZLUserInfoHeaderCellData(model: model)
-        addSubViewModel(headerCellData)
-        let headerSectionData = ZLTableViewBaseSectionData(cellDatas: [headerCellData])
-        headerSectionData.sectionHeaderViewData = ZLCommonSectionHeaderFooterViewData(sectionViewHeight: 10)
-        sectionDatas.append(headerSectionData)
+        sectionDataArray.forEach { $0.zm_removeFromSuperViewModel() }
+        sectionDataArray.removeAll()
         
-        var itemCellDatas: [ZLTableViewBaseCellData] = []
+        // header
+        let headerSectionData = ZMBaseTableViewSectionData()
+        headerSectionData.cellDatas = [ZLUserInfoHeaderCellData(model: model)]
+        headerSectionData.headerData = ZLCommonSectionHeaderFooterViewData(sectionViewHeight: 10)
+        sectionDataArray.append(headerSectionData)
+        
+        // item 
+        var itemCellDatas: [ZMBaseTableViewCellViewModel] = []
         if let profession = model.profession, !profession.isEmpty {
             let professionCellData = ZLCommonTableViewCellData(canClick: false, title: "职业", info: profession, cellHeight: 50, actionBlock: nil)
-            addSubViewModel(professionCellData)
             itemCellDatas.append(professionCellData)
         }
         
         if let company = model.company, !company.isEmpty {
             let companyCellData = ZLCommonTableViewCellData(canClick: false, title: "公司", info: company, cellHeight: 50, actionBlock: nil)
-            addSubViewModel(companyCellData)
             itemCellDatas.append(companyCellData)
         }
         
         if let email = model.email, !email.isEmpty {
             let emailCellData = ZLCommonTableViewCellData(canClick: false, title: "邮箱", info: email, cellHeight: 50, actionBlock: nil)
-            addSubViewModel(emailCellData)
             itemCellDatas.append(emailCellData)
         }
         
@@ -108,7 +111,6 @@ class ZLUserInfoController: ZLBaseViewController {
                 pasteBoard.string = model.qq
                 ZLToastView.showMessage("成功拷贝到剪切板")
             }
-            addSubViewModel(qqCellData)
             itemCellDatas.append(qqCellData)
         }
         
@@ -119,7 +121,6 @@ class ZLUserInfoController: ZLBaseViewController {
                 pasteBoard.string = model.wechat
                 ZLToastView.showMessage("成功拷贝到剪切板")
             }
-            addSubViewModel(wechatCellData)
             itemCellDatas.append(wechatCellData)
         }
         
@@ -129,83 +130,64 @@ class ZLUserInfoController: ZLBaseViewController {
                 pasteBoard.string = model.linkedin
                 ZLToastView.showMessage("成功拷贝到剪切板")
             }
-            addSubViewModel(linkedinCellData)
             itemCellDatas.append(linkedinCellData)
         }
         
         if let weibo = model.weibo, !weibo.isEmpty {
             let weiboCellData = ZLCommonTableViewCellData(canClick: false, title: "微博", info: weibo, cellHeight: 50, actionBlock: nil)
-            addSubViewModel(weiboCellData)
             itemCellDatas.append(weiboCellData)
         }
         
         if let blog = model.blog, !blog.isEmpty {
             let blogCellData = ZLCommonTableViewCellData(canClick: false, title: "博客", info: blog, cellHeight: 50, actionBlock: nil)
-            addSubViewModel(blogCellData)
             itemCellDatas.append(blogCellData)
         }
-        let itemSectionData = ZLTableViewBaseSectionData(cellDatas: itemCellDatas)
-        itemSectionData.sectionHeaderViewData = ZLCommonSectionHeaderFooterViewData(sectionViewHeight: 10)
-        sectionDatas.append(itemSectionData)
+        let itemSectionData = ZMBaseTableViewSectionData(cellDatas: itemCellDatas)
+        itemSectionData.headerData = ZLCommonSectionHeaderFooterViewData(sectionViewHeight: 10)
+        sectionDataArray.append(itemSectionData)
         
-        tableContainerView.resetSectionDatas(sectionDatas: sectionDatas, hasMoreData: false)
+        sectionDataArray.forEach { $0.zm_addSuperViewModel(self) }
     }
     
-    
-    lazy var tableContainerView: ZLTableContainerView =  {
-        let tableView = ZLTableContainerView()
-        tableView.setTableViewHeader()
-        tableView.register(ZLUserInfoHeaderCell.self, forCellReuseIdentifier: "ZLUserInfoHeaderCell")
-        tableView.register(ZLCommonTableViewCell.self, forCellReuseIdentifier: "ZLCommonTableViewCell")
-        tableView.register(ZLCommonSectionHeaderFooterView.self, forViewReuseIdentifier: "ZLCommonSectionHeaderFooterView")
-        tableView.delegate = self
-        return tableView
-    }()
+   
 }
 
-// MARK: ZLTableContainerViewDelegate
-extension ZLUserInfoController: ZLTableContainerViewDelegate {
-    
-    func zlLoadNewData() {
-        loadRequest()
-    }
-    
-    func zlLoadMoreData() {
-
-    }
-}
 
 // MARK: Request
 extension ZLUserInfoController {
     
-    func loadRequest() {
-        
+    func loadData() {
         guard !login.isEmpty else {
             ZLToastView.showMessage("login 为空", sourceView: contentView)
+            self.viewStatus = .normal
+            self.endRefreshView(type: .header)
             return
         }
         
         let provider = MoyaProvider<ZLGiteeRequest>()
         provider.request(ZLGiteeRequest.user(login: login)) { [weak self] result in
             guard let self = self else { return }
+            self.endRefreshView(type: .header)
             switch result {
             case .success(let response):
                 let data = response.data
                 let dataStr = String(data: data, encoding:.utf8)
                 if response.statusCode == 200 {
                     guard let model = ZLGiteeUserModel.deserialize(from: dataStr, designatedPath: nil) else {
-                        self.tableContainerView.endRefresh()
+                        self.viewStatus = self.model == nil ? .error : .normal
                         return
                     }
                     self.model = model
                     self.title = model.name
                     self.generateCellDatas()
+                    self.tableView.reloadData()
+                    self.viewStatus = .normal
                 } else {
-                    self.tableContainerView.endRefresh()
+                    self.viewStatus = self.model == nil ? .error : .normal
                     ZLToastView.showMessage(dataStr ?? "", sourceView: self.contentView)
                 }
             case .failure(let error):
-                self.tableContainerView.endRefresh()
+                self.viewStatus = self.model == nil ? .error : .normal
                 ZLToastView.showMessage(error.localizedDescription, sourceView: self.contentView)
             }
         

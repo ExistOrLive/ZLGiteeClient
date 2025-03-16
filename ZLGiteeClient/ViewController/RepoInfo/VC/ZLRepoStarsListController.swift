@@ -7,11 +7,11 @@
 
 import UIKit
 import ZLUIUtilities
-import ZLBaseUI
+import ZMMVVM
 import ZLBaseExtension
 import ZLUtilities
 
-class ZLRepoStarsListController: ZLBaseViewController {
+class ZLRepoStarsListController: ZMTableViewController {
 
     let repoFullName: String
     /// login Name
@@ -26,7 +26,7 @@ class ZLRepoStarsListController: ZLBaseViewController {
         let nameArray = repoFullName.split(separator: "/")
         self.loginName = String(nameArray.first ?? "")
         self.repoName = String(nameArray.last ?? "")
-        super.init(nibName: nil, bundle: nil)
+        super.init()
     }
     
     required init?(coder: NSCoder) {
@@ -35,62 +35,59 @@ class ZLRepoStarsListController: ZLBaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-      
-        setupUI()
-            
-        tableContainerView.startLoad()
+        viewStatus = .loading
+        refreshLoadNewData()
     }
     
-    func setupUI() {
+    override func setupUI() {
+        super.setupUI()
         title = "Stars"
-        contentView.addSubview(tableContainerView)
-        tableContainerView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
+        
+        setRefreshViews(types: [.header,.footer])
+        tableView.register(ZLUserTableViewCell.self, forCellReuseIdentifier: "ZLUserTableViewCell")
     }
     
-    // MARK: - lazy view
-    
-    lazy var tableContainerView: ZLTableContainerView = {
-        let view = ZLTableContainerView()
-        view.setTableViewHeader()
-        view.setTableViewFooter()
-        view.delegate = self
-        view.register(ZLUserTableViewCell.self, forCellReuseIdentifier: "ZLUserTableViewCell")
-        return view
-    }()
-    
-}
 
-// MARK: - ZLTableContainerViewDelegate
-extension ZLRepoStarsListController: ZLTableContainerViewDelegate {
-    
-    func zlLoadNewData() {
+
+// MARK: - Refresh
+    override func refreshLoadNewData() {
         ZLGiteeRequest.sharedProvider.requestRest(.repoStarsList(login: loginName, repoName: repoName, page: 1, per_page: 20), completion: { [weak self] (result, model, msg) in
             guard let self else { return }
+            
             if result, let array = model as? [ZLGiteeUserModel] {
-                let cellDatas = self.subViewModels
-                cellDatas.forEach { $0.removeFromSuperViewModel() }
+                sectionDataArray.forEach { $0.zm_removeFromSuperViewModel() }
                 let newCellDatas = array.map { ZLUserTableViewCellData(userModel: $0) }
-                self.addSubViewModels(newCellDatas)
-                self.tableContainerView.resetCellDatas(cellDatas: newCellDatas, hasMoreData: newCellDatas.count >= 20 )
+                self.zm_addSubViewModels(newCellDatas)
+                let sectionData = ZMBaseTableViewSectionData(zm_sectionID: "", cellDatas: newCellDatas)
+                self.sectionDataArray = [sectionData]
+                self.tableViewProxy.reloadData()
+                self.viewStatus = self.tableViewProxy.isEmpty ? .empty : .normal
+                self.endRefreshViews(noMoreData: newCellDatas.count < 20)
                 self.page = 2
             } else {
-                self.tableContainerView.endRefresh()
+                self.viewStatus = self.tableViewProxy.isEmpty ? .error : .normal
+                self.endRefreshViews()
+                ZLToastView.showMessage(msg, sourceView: self.contentView)
             }
         })
     }
     
-    func zlLoadMoreData() {
+    override func refreshLoadMoreData() {
         ZLGiteeRequest.sharedProvider.requestRest(.repoStarsList(login: loginName, repoName: repoName, page: page, per_page: 20), completion: { [weak self] (result, model, msg) in
             guard let self else { return }
+            self.endRefreshView(type: .footer)
             if result, let array = model as? [ZLGiteeUserModel] {
-                let newCellDatas = array.map {  ZLUserTableViewCellData(userModel: $0) }
-                self.addSubViewModels(newCellDatas)
-                self.tableContainerView.appendCellDatas(cellDatas: newCellDatas, hasMoreData: newCellDatas.count >= 20 )
+                let newCellDatas = array.map { ZLUserTableViewCellData(userModel: $0) }
+                self.zm_addSubViewModels(newCellDatas)
+                self.sectionDataArray.first?.cellDatas.append(contentsOf: newCellDatas)
+                self.tableViewProxy.reloadData()
+                self.viewStatus = self.tableViewProxy.isEmpty ? .empty : .normal
+                self.endRefreshViews(noMoreData: newCellDatas.count < 20)
                 self.page = self.page + 1
             } else {
-                self.tableContainerView.endRefresh()
+                self.viewStatus = self.tableViewProxy.isEmpty ? .error : .normal
+                self.endRefreshViews()
+                ZLToastView.showMessage(msg, sourceView: self.contentView)
             }
         })
     }

@@ -8,7 +8,8 @@
 import UIKit
 import WebKit
 import SnapKit
-import ZLBaseUI
+import ZLUIUtilities
+import ZMMVVM
 
 protocol ZLGiteeOAuthControllerDelegate: AnyObject {
     
@@ -31,7 +32,7 @@ protocol ZLGiteeOAuthControllerDelegate: AnyObject {
     func onOAuthClose(serialNumber: String)
 }
 
-class ZLGiteeOAuthController: ZLBaseViewController {
+class ZLGiteeOAuthController: ZMViewController {
     
     //
     private weak var delegate: ZLGiteeOAuthControllerDelegate?
@@ -77,7 +78,6 @@ class ZLGiteeOAuthController: ZLBaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.setupUI()
         self.startOAuth()
     }
     
@@ -88,11 +88,10 @@ class ZLGiteeOAuthController: ZLBaseViewController {
         }
     }
     
-    private func setupUI() {
-        
+    override func setupUI() {
+        super.setupUI()
         title = "OAuth"
-        setZLNavigationBarHidden(false)
-        
+        isZmNavigationBarHidden = false 
         contentView.addSubview(stackView)
         stackView.addArrangedSubview(processView)
         stackView.addArrangedSubview(webView)
@@ -109,7 +108,7 @@ class ZLGiteeOAuthController: ZLBaseViewController {
         webView.addObserver(self, forKeyPath: "estimatedProgress", options: [.new,.initial], context: nil)
     }
     
-    override func onBackButtonClicked(_ button: UIButton!) {
+    override func onBackButtonClicked(_ button: UIButton) {
         delegate?.onOAuthClose(serialNumber: self.serialNumber)
         close()
     }

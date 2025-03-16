@@ -8,23 +8,26 @@
 
 import UIKit
 import ZLUtilities
-import ZLBaseUI
+import ZMMVVM
 import ZLUIUtilities
 
-class ZLIssueTableViewCellData: ZLTableViewBaseCellData {
+class ZLIssueTableViewCellData: ZMBaseTableViewCellViewModel {
 
     let issueModel: ZLGiteeIssueModel
 
     init(issueModel: ZLGiteeIssueModel) {
         self.issueModel = issueModel
         super.init()
-        self.cellReuseIdentifier = "ZLIssueTableViewCell"
+    }
+    
+    override var zm_cellReuseIdentifier: String {
+        return "ZLIssueTableViewCell"
     }
   
-    override func onCellSingleTap() {
+    override func zm_onCellSingleTap() {
         let vc = ZLWebContentController()
         vc.requestURL = URL(string: issueModel.html_url ?? "")
-        viewController?.navigationController?.pushViewController(vc, animated: true)
+        zm_viewController?.navigationController?.pushViewController(vc, animated: true)
     }
 }
 
@@ -61,7 +64,7 @@ extension ZLIssueTableViewCellData: ZLIssueTableViewCellDelegate {
 
     func onClickIssueRepoFullName() {
         let vc = ZLRepoInfoController(repoFullName: issueModel.repository?.full_name ?? "")
-        self.viewController?.navigationController?.pushViewController(vc, animated: true)
+        zm_viewController?.navigationController?.pushViewController(vc, animated: true)
     }
     
     func hasLongPressAction() -> Bool {
@@ -73,7 +76,7 @@ extension ZLIssueTableViewCellData: ZLIssueTableViewCellDelegate {
     }
 
     func longPressAction(view: UIView) {
-        guard let sourceViewController = viewController,
+        guard let sourceViewController = zm_viewController,
               let url = URL(string: issueModel.html_url ?? "") else { return }
         
         view.showShareMenu(title: url.absoluteString, url: url, sourceViewController: sourceViewController)

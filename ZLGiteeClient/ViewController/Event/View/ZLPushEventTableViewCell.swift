@@ -23,9 +23,10 @@ class ZLPushEventTableViewCell: ZLEventTableViewCell {
             make.edges.equalToSuperview().inset(UIEdgeInsets.init(top: 5, left: 10, bottom: 10, right: 10))
         })
     }
+    
 
-    override func fillWithViewData(viewData: ZLEventTableViewCellData) {
-        super.fillWithViewData(viewData: viewData)
+    override func zm_fillWithViewData(viewData: ZLEventTableViewCellData) {
+        super.zm_fillWithViewData(viewData: viewData)
         guard let pushEventCellData = viewData as? ZLPushEventTableViewCellData else {
             return
         }

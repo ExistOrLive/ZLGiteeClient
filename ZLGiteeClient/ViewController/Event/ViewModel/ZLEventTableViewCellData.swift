@@ -6,20 +6,24 @@
 //
 
 import Foundation
+import ZMMVVM
 import ZLUIUtilities
 import ZLBaseExtension
 
-class ZLEventTableViewCellData: ZLTableViewBaseCellData{
+class ZLEventTableViewCellData: ZMBaseTableViewCellViewModel {
     
     let model: ZLGiteeEventModel
     
     init(model: ZLGiteeEventModel) {
         self.model = model
         super.init()
-        cellReuseIdentifier = "ZLEventTableViewCell"
     }
     
-    override func onCellSingleTap() {
+    override var zm_cellReuseIdentifier: String {
+        return "ZLEventTableViewCell"
+    }
+    
+    override func zm_onCellSingleTap() {
         navigationToRepoVC() 
     }
     
@@ -59,14 +63,14 @@ class ZLEventTableViewCellData: ZLTableViewBaseCellData{
         guard let fullName = self.model.repo?.full_name else { return }
         let repoVc = ZLRepoInfoController(repoFullName: fullName)
         repoVc.hidesBottomBarWhenPushed = true
-        self.viewController?.navigationController?.pushViewController(repoVc, animated: true)
+        zm_viewController?.navigationController?.pushViewController(repoVc, animated: true)
     }
     
     func navigationToUserInfoVC() {
         guard let login = model.actor?.login else { return }
         let vc = ZLUserInfoController(login: login)
         vc.hidesBottomBarWhenPushed = true
-        viewController?.navigationController?.pushViewController(vc, animated: true)
+        zm_viewController?.navigationController?.pushViewController(vc, animated: true)
     }
     
 }

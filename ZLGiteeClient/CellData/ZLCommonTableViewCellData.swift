@@ -7,14 +7,15 @@
 //
 
 import UIKit
-import ZLUIUtilities
+import ZMMVVM
 
-class ZLCommonTableViewCellData: ZLTableViewBaseCellData {
+class ZLCommonTableViewCellData: ZMBaseTableViewCellViewModel {
 
     private var _canClick: Bool = false
     private var _title: String = ""
     private var _info: String = ""
     private var _actionBlock: (() -> Void)?
+    private var _cellHeight: CGFloat = 0
 
     init(canClick: Bool,
          title: String,
@@ -26,11 +27,18 @@ class ZLCommonTableViewCellData: ZLTableViewBaseCellData {
         _info = info
         _actionBlock = actionBlock
         super.init()
-        self.cellHeight = cellHeight
-        self.cellReuseIdentifier = "ZLCommonTableViewCell"
+        self._cellHeight = cellHeight
+    }
+    
+    override var zm_cellReuseIdentifier: String {
+        return "ZLCommonTableViewCell"
+    }
+    
+    override var zm_cellHeight: CGFloat {
+        _cellHeight
     }
 
-    override func onCellSingleTap() {
+    override func zm_onCellSingleTap() {
        _actionBlock?()
     }
 }
@@ -48,5 +56,4 @@ extension ZLCommonTableViewCellData: ZLCommonTableViewCellDataSourceAndDelegate 
     var info: String {
         _info
     }
-
 }

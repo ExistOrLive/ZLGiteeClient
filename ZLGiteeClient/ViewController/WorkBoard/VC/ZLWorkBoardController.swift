@@ -6,110 +6,82 @@
 //
 
 import UIKit
-import ZLBaseUI
-import JXPagingView
-import JXSegmentedView
+import ZMMVVM
+import ZLUIUtilities
 
-class ZLWorkBoardController: ZLBaseViewController {
-    
-    var vcArray: [JXPagingViewListViewDelegate] = []
-    
-    var headerViewData: ZLWorkBoardHeaderViewData?
 
+class ZLWorkBoardController: ZMTableViewController {
+    
+    lazy var stateModel: ZLWorkBoardStateModel = {
+        ZLWorkBoardStateModel()
+    }()
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = "工作台"
-        setupUI()
+        generateViewData()
+        tableView.reloadData()
     }
     
-    func setupUI() {
-        contentView.addSubview(pagingView)
-        pagingView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
+    override func setupUI() {
+        super.setupUI()
+        isZmNavigationBarHidden = true
         
-        if let userModel = ZLGiteeOAuthUserServiceModel.sharedService.currentUserModel {
-            let headerViewData = ZLWorkBoardHeaderViewData(model: userModel)
-            addSubViewModel(headerViewData)
-            self.headerViewData = headerViewData
-            headerView.fillWithData(data: headerViewData)
-        }
-        vcArray = [ZLWorkBoardItemController(), ZLReceivedEventController(), ZLMyEventController()]
-        pagingView.reloadData()
-        
-//        /// 授权用户的issue
-//         https://gitee.com/api/v5/user/issues
-//        
-//        组织
-//    https://gitee.com/api/v5/user/orgs
-//        
-//        所有仓库
-//    https://gitee.com/api/v5/user/repos
+        tableView.register(ZLCommonSectionHeaderFooterView.self,
+                           forHeaderFooterViewReuseIdentifier: "ZLCommonSectionHeaderFooterView")
+        tableView.register(ZLWorkBoardEditHeaderView.self,
+                           forHeaderFooterViewReuseIdentifier: "ZLWorkBoardEditHeaderView")
+        tableView.register(ZLWorkBoardHeaderCell.self,
+                           forCellReuseIdentifier: "ZLWorkBoardHeaderCell")
+        tableView.register(ZLWorkBoardContributionCell.self,
+                           forCellReuseIdentifier: "ZLWorkBoardContributionCell")
+        tableView.register(ZLWorkBoardItemCell.self,
+                           forCellReuseIdentifier: "ZLWorkBoardItemCell")
+        tableView.bounces = false
     }
-    
 
-    lazy var headerView: ZLWorkBoardHeaderView = {
-       let headerView = ZLWorkBoardHeaderView()
-        return headerView
-    }()
-    
-    lazy var pagingView: JXPagingView = {
-        let pagingView = JXPagingView(delegate: self)
-        pagingView.mainTableView.bounces = false
-        return pagingView
-    }()
-    
-    
-    lazy var segmentedViewDataSource: JXSegmentedTitleDataSource = {
-        let dataSource = JXSegmentedTitleDataSource()
-        dataSource.titles = ["主页","动态","我的动态"]
-        dataSource.titleSelectedFont = .zlMediumFont(withSize: 18)
-        dataSource.titleNormalFont = .zlRegularFont(withSize: 16)
-        dataSource.titleSelectedColor = .black
-        dataSource.titleNormalColor = .gray
-        dataSource.itemWidth = floor(UIScreen.main.bounds.size.width / 3.0)
-        dataSource.itemSpacing = 0
-        return dataSource
-    }()
-
-    lazy var segmentedView: JXSegmentedView  = {
-        let view = JXSegmentedView()
-        view.dataSource = segmentedViewDataSource
-        view.listContainer = pagingView.listContainerView
-        return view
-    }()
 }
 
-// MARK: - JXPagingViewDelegate
-extension ZLWorkBoardController: JXPagingViewDelegate {
-    
-    func pagingView(_ pagingView: JXPagingView, initListAtIndex index: Int) -> any JXPagingViewListViewDelegate {
-        vcArray[index]
-    }
-    
-    /// tableHeaderView的高度，因为内部需要比对判断，只能是整型数
-    func tableHeaderViewHeight(in pagingView: JXPagingView) -> Int {
-        Int(headerViewData?.height ?? 0)
-    }
-    
-    /// 返回tableHeaderView
-    func tableHeaderView(in pagingView: JXPagingView) -> UIView {
-        headerView
-    }
-    /// 返回悬浮HeaderView的高度，因为内部需要比对判断，只能是整型数
-    func heightForPinSectionHeader(in pagingView: JXPagingView) -> Int {
-        45
-    }
-    /// 返回悬浮HeaderView
-    func viewForPinSectionHeader(in pagingView: JXPagingView) -> UIView {
-        segmentedView
-    }
-    
-    /// 返回列表的数量
-    func numberOfLists(in pagingView: JXPagingView) -> Int {
-        vcArray.count
+// MARK: - cellData
+extension ZLWorkBoardController {
+    func generateViewData() {
+
+        ///  workboardHeaderSection
+        let workboardHeaderSectionData = ZMBaseTableViewSectionData()
+        let headerCellData = ZLWorkBoardHeaderCellData(stateModel: stateModel)
+        workboardHeaderSectionData.cellDatas = [headerCellData]
+        workboardHeaderSectionData.footerData = ZLCommonSectionHeaderFooterViewData(sectionViewHeight: 10)
+        
+        ///  workboardContributionSection
+        let workboardContributionSectionData = ZMBaseTableViewSectionData()
+        let contributionCellData = ZLWorkBoardContributionCellData(stateModel: stateModel)
+        workboardContributionSectionData.cellDatas = [contributionCellData]
+        workboardContributionSectionData.footerData = ZLCommonSectionHeaderFooterViewData(sectionViewHeight: 10)
+        
+        
+        ///  workboardOrgSection
+        let workboardOrgSectionData = ZMBaseTableViewSectionData()
+        workboardOrgSectionData.cellDatas = [ZLWorkBoardItemCellData(type: .companys),
+                                             ZLWorkBoardItemCellData(type: .orgs)]
+        
+        ///  workboardOrgSection
+        let workboardFixRepoSectionData = ZMBaseTableViewSectionData()
+        let fixRepoViewData = ZLWorkBoardEditHeaderViewData(type: .fixedRepo)
+        workboardFixRepoSectionData.headerData = fixRepoViewData
+        
+        sectionDataArray = [workboardHeaderSectionData,
+                            workboardContributionSectionData,
+                            workboardOrgSectionData,
+                            workboardFixRepoSectionData]
+        sectionDataArray.forEach { $0.zm_addSuperViewModel(self) }
     }
 }
-
-
-extension JXPagingListContainerView: JXSegmentedViewListContainer {}
+//
+//// MARK: - ZLTableContainerViewDelegate
+//extension ZLWorkBoardController: ZLTableContainerViewDelegate {
+//    func zlLoadNewData() { }
+//    func zlLoadMoreData() { }
+//}

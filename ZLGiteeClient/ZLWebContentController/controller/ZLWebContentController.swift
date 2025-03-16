@@ -7,28 +7,27 @@
 //
 
 import UIKit
-import ZLBaseUI
+import ZLUIUtilities
 import ZLUtilities
 
-@objcMembers class ZLWebContentController: ZLBaseViewController {
+@objcMembers class ZLWebContentController: ZMViewController {
 
     var requestURL: URL?
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupUI()
+        zm_addSubViewModel(webContentViewModel)
+        webContentView.zm_fillWithData(data: webContentViewModel)
     }
     
-    func setupUI() {
+    override func setupUI() {
+        super.setupUI()
         title = "WebView"
         contentView.addSubview(webContentView)
         webContentView.snp.makeConstraints { (make) in
             make.edges.equalToSuperview()
         }
-        addSubViewModel(webContentViewModel)
-        webContentViewModel.bindModel(self.requestURL, andView: webContentView)
-        
-        zlNavigationBar.rightButton = rightButton
+        zmNavigationBar.addRightView(rightButton)
     }
     
     //MARK: Lazy View
@@ -50,7 +49,7 @@ import ZLUtilities
     }()
     
     private lazy var webContentViewModel: ZLWebContentViewModel = {
-        ZLWebContentViewModel()
+        ZLWebContentViewModel(url: self.requestURL)
     }()
 
     

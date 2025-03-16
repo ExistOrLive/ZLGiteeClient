@@ -6,9 +6,10 @@
 //
 
 import UIKit
-import ZLBaseUI
 import ZLUtilities
 import JXSegmentedView
+import ZLUIUtilities
+import ZMMVVM
 
 enum SearchType: CaseIterable {
     case repo
@@ -27,7 +28,7 @@ enum SearchType: CaseIterable {
     }
 }
 
-class ZLSearchController: ZLBaseViewController {
+class ZLSearchController: ZMViewController {
     
     lazy var searchTypes: [SearchType] = SearchType.allCases
     
@@ -41,14 +42,10 @@ class ZLSearchController: ZLBaseViewController {
         return vcDic
     }()
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        setupUI()
-    }
-    
 
     // MARK: Lazy View
-    func setupUI() {
+    override func setupUI() {
+        super.setupUI()
         view.addSubview(topBackView)
         view.addSubview(segmentedView)
         view.addSubview(segmentedListContainerView)

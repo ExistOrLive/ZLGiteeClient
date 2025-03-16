@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import ZLBaseUI
 import ZLUIUtilities
 
 enum ZLLoginStep {
@@ -29,7 +28,7 @@ enum ZLLoginStep {
     }
 }
 
-class ZLGiteeLoginController: ZLBaseViewController {
+class ZLGiteeLoginController: ZMViewController {
         
     // 登陆操作的流水号
     private var loginSerialNumber: String?
@@ -47,14 +46,9 @@ class ZLGiteeLoginController: ZLBaseViewController {
                                           redirect_uri: GiteeRedirectURL)
         return manager
     }()
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        setupUI()
-    }
-    
-    func setupUI() {
-        setZLNavigationBarHidden(true)
+        
+    override func setupUI() {
+        super.setupUI()
         contentView.addSubview(icon)
         contentView.addSubview(titleLabel)
         contentView.addSubview(activityIndicator)
@@ -131,7 +125,7 @@ class ZLGiteeLoginController: ZLBaseViewController {
     }()
     
     lazy var loginButton: UIButton = {
-        let button = ZLBaseButton()
+        let button = ZMButton()
         button.titleLabel?.font = UIFont.zlMediumFont(withSize: 16)
         button.setTitle("登录", for: .normal)
         button.addTarget(self, action: #selector(onLoginButtonClicked), for: .touchUpInside)
@@ -186,7 +180,7 @@ extension ZLGiteeLoginController {
         oauthManager.startOAuth(type: .code,
                                 delegate: self) { [weak self] vc in
             vc.modalPresentationStyle = .fullScreen
-            self?.viewController?.present(vc, animated: true, completion: nil)
+            self?.present(vc, animated: true, completion: nil)
         }
     }
 

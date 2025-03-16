@@ -6,7 +6,7 @@
 //
 
 import UIKit
-import ZLBaseUI
+ 
 import Foundation
 import ZLUIUtilities
 import ZLUtilities
@@ -46,7 +46,7 @@ class ZMPopContainerViewDelegate_AccessToken: NSObject, ZMPopContainerViewDelega
 }
 
 
-class ZLInputAccessTokenView: ZLBaseView {
+class ZLInputAccessTokenView: UIView {
     
     weak var popView: ZMPopContainerView?
     var resultBlock: ((String?) -> Void)?
@@ -145,7 +145,7 @@ class ZLInputAccessTokenView: ZLBaseView {
     }()
     
     lazy var confirmButton: UIButton = {
-        let button = ZLBaseButton()
+        let button = ZMButton()
         button.titleLabel?.font = .zlMediumFont(withSize: 15)
         button.setTitle("确认",
                         for: .normal)

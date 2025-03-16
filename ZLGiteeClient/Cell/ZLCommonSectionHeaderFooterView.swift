@@ -8,9 +8,10 @@
 import Foundation
 import UIKit
 import ZLUIUtilities
+import ZMMVVM
 
 
-class ZLCommonSectionHeaderFooterViewData: ZLTableViewBaseSectionViewData,ZLCommonSectionHeaderViewDelegate {
+class ZLCommonSectionHeaderFooterViewData: ZMBaseTableViewReuseViewModel,ZLCommonSectionHeaderViewDelegate {
     
     var backgroundColor: UIColor = .clear
     
@@ -21,6 +22,8 @@ class ZLCommonSectionHeaderFooterViewData: ZLTableViewBaseSectionViewData,ZLComm
     var titleFont: UIFont = .systemFont(ofSize: 15)
     
     var titleEdge: UIEdgeInsets = .zero
+    
+    var sectionViewHeight: CGFloat = 0
     
     init(title: String = "",
          titleColor: UIColor = .clear,
@@ -34,8 +37,15 @@ class ZLCommonSectionHeaderFooterViewData: ZLTableViewBaseSectionViewData,ZLComm
         self.titleFont = titleFont
         self.titleEdge = titleEdge
         super.init()
-        self.sectionViewReuseIdentifier = ZLCommonSectionHeaderFooterView.reuseIdentifier
         self.sectionViewHeight = sectionViewHeight
+    }
+    
+    override var zm_viewReuseIdentifier: String {
+        ZLCommonSectionHeaderFooterView.reuseIdentifier
+    }
+    
+    override var zm_viewHeight: CGFloat {
+        sectionViewHeight
     }
 }
 
@@ -77,20 +87,11 @@ class ZLCommonSectionHeaderFooterView: UITableViewHeaderFooterView {
         }
     }
 }
-extension ZLCommonSectionHeaderFooterView: ZLViewUpdatableWithViewData {
-    
-    func fillWithViewData(viewData data: ZLCommonSectionHeaderViewDelegate) {
-        contentView.backgroundColor = data.backgroundColor
-        titleLabel.text = data.title
-        titleLabel.font = data.titleFont
-        titleLabel.textColor = data.titleColor
-        titleLabel.snp.updateConstraints { make in
-            make.edges.equalTo(data.titleEdge)
-        }
-    }
-    
-    func justUpdateView() {
-        
+extension ZLCommonSectionHeaderFooterView: ZMBaseViewUpdatableWithViewData {
+      
+    func zm_fillWithViewData(viewData: ZLCommonSectionHeaderFooterViewData) {
+        self.backgroundColor = viewData.backgroundColor
+        self.contentView.backgroundColor = viewData.backgroundColor
     }
 }
 

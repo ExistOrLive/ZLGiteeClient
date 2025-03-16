@@ -8,19 +8,20 @@
 
 import UIKit
 import WebKit
-//import ZLGitRemoteService
-import ZLBaseUI
 import ZLBaseExtension
 import ZLUtilities
+import ZMMVVM
 
 @objc protocol ZLWebContentViewDelegate: NSObjectProtocol {
     @objc func webView(_ webView: WKWebView, navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void)
 
     @objc func webView(_ webView: WKWebView, navigationResponse: WKNavigationResponse, decisionHandler: @escaping (WKNavigationResponsePolicy) -> Void)
 
-    @objc optional func webView(_ webView: WKWebView, didReceiveServerRedirectForProvisionalNavigation navigation: WKNavigation!)
+    @objc func webView(_ webView: WKWebView, didReceiveServerRedirectForProvisionalNavigation navigation: WKNavigation!)
 
-    @objc optional func onTitleChange(title: String?)
+    @objc func onTitleChange(title: String?)
+    
+    @objc var url: URL? { get }
 }
 
 extension ZLWebContentViewDelegate {
@@ -33,7 +34,7 @@ extension ZLWebContentViewDelegate {
     }
 }
 
-class ZLWebContentView: ZLBaseView {
+class ZLWebContentView: UIView {
     
     // MARK: UIView
     private lazy var webView: WKWebView = {
@@ -82,7 +83,7 @@ class ZLWebContentView: ZLBaseView {
         label.numberOfLines = 0
         label.textColor = UIColor.lightGray
         label.textAlignment = .center
-        label.font = .init(name: Font_PingFangSCMedium, size: 15)
+        label.font = .zlMediumFont(withSize: 15)
         return label
     }()
     
@@ -150,7 +151,9 @@ class ZLWebContentView: ZLBaseView {
         webView.url 
     }
 
-    @objc weak var delegate: ZLWebContentViewDelegate?
+    var delegate: ZLWebContentViewDelegate? {
+        zm_viewModel as? ZLWebContentViewDelegate
+    }
     
 
     deinit {
@@ -257,7 +260,7 @@ extension ZLWebContentView {
         if "title" == keyPath {
             let newTitle = change?[NSKeyValueChangeKey.newKey] as? String
             if self.delegate?.responds(to: #selector(ZLWebContentViewDelegate.onTitleChange(title:))) ?? false {
-                self.delegate?.onTitleChange?(title: newTitle)
+                self.delegate?.onTitleChange(title: newTitle)
             }
         } else if "canGoBack" == keyPath {
             guard let value: Bool = change?[NSKeyValueChangeKey.newKey] as? Bool else {
@@ -364,7 +367,7 @@ extension ZLWebContentView: WKUIDelegate, WKNavigationDelegate {
 
 //        ZLLog_Debug("ZLWebContentView: webView:didReceiveServerRedirectForProvisionalNavigation navigation[\(String(describing: navigation))]")
         if self.delegate?.responds(to: #selector(ZLWebContentViewDelegate.webView(_:didReceiveServerRedirectForProvisionalNavigation:))) ?? false {
-            self.delegate?.webView?(webView, didReceiveServerRedirectForProvisionalNavigation: navigation)
+            self.delegate?.webView(webView, didReceiveServerRedirectForProvisionalNavigation: navigation)
         }
     }
 
@@ -406,5 +409,16 @@ extension ZLWebContentView: WKUIDelegate, WKNavigationDelegate {
     /// 8. 页面渲染结束
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
 //        ZLLog_Debug("ZLWebContentView: webView:didFinish navigation[\(String(describing: navigation))]")
+    }
+}
+
+// MARK: - ZMBaseViewUpdatableWithViewData
+extension ZLWebContentView: ZMBaseViewUpdatableWithViewData {
+    func zm_fillWithViewData(viewData: ZLWebContentViewDelegate) {
+        guard let url = viewData.url else { return }
+        let request = URLRequest(url: url,
+                                 cachePolicy: .useProtocolCachePolicy,
+                                 timeoutInterval: 60)
+        loadRequest(request)
     }
 }

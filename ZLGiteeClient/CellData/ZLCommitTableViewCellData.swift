@@ -6,23 +6,25 @@
 //
 
 import Foundation
-import ZLBaseUI
-import ZLUIUtilities
+import ZMMVVM
 
-class ZLCommitTableViewCellData: ZLTableViewBaseCellData {
+class ZLCommitTableViewCellData: ZMBaseTableViewCellViewModel {
 
     let commitModel: ZLGiteeCommitModel
 
-     init(commitModel: ZLGiteeCommitModel) {
-         self.commitModel = commitModel
-         super.init()
-         self.cellReuseIdentifier = "ZLCommitTableViewCell"
-     }
- 
-    override func onCellSingleTap() {
+    init(commitModel: ZLGiteeCommitModel) {
+        self.commitModel = commitModel
+        super.init()
+    }
+    
+    override var zm_cellReuseIdentifier: String {
+        return "ZLCommitTableViewCell"
+    }
+
+    override func zm_onCellSingleTap() {
         let vc = ZLWebContentController()
         vc.requestURL = URL(string: commitModel.html_url ?? "")
-        viewController?.navigationController?.pushViewController(vc, animated: true)
+        zm_viewController?.navigationController?.pushViewController(vc, animated: true)
     }
 }
 
@@ -45,7 +47,6 @@ extension ZLCommitTableViewCellData: ZLCommitTableViewCellDelegate {
         dateFormatter.dateFormat = "yyyy-MM-dd"
         return "\(self.commitModel.committer?.name ?? "") 提交于 \(dateFormatter.string(from: self.commitModel.commit?.committer?.date ?? Date())) "
     }
-
 }
 
 

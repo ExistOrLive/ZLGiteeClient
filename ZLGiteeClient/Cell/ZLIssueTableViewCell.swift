@@ -11,6 +11,7 @@ import YYText
 import ZLBaseExtension
 import ZLUtilities
 import ZLUIUtilities
+import ZMMVVM
 
 protocol ZLIssueTableViewCellDelegate: NSObjectProtocol {
 
@@ -39,20 +40,20 @@ class ZLIssueTableViewCell: UITableViewCell {
         view.cornerRadius = 8.0
         return view
     }()
-
+    
     private lazy var statusTag: UILabel = {
         let label = UILabel()
         label.font = UIFont.zlIconFont(withSize: 20)
         return label
     }()
-
+    
     private lazy var repoNameTitleLabel: YYLabel = {
-       let label = YYLabel()
+        let label = YYLabel()
         label.numberOfLines = 0
         label.preferredMaxLayoutWidth = ZLKeyWindowWidth - 90
         return label
     }()
-
+    
     private lazy var labelStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.alignment = .fill
@@ -61,7 +62,7 @@ class ZLIssueTableViewCell: UITableViewCell {
         stackView.spacing = 8
         return stackView
     }()
-
+    
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 4
@@ -69,7 +70,7 @@ class ZLIssueTableViewCell: UITableViewCell {
         label.font = .zlRegularFont(withSize: 15)
         return label
     }()
-
+    
     private lazy var assitLabel: UILabel = {
         let label2 = UILabel()
         label2.textColor = UIColor(named: "ZLLabelColor2")
@@ -83,8 +84,10 @@ class ZLIssueTableViewCell: UITableViewCell {
         let gesture = UILongPressGestureRecognizer(target: self, action: #selector(longPressAction(gesture:)))
         return gesture
     }()
-
-    weak var delegate: ZLIssueTableViewCellDelegate?
+    
+    var delegate: ZLIssueTableViewCellDelegate? {
+        zm_viewModel as? ZLIssueTableViewCellDelegate
+    }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -177,18 +180,11 @@ class ZLIssueTableViewCell: UITableViewCell {
 
 }
 
-extension ZLIssueTableViewCell: ZLViewUpdatableWithViewData {
+extension ZLIssueTableViewCell: ZMBaseViewUpdatableWithViewData {
 
-    
-    func justUpdateView() {
-        
-    }
-    
-    func fillWithViewData(viewData: ZLIssueTableViewCellDelegate) {
 
-        
-        self.delegate = viewData
-        
+    func zm_fillWithViewData(viewData: ZLIssueTableViewCellDelegate) {
+
         longPressGesture.isEnabled = viewData.hasLongPressAction()
 
         let title = NSMutableAttributedString(string: viewData.getIssueRepoFullName() ?? "",

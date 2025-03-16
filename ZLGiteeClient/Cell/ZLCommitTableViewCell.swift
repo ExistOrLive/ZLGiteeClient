@@ -10,6 +10,7 @@ import UIKit
 import ZLBaseExtension
 import ZLUtilities
 import ZLUIUtilities
+import ZMMVVM
 
 @objc protocol ZLCommitTableViewCellDelegate: NSObjectProtocol {
 
@@ -24,7 +25,9 @@ import ZLUIUtilities
 
 class ZLCommitTableViewCell: UITableViewCell {
 
-    weak var delegate: ZLCommitTableViewCellDelegate?
+    var delegate: ZLCommitTableViewCellDelegate? {
+        zm_viewModel as? ZLCommitTableViewCellDelegate
+    }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -123,14 +126,11 @@ class ZLCommitTableViewCell: UITableViewCell {
 
 }
 
-extension ZLCommitTableViewCell: ZLViewUpdatableWithViewData {
-    func justUpdateView() {
-        
-    }
-    
-    func fillWithViewData(viewData cellData: ZLCommitTableViewCellData) {
-        self.titleLabel.text = cellData.getCommitTitle()
-        self.assitLabel.text = cellData.getAssistInfo()
-        self.shaButton.setTitle(cellData.getCommitSha(), for: .normal)
+extension ZLCommitTableViewCell: ZMBaseViewUpdatableWithViewData {
+ 
+    func zm_fillWithViewData(viewData: ZLCommitTableViewCellData) {
+        self.titleLabel.text = viewData.getCommitTitle()
+        self.assitLabel.text = viewData.getAssistInfo()
+        self.shaButton.setTitle(viewData.getCommitSha(), for: .normal)
     }
 }

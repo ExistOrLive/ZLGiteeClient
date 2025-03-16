@@ -6,45 +6,30 @@
 //
 
 import UIKit
-import ZLBaseUI
 import SnapKit
 import Moya
 import ZLUIUtilities
+import ZMMVVM
 import JXPagingView
 
-class ZLWorkBoardEventController: ZLBaseViewController {
+class ZLWorkBoardEventController: ZMTableViewController {
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        setupUI()
-    }
-    
-    func setupUI() {
-        title = "仓库"
-        contentView.addSubview(tableContainerView)
-    setZLNavigationBarHidden(true)
-        tableContainerView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
-    }
-    
-    lazy var tableContainerView: ZLTableContainerView =  {
-        let tableView = ZLTableContainerView()
-        tableView.setTableViewHeader()
-        tableView.setTableViewFooter()
-        tableView.register(ZLRepositoryTableViewCell.self, forCellReuseIdentifier: "ZLRepositoryTableViewCell")
-        tableView.delegate = self
-        return tableView
-    }()
-}
 
-extension ZLWorkBoardEventController: ZLTableContainerViewDelegate {
-    func zlLoadNewData() {
-        
+    override func setupUI() {
+        super.setupUI()
+        title = "仓库"
+        setRefreshView(type: .header)
+        setRefreshView(type: .footer)
+        hiddenRefreshView(type: .footer)
+        tableView.register(ZLRepositoryTableViewCell.self, forCellReuseIdentifier: "ZLRepositoryTableViewCell")
     }
-    func zlLoadMoreData() {
-        
+    
+    override func refreshLoadNewData() {
+        endRefreshView(type: .header)
+    }
+    
+    override func refreshLoadMoreData() {
+        endRefreshView(type: .footer)
     }
 }
 
@@ -54,7 +39,7 @@ extension ZLWorkBoardEventController: JXPagingViewListViewDelegate {
     }
     
     func listScrollView() -> UIScrollView {
-        tableContainerView.tableView
+        tableView
     }
     
     func listViewDidScrollCallback(callback: @escaping (UIScrollView)->()) {

@@ -7,9 +7,10 @@
 //
 
 import UIKit
+import ZMMVVM
 import ZLUIUtilities
 
-class ZLUserTableViewCellData: ZLTableViewBaseCellData {
+class ZLUserTableViewCellData: ZMBaseTableViewCellViewModel {
 
     let userModel: ZLGiteeUserModel
 
@@ -18,13 +19,16 @@ class ZLUserTableViewCellData: ZLTableViewBaseCellData {
     init(userModel: ZLGiteeUserModel) {
         self.userModel = userModel
         super.init()
-        self.cellReuseIdentifier = "ZLUserTableViewCell"
+    }
+    
+    override var zm_cellReuseIdentifier: String {
+        return "ZLUserTableViewCell"
     }
 
-    override func onCellSingleTap() {
+    override func zm_onCellSingleTap() {
         let vc = ZLUserInfoController(login: userModel.login ?? "")
         vc.hidesBottomBarWhenPushed = true
-        viewController?.navigationController?.pushViewController(vc, animated: true)
+        zm_viewController?.navigationController?.pushViewController(vc, animated: true)
     }
 }
 

@@ -8,7 +8,6 @@
 
 import UIKit
 import WebKit
-import ZLBaseUI
 import ZLBaseExtension
 import ZLUIUtilities
 
@@ -23,7 +22,7 @@ import ZLUIUtilities
     @objc optional func notifyNewHeight(height: CGFloat)
 }
 
-class ZLReadMeView: ZLBaseView {
+class ZLReadMeView: UIView {
 
     // delegate
     weak var delegate: ZLReadMeViewDelegate?
@@ -178,7 +177,7 @@ class ZLReadMeView: ZLBaseView {
     }()
 
     lazy var refreshButton: UIButton = {
-        let button = ZLBaseButton()
+        let button = UIButton()
         button.titleLabel?.font = .zlMediumFont(withSize: 10)
         button.setTitle("刷新", for: .normal)
         button.addTarget(self, action: #selector(onRefreshButtonClicked(_:)), for: .touchUpInside)

@@ -8,29 +8,36 @@
 import UIKit
 import ZLUtilities
 import ZLUIUtilities
+import ZMMVVM
 
 // MARK: - ZLRepoContentTableViewCellData
-class ZLRepoContentTableViewCellData: ZLTableViewBaseCellData { 
+class ZLRepoContentTableViewCellData: ZMBaseTableViewCellViewModel { 
     
     let model: ZLRepoContentNode
     
     init(model: ZLRepoContentNode) {
         self.model = model
         super.init()
-        cellReuseIdentifier = "ZLRepoContentTableViewCell"
-        cellHeight = 60
+    }
+    
+    override var zm_cellReuseIdentifier: String {
+        return "ZLRepoContentTableViewCell"
+    }
+    
+    override var zm_cellHeight: CGFloat {
+        60
     }
 
-    override func onCellSingleTap() {
+    override func zm_onCellSingleTap() {
         guard let content = model.content else { return }
         switch content.type {
         case "dir":
-            guard let vc = viewController as? ZLRepoContentController else { return }
+            guard let vc = zm_viewController as? ZLRepoContentController else { return }
             vc.enterDir(model: model)
         case "file":
             let vc = ZLWebContentController()
             vc.requestURL = URL(string: content.html_url ?? "")
-            viewController?.navigationController?.pushViewController(vc, animated: true)
+            zm_viewController?.navigationController?.pushViewController(vc, animated: true)
         default:
             break 
         }
@@ -38,7 +45,7 @@ class ZLRepoContentTableViewCellData: ZLTableViewBaseCellData {
     
     func onLongPressAction(view: UIView) {
         guard let content = model.content,
-              let vc = viewController,
+              let vc = zm_viewController,
               let url = URL(string: content.html_url ?? "") else { return }
         view.showShareMenu(title: url.absoluteString, url: url, sourceViewController: vc)
     }
@@ -141,9 +148,9 @@ class ZLRepoContentTableViewCell: UITableViewCell {
     }
 }
 
-extension ZLRepoContentTableViewCell: ZLViewUpdatableWithViewData {
+extension ZLRepoContentTableViewCell: ZMBaseViewUpdatableWithViewData {
     
-    func fillWithViewData(viewData: ZLRepoContentTableViewCellData){
+    func zm_fillWithViewData(viewData: ZLRepoContentTableViewCellData){
         guard let content = viewData.model.content else  { return }
         if content.type == "dir"{
             self.typeLabel.text = ZLIconFont.DirClose.rawValue

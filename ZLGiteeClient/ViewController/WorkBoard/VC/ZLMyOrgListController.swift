@@ -6,53 +6,38 @@
 //
 
 import UIKit
-import ZLBaseUI
 import SnapKit
 import Moya
 import ZLUIUtilities
+import ZMMVVM
 
-class ZLMyOrgListController: ZLBaseViewController {
+class ZLMyOrgListController: ZMTableViewController {
         
     private var page: Int = 1
     private var per_page: Int = 20
-    
-    // ViewModel
-    private var cellDatas: [ZLTableViewBaseCellData] = []
-    
+        
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupUI()
-        tableContainerView.startLoad()
+        viewStatus = .loading
+        refreshLoadNewData()
     }
     
-    func setupUI() {
+    override func setupUI() {
+        super.setupUI()
         title = "组织"
-        contentView.addSubview(tableContainerView)
-        tableContainerView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
+        setRefreshView(type: .header)
+        setRefreshView(type: .footer)
+        hiddenRefreshView(type: .footer)
+        tableView.register(ZLOrgTableViewCell.self, forCellReuseIdentifier: "ZLOrgTableViewCell")
+        tableView.contentInset = UIEdgeInsets(top: 5, left: 0, bottom: 0, right: 0)
     }
     
-    
-    lazy var tableContainerView: ZLTableContainerView =  {
-        let tableView = ZLTableContainerView()
-        tableView.tableView.contentInset = UIEdgeInsets(top: 5, left: 0, bottom: 0, right: 0)
-        tableView.setTableViewHeader()
-        tableView.setTableViewFooter()
-        tableView.register(ZLOrgTableViewCell.self, forCellReuseIdentifier: "ZLOrgTableViewCell")
-        tableView.delegate = self
-        return tableView
-    }()
-    
-}
-
-
-extension ZLMyOrgListController: ZLTableContainerViewDelegate {
-    func zlLoadNewData() {
+    // MARK: - Refresh
+    override func refreshLoadNewData() {
         loadData(loadNewData: true)
     }
     
-    func zlLoadMoreData() {
+    override func refreshLoadMoreData() {
         loadData(loadNewData: false)
     }
 }
@@ -74,19 +59,23 @@ extension ZLMyOrgListController {
             if result, let array = model as? [ZLGiteeOrgModel] {
                 let newCellDatas = array.map { ZLOrgTableViewCellData(orgModel: $0)}
                 if loadNewData {
-                    let cellDatas = self.subViewModels
-                    cellDatas.forEach { $0.removeFromSuperViewModel() }
-                    self.addSubViewModels(newCellDatas)
-                    self.tableContainerView.resetCellDatas(cellDatas: newCellDatas, hasMoreData: newCellDatas.count >= 20 )
+                    sectionDataArray.forEach { $0.zm_removeFromSuperViewModel() }
+                    self.zm_addSubViewModels(newCellDatas)
+                    let sectionData = ZMBaseTableViewSectionData(zm_sectionID: "", cellDatas: newCellDatas)
+                    self.sectionDataArray = [sectionData]
+                    self.tableViewProxy.reloadData()
+                    self.viewStatus = newCellDatas.isEmpty ? .empty : .normal
                     self.page = 2
                 } else {
-                    self.addSubViewModels(newCellDatas)
-                    self.tableContainerView.appendCellDatas(cellDatas: newCellDatas, hasMoreData: newCellDatas.count >= 20 )
+                    self.zm_addSubViewModels(newCellDatas)
+                    self.sectionDataArray.first?.cellDatas.append(contentsOf: newCellDatas)
+                    self.tableViewProxy.reloadData()
                     self.page = self.page + 1
                 }
                 
             } else {
-                self.tableContainerView.endRefresh()
+                self.viewStatus = self.tableViewProxy.isEmpty  ? .error : .normal
+                self.endRefreshView(type: loadNewData ? .header : .footer)
             }
         })
     }

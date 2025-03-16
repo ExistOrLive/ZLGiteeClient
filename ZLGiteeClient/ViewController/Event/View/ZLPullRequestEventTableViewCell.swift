@@ -159,8 +159,8 @@ class ZLPullRequestEventTableViewCell: ZLEventTableViewCell {
     }()
 
     
-    override func fillWithViewData(viewData: ZLEventTableViewCellData) {
-        super.fillWithViewData(viewData: viewData)
+    override func zm_fillWithViewData(viewData: ZLEventTableViewCellData) {
+        super.zm_fillWithViewData(viewData: viewData)
         guard let cellData = viewData as? ZLPullRequstEventTableViewCellDelegate else {
             return
         }

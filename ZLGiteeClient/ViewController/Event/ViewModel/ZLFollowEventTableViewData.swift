@@ -16,7 +16,7 @@ class ZLFollowEventTableViewData: ZLEventTableViewCellData {
         ZLGiteeFollowEventPayloadModel.deserialize(from: model.payload)
     }()
     
-    override func onCellSingleTap() {
+    override func zm_onCellSingleTap() {
         navigationToTargetVC()
     }
 
@@ -25,7 +25,7 @@ class ZLFollowEventTableViewData: ZLEventTableViewCellData {
         if payload.target_type == "User", let login = payload.target?.login {
             let vc = ZLUserInfoController(login: login)
             vc.hidesBottomBarWhenPushed = true
-            viewController?.navigationController?.pushViewController(vc, animated: true)
+            zm_viewController?.navigationController?.pushViewController(vc, animated: true)
         }
     }
     

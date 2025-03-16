@@ -7,7 +7,7 @@
 
 import UIKit
 import ZLUIUtilities
-import ZLBaseUI
+import ZMMVVM
 import ZLBaseExtension
 import ZLUtilities
 
@@ -19,7 +19,7 @@ class ZLRepoContentNode {
     var parentNode: ZLRepoContentNode?
 }
 
-class ZLRepoContentController: ZLBaseViewController {
+class ZLRepoContentController: ZMTableViewController {
 
     // model
     let loginName: String
@@ -31,13 +31,6 @@ class ZLRepoContentController: ZLBaseViewController {
     var rootContentNode: ZLRepoContentNode?
     /// 当前节点
     var currentContentNode: ZLRepoContentNode?
-    
-    lazy var tableContainerView: ZLTableContainerView = {
-        let view = ZLTableContainerView()
-        view.register(ZLRepoContentTableViewCell.self, forCellReuseIdentifier: "ZLRepoContentTableViewCell")
-        view.delegate = self
-        return view
-    }()
     
     lazy var closeButton: UIButton = {
         let button = UIButton.init(type: .custom)
@@ -57,40 +50,43 @@ class ZLRepoContentController: ZLBaseViewController {
         self.repoName = repoName
         self.path = path ?? "/"
         self.ref = ref
-        super.init(nibName: nil, bundle: nil)
+        super.init()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-
     override func viewDidLoad() {
-
         super.viewDidLoad()
-        
         self.generateContentTree()
-        
-        self.setUpUI()
-
         self.reloadData()
-
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        if let navigationVC = navigationController as? ZLBaseNavigationController {
+        if let navigationVC = navigationController as? ZMNavigationController {
             navigationVC.forbidGestureBack = false
         }
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        if let navigationVC = navigationController as? ZLBaseNavigationController {
+        if let navigationVC = navigationController as? ZMNavigationController {
             navigationVC.forbidGestureBack = true
         }
     }
 
+    override func setupUI() {
+        super.setupUI()
+        self.zmNavigationBar.backButton.isHidden = false
+        self.zmNavigationBar.addRightView(closeButton)
+
+        setRefreshViews(types: [.header])
+        
+        tableView.register(ZLRepoContentTableViewCell.self, forCellReuseIdentifier: "ZLRepoContentTableViewCell")
+    }
+    
     func generateContentTree() {
 
         self.rootContentNode = ZLRepoContentNode()
@@ -109,42 +105,30 @@ class ZLRepoContentController: ZLBaseViewController {
             tmpPath.append("/")
         }
     }
-    
-    func setUpUI() {
-    
-        self.zlNavigationBar.backButton.isHidden = false
-        self.zlNavigationBar.rightButton = closeButton
-
-        self.contentView.addSubview(tableContainerView)
-        tableContainerView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
-    }
 
     func reloadData() {
         self.title = self.currentContentNode?.name == ""  ? "/" : self.currentContentNode?.name
 
-        let cellDatas = self.subViewModels
-        cellDatas.forEach { $0.removeFromSuperViewModel() }
+        
+        self.sectionDataArray.forEach { $0.zm_removeFromSuperViewModel()}
+        self.sectionDataArray.removeAll()
+
         
         if let subNodes = currentContentNode?.subNodes {
             let newCellDatas = subNodes.map { ZLRepoContentTableViewCellData(model: $0)}
-            self.addSubViewModels(newCellDatas)
-            self.tableContainerView.resetCellDatas(cellDatas: newCellDatas, hasMoreData: false )
+            self.zm_addSubViewModels(newCellDatas)
+            self.sectionDataArray = [ZMBaseTableViewSectionData(cellDatas: newCellDatas)]
+            self.tableView.reloadData()
         } else {
-            self.tableContainerView.clearListView()
-            self.tableContainerView.startLoad()
+            self.viewStatus = .loading
+            self.tableView.reloadData()
+            self.loadData()
         }
     }
 
    
-
-}
-
-// MARK: - Action
-extension ZLRepoContentController  {
-    
-    override func onBackButtonClicked(_ button: UIButton!) {
+    // MARK: - Action
+    override func onBackButtonClicked(_ button: UIButton) {
         if self.currentContentNode?.parentNode != nil {
             self.currentContentNode = self.currentContentNode?.parentNode
             self.reloadData()
@@ -161,15 +145,13 @@ extension ZLRepoContentController  {
         self.currentContentNode = model
         self.reloadData()
     }
-}
 
-// MARK: - ZLTableContainerViewDelegate
-extension ZLRepoContentController: ZLTableContainerViewDelegate {
-    func zlLoadNewData() {
+    // MARK: - ZLTableContainerViewDelegate
+    override func refreshLoadNewData() {
         loadData()
     }
     
-    func zlLoadMoreData() {
+    override func refreshLoadMoreData() {
     }
 }
 
@@ -181,6 +163,7 @@ extension ZLRepoContentController {
         ZLGiteeRequest.sharedProvider.requestRest(.repoContentList(login: loginName, repoName: repoName, path: currentContentNode?.path ?? "", ref: ref),
                                                   completion: { [weak self] (result, model, msg) in
             guard let self else { return }
+            self.endRefreshViews(noMoreData: true)
             if result, let array = model as? [ZLGiteeFileContentModel] {
                 var dirArray: [ZLRepoContentNode] = []
                 var fileArray: [ZLRepoContentNode] = []
@@ -205,14 +188,17 @@ extension ZLRepoContentController {
                 self.currentContentNode?.subNodes = dirArray + fileArray
                 
                 let dataArray = self.currentContentNode?.subNodes ?? []
-                let cellDatas = self.subViewModels
-                cellDatas.forEach { $0.removeFromSuperViewModel() }
                 let newCellDatas = dataArray.map { ZLRepoContentTableViewCellData(model: $0)}
-                self.addSubViewModels(newCellDatas)
-                self.tableContainerView.resetCellDatas(cellDatas: newCellDatas, hasMoreData: false )
-            
+                self.zm_addSubViewModels(newCellDatas)
+                
+                self.sectionDataArray.forEach { $0.zm_removeFromSuperViewModel() }
+                self.sectionDataArray = [ZMBaseTableViewSectionData(cellDatas: newCellDatas)]
+                self.tableViewProxy.reloadData()
+                self.viewStatus = self.tableViewProxy.isEmpty ? .empty : .normal
+                 
             } else {
-                self.tableContainerView.endRefresh()
+                self.viewStatus = self.tableViewProxy.isEmpty ? .error : .normal
+                ZLToastView.showMessage(msg)
             }
         })
     }

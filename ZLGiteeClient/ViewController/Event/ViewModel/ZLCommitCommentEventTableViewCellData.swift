@@ -13,9 +13,9 @@ import ZLUtilities
 // CommitCommentEvent
 class ZLCommitCommentEventTableViewCellData: ZLEventTableViewCellData {
     
-    override init(model: ZLGiteeEventModel) {
-        super.init(model: model)
-        cellReuseIdentifier = "ZLCommitCommentEventTableViewCell"
+
+    override var zm_cellReuseIdentifier: String {
+        "ZLCommitCommentEventTableViewCell"
     }
     
     lazy var commitCommentPayload: ZLGiteeCommitCommentEventPayloadModel? = {
@@ -42,12 +42,12 @@ class ZLCommitCommentEventTableViewCellData: ZLEventTableViewCellData {
         ).asAttributedString()
     }
     
-    override func onCellSingleTap() {
+    override func zm_onCellSingleTap() {
         guard let url = commitCommentPayload?.comment?.html_url else { return }
         let vc = ZLWebContentController()
         vc.hidesBottomBarWhenPushed = true
         vc.requestURL = URL(string: url)
-        viewController?.navigationController?.pushViewController(vc, animated: true)
+        zm_viewController?.navigationController?.pushViewController(vc, animated: true)
     }
     
     func onRepoButtonClicked() {

@@ -10,72 +10,33 @@ import UIKit
 import ZLUtilities
 import SnapKit
 import ZLUIUtilities
+import ZMMVVM
 
-enum ZLWorkboardType {
-    case repos                // 仓库
-    case pullRequest          // Pull Requests
-    case issues               // Issues
-    case gists                // 代码片段
-    case starRepos            // 星选集
-    case orgs                 // 组织
-    case companys             // 企业
+class ZLWorkBoardItemCellData: ZMBaseTableViewCellViewModel {
     
-    var title: String {
-        switch self {
-        case .repos:
-            return "仓库"
-        case .pullRequest:
-            return "Pull Requests"
-        case .issues:
-            return "Issues"
-        case .gists:
-            return "代码片段"
-        case .starRepos:
-            return "星选集"
-        case .orgs:
-            return "组织"
-        case .companys:
-            return "企业"
-        }
-    }
-    
-    var icon: UIImage? {
-        var iconfont: String = ""
-        switch self {
-        case .repos:
-            iconfont = "\u{e74f}"
-        case .pullRequest:
-            iconfont = "\u{e798}"
-        case .issues:
-            iconfont = "\u{e70f}"
-        case .gists:
-            iconfont = "\u{e60f}"
-        case .starRepos:
-            iconfont = "\u{e7df}"
-        case .orgs:
-            iconfont = "\u{e6dd}"
-        case .companys:
-            iconfont = "\u{e61f}"
-        }
-        return UIImage.iconFontImage(withText: iconfont, fontSize: 20, imageSize: CGSize(width: 30, height: 30), color: .iconColor(withName: "ZLLabelColor1"))
-    }
-}
-
-class ZLWorkBoardItemCellData: ZLTableViewBaseCellData {
-    
-    let type: ZLWorkboardType
-    
-    init(type: ZLWorkboardType) {
+    let type: ZLWorkboardButtonType
+        
+    init(type: ZLWorkboardButtonType) {
         self.type = type
         super.init()
-        cellReuseIdentifier = "ZLWorkBoardItemCell"
-        cellHeight = 50
+    }
+    
+    override var zm_cellReuseIdentifier: String {
+        return "ZLWorkBoardItemCell"
+    }
+    
+    override var zm_cellHeight: CGFloat {
+        60
     }
 
-    override func onCellSingleTap() {
+    override func zm_onCellSingleTap() {
         switch type {
-        case .issues:
+        case .companys:
             break
+        case .orgs:
+            let vc = ZLMyOrgListController()
+            vc.hidesBottomBarWhenPushed = true
+            zm_viewController?.navigationController?.pushViewController(vc, animated: true)
         default:
             break
         }
@@ -104,7 +65,7 @@ class ZLWorkBoardItemCell: UITableViewCell {
         avatarImageView.snp.makeConstraints { make in
             make.left.equalToSuperview().offset(20)
             make.centerY.equalToSuperview()
-            make.size.equalTo(CGSize(width: 30, height: 30))
+            make.size.equalTo(CGSize(width: 40, height: 40))
         }
 
         titleLabel.snp.makeConstraints { make in
@@ -120,8 +81,8 @@ class ZLWorkBoardItemCell: UITableViewCell {
         
         arrowImageView.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
-            make.right.equalToSuperview().offset(-10)
-            make.size.equalTo(CGSize(width: 15, height: 15))
+            make.right.equalToSuperview().offset(-20)
+            make.size.equalTo(CGSize(width: 16, height: 16))
             make.left.equalTo(titleLabel.snp.right).offset(10)
         }
     }
@@ -144,8 +105,8 @@ class ZLWorkBoardItemCell: UITableViewCell {
     lazy var arrowImageView: UIImageView = {
        let imageView = UIImageView()
         imageView.image = UIImage.iconFontImage(withText: ZLIconFont.NextArrow.rawValue,
-                                                fontSize: 12,
-                                                color: UIColor.iconColor(withName: "ICON_Common"))
+                                                fontSize: 16,
+                                                color: UIColor(rgb: 0xC4C4C4) ?? .black)
        return imageView
     }()
 
@@ -156,15 +117,14 @@ class ZLWorkBoardItemCell: UITableViewCell {
     }()
 }
 
-// MARK: - ZLViewUpdatableWithViewData
-extension ZLWorkBoardItemCell: ZLViewUpdatableWithViewData {
-
-    func fillWithViewData(viewData: ZLWorkBoardItemCellData){
+// MARK: - ZMBaseViewUpdatableWithViewData
+extension ZLWorkBoardItemCell: ZMBaseViewUpdatableWithViewData {
+   
+    func zm_fillWithViewData(viewData: ZLWorkBoardItemCellData) {
         titleLabel.text = viewData.type.title
         avatarImageView.image = viewData.type.icon
-    }
-    
-    func justUpdateView() {
-        
+        let indexPath = viewData.zm_indexPath
+        let numberOfRowInCurrentSection = viewData.zm_rowNumberOfCurrentSection
+        singleLineView.isHidden = (indexPath.row == numberOfRowInCurrentSection - 1)
     }
 }

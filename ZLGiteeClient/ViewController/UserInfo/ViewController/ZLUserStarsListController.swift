@@ -6,50 +6,37 @@
 //
 
 import UIKit
-import ZLBaseUI
 import SnapKit
 import Moya
 import ZLUIUtilities
+import ZMMVVM
 
-class ZLUserStarsListController: ZLBaseViewController {
+class ZLUserStarsListController: ZMTableViewController {
 
     // Entry Params
-    var login: String?
+    var login: String = ""
     
-    // ViewModel
-    private var cellDatas: [ZLTableViewBaseCellData] = []
-
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupUI()
-        tableContainerView.startLoad()
-    }
-
-    func setupUI() {
-        title = "标星"
-
-        contentView.addSubview(tableContainerView)
-        tableContainerView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
-    }
-
-    lazy var tableContainerView: ZLTableContainerView =  {
-        let tableView = ZLTableContainerView()
-        tableView.setTableViewHeader()
-        tableView.setTableViewFooter()
-        tableView.register(ZLRepositoryTableViewCell.self, forCellReuseIdentifier: "ZLRepositoryTableViewCell")
-        tableView.delegate = self
-        return tableView
-    }()
-}
-
-extension ZLUserStarsListController: ZLTableContainerViewDelegate {
-    func zlLoadNewData() {
+        viewStatus = .loading
         loadData(loadNewData: true)
     }
 
-    func zlLoadMoreData() {
+    override func setupUI() {
+        super.setupUI()
+        title = "标星"
+        setRefreshView(type: .header)
+        setRefreshView(type: .footer)
+        hiddenRefreshView(type: .footer)
+        
+        tableView.register(ZLRepositoryTableViewCell.self, forCellReuseIdentifier: "ZLRepositoryTableViewCell")
+    }
+    
+    override func refreshLoadNewData() {
+        loadData(loadNewData: true)
+    }
+    
+    override func refreshLoadMoreData() {
         loadData(loadNewData: false)
     }
 }
@@ -57,17 +44,13 @@ extension ZLUserStarsListController: ZLTableContainerViewDelegate {
 // request
 extension ZLUserStarsListController {
     func loadData(loadNewData: Bool) {
-
-        guard let login = self.login,
-           !login.isEmpty else {
-            ZLToastView.showMessage("login 为空", sourceView:view)
-            tableContainerView.endRefresh()
-            return
-        }
-
+        
         let provider = MoyaProvider<ZLGiteeRequest>()
         provider.request(ZLGiteeRequest.userStars(login: login)) { [weak self]result in
             guard let self = self else { return }
+            self.viewStatus = .normal
+            self.endRefreshView(type: .header)
+            self.endRefreshView(type: .footer)
             switch result {
             case .success(let response):
                 let dataStr = String(data: response.data, encoding: .utf8)
@@ -81,27 +64,27 @@ extension ZLUserStarsListController {
                         }
                         return ZLRepositoryTableViewCellData(model: model)
                     }
+                    self.zm_addSubViewModels(cellDatas)
                     if loadNewData {
-                        for cellData in self.cellDatas {
-                            cellData.removeFromSuperViewModel()
+                        for sectionData in self.sectionDataArray {
+                            sectionData.zm_removeFromSuperViewModel()
                         }
-                        self.addSubViewModels(cellDatas)
-                        self.cellDatas = cellDatas
-                        self.tableContainerView.resetCellDatas(cellDatas: cellDatas, hasMoreData: false)
-
+                        let newSectionData = ZMBaseTableViewSectionData(zm_sectionID: "",
+                                                                        cellDatas: cellDatas)
+                        self.sectionDataArray = [ZMBaseTableViewSectionData(zm_sectionID: "",
+                                                                            cellDatas: cellDatas)]
                     } else {
-                        self.addSubViewModels(cellDatas)
-                        self.cellDatas.append(contentsOf: cellDatas)
-                        self.tableContainerView.resetCellDatas(cellDatas: cellDatas, hasMoreData: false)
+                        self.sectionDataArray.first?.cellDatas.append(contentsOf: cellDatas)
                     }
-
+                    self.tableViewProxy.reloadData()
+                    self.viewStatus = (self.sectionDataArray.first?.cellDatas.isEmpty ?? true) ? .empty : .normal
                 } else {
-                    self.tableContainerView.endRefresh()
+                    self.viewStatus = (self.sectionDataArray.first?.cellDatas.isEmpty ?? true)  ? .error : .normal
                     ZLToastView.showMessage(dataStr ?? "", sourceView: self.contentView)
                 }
 
             case .failure(let error):
-                self.tableContainerView.endRefresh()
+                self.viewStatus = (self.sectionDataArray.first?.cellDatas.isEmpty ?? true)  ? .error : .normal
                 ZLToastView.showMessage(error.localizedDescription, sourceView: self.contentView)
             }
         }

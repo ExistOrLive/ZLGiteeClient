@@ -7,7 +7,7 @@
 
 import Foundation
 import UIKit
-import ZLBaseUI
+
 import Kanna
 
 class ZLGiteeContributionData: NSObject {
@@ -18,7 +18,7 @@ class ZLGiteeContributionData: NSObject {
 }
 
 
-class ZLGiteeContributionsView: ZLBaseView, UICollectionViewDataSource, UICollectionViewDelegate {
+class ZLGiteeContributionsView: UIView, UICollectionViewDataSource, UICollectionViewDelegate {
 
     // model
     private var loginName  = ""
@@ -34,7 +34,7 @@ class ZLGiteeContributionsView: ZLBaseView, UICollectionViewDataSource, UICollec
         let collectionView = UICollectionView(frame: CGRect(), collectionViewLayout: collectionViewLayout)
         collectionView.backgroundColor = UIColor.clear
         collectionView.showsHorizontalScrollIndicator = false
-        collectionView.contentInset = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
+        collectionView.contentInset = .zero
         collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "UICollectionViewCell")
         collectionView.delegate = self
         collectionView.dataSource = self
@@ -43,7 +43,7 @@ class ZLGiteeContributionsView: ZLBaseView, UICollectionViewDataSource, UICollec
 
     private lazy var label: UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: Font_PingFangSCSemiBold, size: 12)
+        label.font = .zlSemiBoldFont(withSize: 12)
         label.textColor = UIColor(named: "ZLLabelColor2")
         label.isUserInteractionEnabled = false
         label.textAlignment = .center

@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import ZLBaseUI
+import ZMMVVM
 import ZLBaseExtension
 import YYText
 import ZLUIUtilities
@@ -48,7 +48,9 @@ protocol ZLRepoInfoHeaderCellDataSourceAndDelegate: NSObjectProtocol {
 
 class ZLRepoInfoHeaderCell: UITableViewCell {
 
-    weak var delegate: ZLRepoInfoHeaderCellDataSourceAndDelegate?
+    var delegate: ZLRepoInfoHeaderCellDataSourceAndDelegate? {
+        zm_viewModel as? ZLRepoInfoHeaderCellDataSourceAndDelegate
+    }
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -223,8 +225,8 @@ class ZLRepoInfoHeaderCell: UITableViewCell {
         return button
     }()
 
-    private lazy var watchButton: ZLBaseButton = {
-        let button = ZLBaseButton()
+    private lazy var watchButton: UIButton = {
+        let button = ZMButton()
         button.setTitle("Watch", for: .normal)
         button.setTitle("Watching", for: .selected)
         button.titleLabel?.font = UIFont.zlSemiBoldFont(withSize: 10)
@@ -232,8 +234,8 @@ class ZLRepoInfoHeaderCell: UITableViewCell {
         return button
     }()
 
-    private lazy var starButton: ZLBaseButton = {
-        let button = ZLBaseButton()
+    private lazy var starButton: UIButton = {
+        let button = ZMButton()
         button.setTitle("Star", for: .normal)
         button.setTitle("Starred", for: .selected)
         button.titleLabel?.font = UIFont.zlSemiBoldFont(withSize: 10)
@@ -241,8 +243,8 @@ class ZLRepoInfoHeaderCell: UITableViewCell {
         return button
     }()
     
-    private lazy var forkButton: ZLBaseButton = {
-        let button = ZLBaseButton()
+    private lazy var forkButton: UIButton = {
+        let button = ZMButton()
         button.setTitle("Fork", for: .normal)
         button.titleLabel?.font = UIFont.zlSemiBoldFont(withSize: 10)
         button.addTarget(self, action: #selector(onForkButtonClicked), for: .touchUpInside)
@@ -288,7 +290,7 @@ extension ZLRepoInfoHeaderCell {
 }
 
 // MARK: - ZLViewUpdatableWithViewData
-extension ZLRepoInfoHeaderCell: ZLViewUpdatableWithViewData {
+extension ZLRepoInfoHeaderCell: ZMBaseViewUpdatableWithViewData {
     
     func reloadData() {
         guard let data = delegate else { return }
@@ -346,12 +348,7 @@ extension ZLRepoInfoHeaderCell: ZLViewUpdatableWithViewData {
         }
     }
     
-    func fillWithViewData(viewData data: ZLRepoInfoHeaderCellDataSourceAndDelegate) {
-        delegate = data
-        reloadData()
-    }
-    
-    func justUpdateView() {
+    func zm_fillWithViewData(viewData data: ZLRepoInfoHeaderCellDataSourceAndDelegate) {
         reloadData()
     }
 }

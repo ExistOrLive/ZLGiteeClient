@@ -6,22 +6,26 @@
 //
 
 import UIKit
+import ZMMVVM
 import ZLUIUtilities
 
-class ZLRepositoryTableViewCellDataForV3API: ZLTableViewBaseCellData {
+class ZLRepositoryTableViewCellDataForV3API: ZMBaseTableViewCellViewModel {
     
     let model: ZLGiteeRepoModelV3
     
     init(model: ZLGiteeRepoModelV3) {
         self.model = model
         super.init()
-        self.cellReuseIdentifier = "ZLRepositoryTableViewCell"
+    }
+    
+    override var zm_cellReuseIdentifier: String {
+        return "ZLRepositoryTableViewCell"
     }
 
-    override func onCellSingleTap() {
+    override func zm_onCellSingleTap() {
         let repoVC = ZLRepoInfoController(repoFullName: model.path_with_namespace ?? "")
         repoVC.hidesBottomBarWhenPushed = true
-        viewController?.navigationController?.pushViewController(repoVC, animated: true)
+        zm_viewController?.navigationController?.pushViewController(repoVC, animated: true)
     }
 }
 
@@ -31,7 +35,7 @@ extension ZLRepositoryTableViewCellDataForV3API: ZLRepositoryTableViewCellDelega
     func onRepoAvaterClicked() {
         let vc = ZLUserInfoController(login: model.owner?.name ?? "")
         vc.hidesBottomBarWhenPushed = true
-        viewController?.navigationController?.pushViewController(vc, animated: true)
+        zm_viewController?.navigationController?.pushViewController(vc, animated: true)
     }
 
     func getOwnerAvatarURL() -> String? {

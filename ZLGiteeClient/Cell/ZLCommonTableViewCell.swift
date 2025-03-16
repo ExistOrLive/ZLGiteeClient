@@ -9,6 +9,7 @@
 import UIKit
 import ZLUIUtilities
 import ZLUtilities
+import ZMMVVM
 
 protocol ZLCommonTableViewCellDataSourceAndDelegate: NSObjectProtocol {
 
@@ -81,16 +82,12 @@ class ZLCommonTableViewCell: UITableViewCell {
 }
 
 
-extension ZLCommonTableViewCell: ZLViewUpdatableWithViewData {
-    // MARK: fillWithData
-    func fillWithViewData(viewData: ZLCommonTableViewCellDataSourceAndDelegate) {
+extension ZLCommonTableViewCell: ZMBaseViewUpdatableWithViewData {
+  
+    func zm_fillWithViewData(viewData: ZLCommonTableViewCellDataSourceAndDelegate) {
         selectionStyle = viewData.canClick ? .gray : .none
         titleLabel.text = viewData.title
         subLabel.text = viewData.info
         nextLabel.isHidden = !viewData.canClick
-    }
-    
-    func justUpdateView() {
-        
     }
 }

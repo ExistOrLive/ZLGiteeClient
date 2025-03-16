@@ -11,6 +11,7 @@ import SnapKit
 import SDWebImage
 import ZLUIUtilities
 import ZLUtilities
+import ZMMVVM
 
 protocol ZLRepositoryTableViewCellDelegate: NSObjectProtocol {
 
@@ -158,7 +159,9 @@ class ZLRepositoryTableViewCell: UITableViewCell {
         return gesture
     }()
 
-    weak var delegate: ZLRepositoryTableViewCellDelegate?
+    var delegate: ZLRepositoryTableViewCellDelegate? {
+        zm_viewModel as?  ZLRepositoryTableViewCellDelegate
+    }
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -286,9 +289,9 @@ class ZLRepositoryTableViewCell: UITableViewCell {
 
 }
 
-extension ZLRepositoryTableViewCell: ZLViewUpdatableWithViewData {
-    func fillWithViewData(viewData data: ZLRepositoryTableViewCellDelegate) {
-        delegate = data
+extension ZLRepositoryTableViewCell: ZMBaseViewUpdatableWithViewData {
+    
+    func zm_fillWithViewData(viewData data: ZLRepositoryTableViewCellDelegate) {
         avatarButton.sd_setBackgroundImage(with: URL.init(string: data.getOwnerAvatarURL() ?? ""),
                                                 for: .normal,
                                                 placeholderImage: UIImage.init(named: "default_avatar"))
@@ -301,10 +304,6 @@ extension ZLRepositoryTableViewCell: ZLViewUpdatableWithViewData {
         privateLabel.isHidden = !data.isPriva()
 
         longPressGesture.isEnabled = data.hasLongPressAction()
-    }
-    
-    func justUpdateView() {
-        
     }
 }
 

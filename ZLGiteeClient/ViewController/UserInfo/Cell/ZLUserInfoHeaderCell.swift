@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import ZLBaseUI
+import ZMMVVM
 import ZLUIUtilities
 
 protocol ZLUserInfoHeaderCellDataSourceAndDelegate: NSObjectProtocol {
@@ -39,7 +39,9 @@ protocol ZLUserInfoHeaderCellDataSourceAndDelegate: NSObjectProtocol {
 
 class ZLUserInfoHeaderCell: UITableViewCell {
 
-    private weak var delegate: ZLUserInfoHeaderCellDataSourceAndDelegate?
+    var delegate: ZLUserInfoHeaderCellDataSourceAndDelegate? {
+        zm_viewModel as? ZLUserInfoHeaderCellDataSourceAndDelegate
+    }
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -211,8 +213,8 @@ class ZLUserInfoHeaderCell: UITableViewCell {
         return button
     }()
 
-    private lazy var followButton: ZLBaseButton = {
-        let button = ZLBaseButton()
+    private lazy var followButton: ZMButton = {
+        let button = ZMButton()
         button.setTitle("关注", for: .normal)
         button.setTitle("取消关注", for: .selected)
         button.titleLabel?.font = UIFont.zlSemiBoldFont(withSize: 10)
@@ -220,8 +222,8 @@ class ZLUserInfoHeaderCell: UITableViewCell {
         return button
     }()
 
-    private lazy var blockButton: ZLBaseButton = {
-        let button = ZLBaseButton()
+    private lazy var blockButton: ZMButton = {
+        let button = ZMButton()
         button.setTitle("屏蔽", for: .normal)
         button.setTitle("取消屏蔽", for: .selected)
         button.titleLabel?.font = UIFont.zlSemiBoldFont(withSize: 10)
@@ -232,15 +234,10 @@ class ZLUserInfoHeaderCell: UITableViewCell {
 }
 
 
-extension ZLUserInfoHeaderCell: ZLViewUpdatableWithViewData {
+extension ZLUserInfoHeaderCell: ZMBaseViewUpdatableWithViewData {
     // MARK: fillWithdata
-    func fillWithViewData(viewData: ZLUserInfoHeaderCellDataSourceAndDelegate){
-        delegate = viewData
+    func zm_fillWithViewData(viewData: ZLUserInfoHeaderCellDataSourceAndDelegate){
         reloadData()
-    }
-    
-    func justUpdateView() {
-        
     }
 }
 

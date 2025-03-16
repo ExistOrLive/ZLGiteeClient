@@ -7,7 +7,8 @@
 
 import UIKit
 import ZLBaseExtension
-import ZLBaseUI
+import ZLUIUtilities
+ 
 
 class ZLMainViewController: UITabBarController {
 
@@ -19,10 +20,10 @@ class ZLMainViewController: UITabBarController {
     }
     
     func setupAllChildViewController() {
-        self.addChild(ZLBaseNavigationController(rootViewController: ZLWorkBoardController()))
-        self.addChild(ZLBaseNavigationController(rootViewController: ZLNotificationsController()))
-        self.addChild(ZLBaseNavigationController(rootViewController: ZLExploreController()))
-        self.addChild(ZLBaseNavigationController(rootViewController: ZLProfileController()))
+        self.addChild(ZMNavigationController(rootViewController: ZLWorkBoardController()))
+        self.addChild(ZMNavigationController(rootViewController: ZLNotificationsController()))
+        self.addChild(ZMNavigationController(rootViewController: ZLExploreController()))
+        self.addChild(ZMNavigationController(rootViewController: ZLProfileController()))
     }
     
     func setupTabBarItems() {

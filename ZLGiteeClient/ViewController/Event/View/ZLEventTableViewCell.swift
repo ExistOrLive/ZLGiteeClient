@@ -11,10 +11,13 @@ import YYText
 import ZLUtilities
 import ZLUIUtilities
 import SDWebImage
+import ZMMVVM
 
-class ZLEventTableViewCell: UITableViewCell, ZLViewUpdatableWithViewData {
+class ZLEventTableViewCell: UITableViewCell, ZMBaseViewUpdatableWithViewData {
 
-    weak var delegate: ZLEventTableViewCellData?
+    var delegate: ZLEventTableViewCellData? {
+        zm_viewModel as? ZLEventTableViewCellData
+    }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -147,9 +150,8 @@ class ZLEventTableViewCell: UITableViewCell, ZLViewUpdatableWithViewData {
         return button
     }()
     
-    
-    func fillWithViewData(viewData: ZLEventTableViewCellData) {
-        delegate = viewData
+        
+    func zm_fillWithViewData(viewData: ZLEventTableViewCellData) {
         headImageButton.sd_setBackgroundImage(with: URL(string: viewData.actorAvatar()),
                                               for: .normal,
                                               placeholderImage: UIImage(named: "default_avatar"))
@@ -157,10 +159,6 @@ class ZLEventTableViewCell: UITableViewCell, ZLViewUpdatableWithViewData {
         actorNameLabel.text = viewData.actorName()
         timeLabel.text = viewData.eventTimerStr()
         eventDesLabel.attributedText = viewData.eventDescription()
-    }
-    
-    func justUpdateView() {
-        
     }
 }
 

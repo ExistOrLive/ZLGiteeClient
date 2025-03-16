@@ -12,10 +12,10 @@ import ZLBaseExtension
 
 class ZLIssueCommentEventTableViewCellData: ZLEventTableViewCellData, ZLIssueEventTableViewCellDelegate {
     
-    override init(model: ZLGiteeEventModel) {
-        super.init(model: model)
-        cellReuseIdentifier = "ZLIssueEventTableViewCell"
+    override var zm_cellReuseIdentifier: String {
+        "ZLIssueEventTableViewCell"
     }
+    
     
     lazy var issueCommentPayload: ZLGiteeIssueCommentEventPayloadModel? = {
         ZLGiteeIssueCommentEventPayloadModel.deserialize(from: model.payload)
@@ -38,15 +38,15 @@ class ZLIssueCommentEventTableViewCellData: ZLEventTableViewCellData, ZLIssueEve
         guard let full_name = issueCommentPayload?.repository?.full_name else { return }
         let repoVc = ZLRepoInfoController(repoFullName: full_name)
         repoVc.hidesBottomBarWhenPushed = true
-        self.viewController?.navigationController?.pushViewController(repoVc, animated: true)
+        zm_viewController?.navigationController?.pushViewController(repoVc, animated: true)
     }
     
-    override func onCellSingleTap() {
+    override func zm_onCellSingleTap () {
         guard let url = issueCommentPayload?.issue?.html_url else { return }
         let vc = ZLWebContentController()
         vc.hidesBottomBarWhenPushed = true
         vc.requestURL = URL(string: url)
-        viewController?.navigationController?.pushViewController(vc, animated: true)
+        zm_viewController?.navigationController?.pushViewController(vc, animated: true)
     }
     
 

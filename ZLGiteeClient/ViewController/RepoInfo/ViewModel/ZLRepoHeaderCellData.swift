@@ -8,29 +8,23 @@
 
 import Foundation
 import ZLUIUtilities
+import ZMMVVM
 
-class ZLRepoHeaderCellData: ZLTableViewBaseCellData {
+class ZLRepoHeaderCellData: ZMBaseTableViewCellViewModel {
     
     // presenter
     let stateModel: ZLRepoInfoStateModel
     
-    // ViewUpdatable
-    weak var viewUptable: ZLViewUpdatable?
-    
     init(stateModel: ZLRepoInfoStateModel) {
         self.stateModel = stateModel
         super.init()
-        self.cellReuseIdentifier = "ZLRepoInfoHeaderCell"
+    }
+    
+    override var zm_cellReuseIdentifier: String {
+        return "ZLRepoInfoHeaderCell"
     }
 }
 
-
-// MARK: - ZLViewUpdatableDataModel
-extension ZLRepoHeaderCellData: ZLViewUpdatableDataModel {
-    func setViewUpdatable(_ view: ZLViewUpdatable) {
-        self.viewUptable = view
-    }
-}
 
 // MARK: - ZLRepoInfoHeaderCellDataSourceAndDelegate
 extension ZLRepoHeaderCellData: ZLRepoInfoHeaderCellDataSourceAndDelegate {
@@ -102,74 +96,74 @@ extension ZLRepoHeaderCellData: ZLRepoInfoHeaderCellDataSourceAndDelegate {
     
     func onAvatarButtonClicked() {
         let userInfoVC = ZLUserInfoController(login: repoInfoModel?.owner?.login ?? "")
-        viewController?.navigationController?.pushViewController(userInfoVC, animated: true)
+        zm_viewController?.navigationController?.pushViewController(userInfoVC, animated: true)
     }
     
     func onStarButtonClicked() {
-        ZLProgressHUD.show(view: viewController?.view, animated: true)
+        ZLProgressHUD.show(view: zm_viewController?.view, animated: true)
         stateModel.starRepo { [weak self] result, msg in
             guard let self else { return }
-            ZLProgressHUD.dismiss(view: self.viewController?.view, animated: true)
+            ZLProgressHUD.dismiss(view: self.zm_viewController?.view, animated: true)
             if result {
-                ZLToastView.showMessage(self.stateModel.viewerIsStar ? "star成功" : "取消star成功", sourceView: self.viewController?.view)
+                ZLToastView.showMessage(self.stateModel.viewerIsStar ? "star成功" : "取消star成功", sourceView: self.zm_viewController?.view)
             } else {
-                ZLToastView.showMessage(msg, sourceView: self.viewController?.view)
+                ZLToastView.showMessage(msg, sourceView: self.zm_viewController?.view)
             }
         }
     }
     
     func onForkButtonClicked() {
-        ZLProgressHUD.show(view: viewController?.view, animated: true)
+        ZLProgressHUD.show(view: zm_viewController?.view, animated: true)
         stateModel.forkRepo { [weak self] result, model, msg in
             guard let self = self else { return }
-            ZLProgressHUD.dismiss(view: self.viewController?.view, animated: true)
+            ZLProgressHUD.dismiss(view: self.zm_viewController?.view, animated: true)
             if result, let model {
                 let repoInfoVC = ZLRepoInfoController(repoFullName: model.full_name ?? "")
-                self.viewController?.navigationController?.pushViewController(repoInfoVC, animated: true)
+                self.zm_viewController?.navigationController?.pushViewController(repoInfoVC, animated: true)
                 ZLToastView.showMessage("fork成功")
             } else {
-                ZLToastView.showMessage(msg, sourceView: self.viewController?.view)
+                ZLToastView.showMessage(msg, sourceView: self.zm_viewController?.view)
             }
         }
     }
     
     func onWatchButtonClicked() {
-        ZLProgressHUD.show(view: viewController?.view, animated: true)
+        ZLProgressHUD.show(view: zm_viewController?.view, animated: true)
         stateModel.watchRepo { [weak self] result, msg in
             guard let self else { return }
-            ZLProgressHUD.dismiss(view: self.viewController?.view, animated: true)
+            ZLProgressHUD.dismiss(view: self.zm_viewController?.view, animated: true)
             if result {
-                ZLToastView.showMessage(self.stateModel.viewerIsWatch ? "watch成功" : "取消watch成功", sourceView: self.viewController?.view)
+                ZLToastView.showMessage(self.stateModel.viewerIsWatch ? "watch成功" : "取消watch成功", sourceView: self.zm_viewController?.view)
             } else {
-                ZLToastView.showMessage(msg, sourceView: self.viewController?.view)
+                ZLToastView.showMessage(msg, sourceView: self.zm_viewController?.view)
             }
         }
     }
 
     func onIssuesNumButtonClicked() {
         let vc = ZLRepoIssueListController(repoFullName: repoInfoModel?.full_name ?? "")
-        self.viewController?.navigationController?.pushViewController(vc, animated: true)
+        self.zm_viewController?.navigationController?.pushViewController(vc, animated: true)
     }
     
     func onStarsNumButtonClicked() {
         let vc = ZLRepoStarsListController(repoFullName: repoInfoModel?.full_name ?? "")
-        self.viewController?.navigationController?.pushViewController(vc, animated: true)
+        self.zm_viewController?.navigationController?.pushViewController(vc, animated: true)
     }
     
     func onForksNumButtonClicked() {
         let vc = ZLRepoForksListController(repoFullName: repoInfoModel?.full_name ?? "")
-        self.viewController?.navigationController?.pushViewController(vc, animated: true)
+        self.zm_viewController?.navigationController?.pushViewController(vc, animated: true)
     }
     
     func onWatchersNumButtonClicked() {
         let vc = ZLRepoWatchingListController(repoFullName: repoInfoModel?.full_name ?? "")
-        self.viewController?.navigationController?.pushViewController(vc, animated: true)
+        self.zm_viewController?.navigationController?.pushViewController(vc, animated: true)
     }
     
     func onSourceRepoClicked() {
         if let repoFullName = sourceRepoName {
             let vc = ZLRepoInfoController(repoFullName: repoFullName) 
-            self.viewController?.navigationController?.pushViewController(vc, animated: true)
+            self.zm_viewController?.navigationController?.pushViewController(vc, animated: true)
         }
     }
 }

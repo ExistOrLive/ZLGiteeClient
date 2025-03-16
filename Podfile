@@ -7,18 +7,18 @@ require "fileutils"
 target 'ZLGiteeClient' do
   # Comment the next line if you don't want to use dynamic frameworks
 
-  pod 'ZLBaseUI', :git => 'https://github.com/ExistOrLive/ZLBaseUI.git'
-  #pod 'ZLBaseUI', :path => "../../ZLBaseUI"
-
   pod 'ZLBaseExtension', :git => "https://github.com/ExistOrLive/ZLBaseExtension.git"
-  #pod 'ZLBaseExtension', :path => "../../ZLBaseExtension"
+  #pod 'ZLBaseExtension', :path => "../ZLBaseExtension"
 
-  pod 'ZLUIUtilities', :git => "https://github.com/ExistOrLive/ZLUIUtilities.git"
+  pod 'ZLUIUtilities', :git => "https://github.com/ExistOrLive/ZLUIUtilities.git", :branch => "ZMMVVM"
   #pod 'ZLUIUtilities', :path => "../ZLUIUtilities"
   
   pod 'ZLUtilities', :git => "https://github.com/ExistOrLive/ZLUtilities.git"
   #pod 'ZLUtilities', :path => "../ZLUtilities"
   
+  pod 'ZMMVVM', :git => "https://github.com/ExistOrLive/ZMMVVM.git"
+  #pod 'ZMMVVM', :path => "../ZMMVVM"
+    
 # HTML Parser
 pod 'Kanna'
 # 弹出框 弹出菜单

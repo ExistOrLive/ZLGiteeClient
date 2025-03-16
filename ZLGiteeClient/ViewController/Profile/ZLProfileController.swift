@@ -6,20 +6,14 @@
 //
 
 import UIKit
-import ZLBaseUI
 import ZLUIUtilities
 
-class ZLProfileController: ZLBaseViewController {
+class ZLProfileController: ZMViewController {
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        self.title = "我"
-        setupUI()
-        
-    }
-    
     // MARK: View
-    private func setupUI() {
+    override func setupUI() {
+        super.setupUI()
+        title = "我"
         contentView.addSubview(buttonStackView)
         
         buttonStackView.addArrangedSubview(starButton)

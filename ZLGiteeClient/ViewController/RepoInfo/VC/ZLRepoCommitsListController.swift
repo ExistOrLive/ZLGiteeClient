@@ -7,11 +7,11 @@
 
 import UIKit
 import ZLUIUtilities
-import ZLBaseUI
+import ZMMVVM
 import ZLBaseExtension
 import ZLUtilities
 
-class ZLRepoCommitsListController: ZLBaseViewController {
+class ZLRepoCommitsListController: ZMTableViewController {
 
     let repoFullName: String
     /// login Name
@@ -26,7 +26,7 @@ class ZLRepoCommitsListController: ZLBaseViewController {
         let nameArray = repoFullName.split(separator: "/")
         self.loginName = String(nameArray.first ?? "")
         self.repoName = String(nameArray.last ?? "")
-        super.init(nibName: nil, bundle: nil)
+        super.init(style: .grouped)
     }
     
     required init?(coder: NSCoder) {
@@ -35,62 +35,61 @@ class ZLRepoCommitsListController: ZLBaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-      
-        setupUI()
-            
-        tableContainerView.startLoad()
+        viewStatus = .loading
+        refreshLoadNewData()
     }
     
-    func setupUI() {
+    override func setupUI() {
+        super.setupUI()
         title = "提交"
-        contentView.addSubview(tableContainerView)
-        tableContainerView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
+        setRefreshViews(types: [.header,.footer])
+        
+        tableView.register(ZLCommitTableViewCell.self, forCellReuseIdentifier: "ZLCommitTableViewCell")
     }
     
-    // MARK: - lazy view
-    
-    lazy var tableContainerView: ZLTableContainerView = {
-        let view = ZLTableContainerView()
-        view.setTableViewHeader()
-        view.setTableViewFooter()
-        view.delegate = self
-        view.register(ZLCommitTableViewCell.self, forCellReuseIdentifier: "ZLCommitTableViewCell")
-        return view
-    }()
-    
-}
+    // MARK: - Refresh
 
-// MARK: - ZLTableContainerViewDelegate
-extension ZLRepoCommitsListController: ZLTableContainerViewDelegate {
-    
-    func zlLoadNewData() {
+    override func refreshLoadNewData() {
         ZLGiteeRequest.sharedProvider.requestRest(.repoCommitsList(login: loginName, repoName: repoName, page: 1, per_page: 20), completion: { [weak self] (result, model, msg) in
             guard let self else { return }
+            self.endRefreshView(type: .header)
+            self.viewStatus = .normal
             if result, let array = model as? [ZLGiteeCommitModel] {
-                let cellDatas = self.subViewModels
-                cellDatas.forEach { $0.removeFromSuperViewModel() }
-                let newCellDatas = array.map { ZLCommitTableViewCellData(commitModel: $0) }
-                self.addSubViewModels(newCellDatas)
-                self.tableContainerView.resetCellDatas(cellDatas: newCellDatas, hasMoreData: newCellDatas.count >= 20 )
                 self.page = 2
+                
+                sectionDataArray.forEach{ $0.zm_removeFromSuperViewModel() }
+                let newCellDatas = array.map { ZLCommitTableViewCellData(commitModel: $0) }
+                self.zm_addSubViewModels(newCellDatas)
+                let sectionData = ZMBaseTableViewSectionData(zm_sectionID: "", cellDatas: newCellDatas)
+                self.sectionDataArray = [sectionData]
+                self.tableViewProxy.reloadData()
+                self.endRefreshViews(noMoreData: newCellDatas.count < 20)
+                self.viewStatus = self.tableViewProxy.isEmpty ? .empty : .normal
             } else {
-                self.tableContainerView.endRefresh()
+                self.endRefreshViews()
+                self.viewStatus = self.tableViewProxy.isEmpty ? .error : .normal
+                ZLToastView.showMessage(msg, sourceView: self.contentView)
             }
         })
     }
     
-    func zlLoadMoreData() {
-        ZLGiteeRequest.sharedProvider.requestRest(.repoForksList(login: loginName, repoName: repoName, page: page, per_page: 20), completion: { [weak self] (result, model, msg) in
+    override func refreshLoadMoreData() {
+        ZLGiteeRequest.sharedProvider.requestRest(.repoCommitsList(login: loginName, repoName: repoName, page: page, per_page: 20), completion: { [weak self] (result, model, msg) in
             guard let self else { return }
+            self.endRefreshView(type: .footer)
+            self.viewStatus = .normal
             if result, let array = model as? [ZLGiteeCommitModel] {
-                let newCellDatas = array.map {  ZLCommitTableViewCellData(commitModel: $0)  }
-                self.addSubViewModels(newCellDatas)
-                self.tableContainerView.appendCellDatas(cellDatas: newCellDatas, hasMoreData: newCellDatas.count >= 20 )
+                let newCellDatas = array.map { ZLCommitTableViewCellData(commitModel: $0) }
+                self.zm_addSubViewModels(newCellDatas)
+                self.sectionDataArray.first?.cellDatas.append(contentsOf: newCellDatas)
+                self.tableViewProxy.reloadData()
+                self.endRefreshViews(noMoreData: newCellDatas.count < 20)
+                self.viewStatus = self.tableViewProxy.isEmpty ? .empty : .normal
                 self.page = self.page + 1
             } else {
-                self.tableContainerView.endRefresh()
+                self.endRefreshViews()
+                self.viewStatus = self.tableViewProxy.isEmpty ? .error : .normal
+                ZLToastView.showMessage(msg, sourceView: self.contentView)
             }
         })
     }

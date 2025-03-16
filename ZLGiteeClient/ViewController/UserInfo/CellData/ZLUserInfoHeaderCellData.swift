@@ -8,15 +8,19 @@
 import UIKit
 import HandyJSON
 import ZLUIUtilities
+import ZMMVVM
 
-class ZLUserInfoHeaderCellData: ZLTableViewBaseCellData {
+class ZLUserInfoHeaderCellData: ZMBaseTableViewCellViewModel {
     
     let model: ZLGiteeUserModel
     
     init(model: ZLGiteeUserModel) {
         self.model = model
         super.init()
-        self.cellReuseIdentifier = "ZLUserInfoHeaderCell"
+    }
+    
+    override var zm_cellReuseIdentifier: String {
+        "ZLUserInfoHeaderCell"
     }
 }
 
@@ -76,24 +80,24 @@ extension ZLUserInfoHeaderCellData: ZLUserInfoHeaderCellDataSourceAndDelegate {
     func onReposNumButtonClicked() {
         let vc = ZLUserReposListController()
         vc.login = model.login ?? ""
-        viewController?.navigationController?.pushViewController(vc, animated: true)
+        zm_viewController?.navigationController?.pushViewController(vc, animated: true)
     }
     
     func onStarReposNumButtonClicked() {
         let vc = ZLUserStarsListController()
         vc.login = model.login ?? ""
-        viewController?.navigationController?.pushViewController(vc, animated: true)
+        zm_viewController?.navigationController?.pushViewController(vc, animated: true)
     }
     
     func onFollowsNumButtonClicked() {
         let vc = ZLUserFollowerListController()
         vc.login = model.login ?? "" 
-        viewController?.navigationController?.pushViewController(vc, animated: true)
+        zm_viewController?.navigationController?.pushViewController(vc, animated: true)
     }
     
     func onFollowingNumButtonClicked() {
         let vc = ZLUserFollowingListController()
         vc.login = model.login ?? ""
-        viewController?.navigationController?.pushViewController(vc, animated: true)
+        zm_viewController?.navigationController?.pushViewController(vc, animated: true)
     }
 }

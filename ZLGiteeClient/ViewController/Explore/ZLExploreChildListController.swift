@@ -6,13 +6,13 @@
 //
 
 import Foundation
-import ZLBaseUI
 import ZLBaseExtension
 import ZLUIUtilities
+import ZMMVVM
 import JXSegmentedView
 
 
-class ZLExploreChildListController: ZLBaseViewController {
+class ZLExploreChildListController: ZMTableViewController {
 
     let type: ExploreType
    
@@ -20,7 +20,7 @@ class ZLExploreChildListController: ZLBaseViewController {
         
     init(type: ExploreType) {
         self.type = type
-        super.init(nibName: nil, bundle: nil)
+        super.init()
     }
     
     required init?(coder: NSCoder) {
@@ -29,44 +29,19 @@ class ZLExploreChildListController: ZLBaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-      
-        setupUI()
-            
-        tableContainerView.startLoad()
+        viewStatus = .loading
+        refreshLoadNewData()
     }
     
-    func setupUI() {
-        setZLNavigationBarHidden(true)
-        contentView.addSubview(tableContainerView)
-        tableContainerView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
+    override func setupUI() {
+        super.setupUI()
+        isZmNavigationBarHidden = true 
+        setRefreshViews(types: [.header,.footer])
+        tableView.register(ZLRepositoryTableViewCell.self, forCellReuseIdentifier: "ZLRepositoryTableViewCell")
     }
     
-    // MARK: - lazy view
-    
-    lazy var tableContainerView: ZLTableContainerView = {
-        let view = ZLTableContainerView()
-        view.setTableViewHeader()
-        view.setTableViewFooter()
-        view.delegate = self
-        view.register(ZLRepositoryTableViewCell.self, forCellReuseIdentifier: "ZLRepositoryTableViewCell")
-        return view
-    }()
-    
-}
-
-// MARK: - JXSegmentedListContainerViewListDelegate
-extension ZLExploreChildListController: JXSegmentedListContainerViewListDelegate {
-    func listView() -> UIView {
-        view
-    }
-}
-
-// MARK: - ZLTableContainerViewDelegate
-extension ZLExploreChildListController: ZLTableContainerViewDelegate {
-    
-    func zlLoadNewData() {
+    // MARK: - Refresh
+    override func refreshLoadNewData() {
         var request: ZLGiteeRequest = .latestRepoList(page: 1, per_page: 20)
         switch type {
         case .recommend:
@@ -80,19 +55,22 @@ extension ZLExploreChildListController: ZLTableContainerViewDelegate {
         ZLGiteeRequest.sharedProvider.requestRest(request, completion: { [weak self] (result, model, msg) in
             guard let self else { return }
             if result, let array = model as? [ZLGiteeRepoModelV3] {
-                let cellDatas = self.subViewModels
-                cellDatas.forEach { $0.removeFromSuperViewModel() }
+                self.sectionDataArray.forEach{ $0.zm_removeFromSuperViewModel() }
                 let newCellDatas = array.map { ZLRepositoryTableViewCellDataForV3API(model: $0) }
-                self.addSubViewModels(newCellDatas)
-                self.tableContainerView.resetCellDatas(cellDatas: newCellDatas, hasMoreData: newCellDatas.count >= 20 )
+                self.zm_addSubViewModels(newCellDatas)
+                let sectionData = ZMBaseTableViewSectionData(zm_sectionID: "", cellDatas: newCellDatas)
+                self.sectionDataArray = [sectionData]
+                self.tableViewProxy.reloadData()
+                self.viewStatus = newCellDatas.isEmpty ? .empty : .normal
                 self.page = 2
             } else {
-                self.tableContainerView.endRefresh()
+                self.viewStatus = self.sectionDataArray.first?.cellDatas.isEmpty ?? true ? .error : .normal
             }
+            self.endRefreshView(type: .header)
         })
     }
     
-    func zlLoadMoreData() {
+    override func refreshLoadMoreData() {
         var request: ZLGiteeRequest = .latestRepoList(page: page, per_page: 20)
         switch type {
         case .recommend:
@@ -106,15 +84,23 @@ extension ZLExploreChildListController: ZLTableContainerViewDelegate {
             guard let self else { return }
             if result, let array = model as? [ZLGiteeRepoModelV3] {
                 let newCellDatas = array.map {  ZLRepositoryTableViewCellDataForV3API(model: $0) }
-                self.addSubViewModels(newCellDatas)
-                self.tableContainerView.appendCellDatas(cellDatas: newCellDatas, hasMoreData: newCellDatas.count >= 20 )
+                self.zm_addSubViewModels(newCellDatas)
+                self.sectionDataArray.first?.cellDatas.append(contentsOf: newCellDatas)
+                self.tableViewProxy.reloadData()
                 self.page = self.page + 1
-            } else {
-                self.tableContainerView.endRefresh()
             }
+            self.endRefreshView(type: .footer)
         })
     }
 }
 
+
+
+// MARK: - JXSegmentedListContainerViewListDelegate
+extension ZLExploreChildListController: JXSegmentedListContainerViewListDelegate {
+    func listView() -> UIView {
+        view
+    }
+}
 
 

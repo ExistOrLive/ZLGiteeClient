@@ -6,11 +6,11 @@
 //
 
 import Foundation
-import ZLBaseUI
+import ZMMVVM
 import ZLUIUtilities
 import JXPagingView
 
-class ZLReceivedEventController: ZLBaseViewController {
+class ZLReceivedEventController: ZMTableViewController {
     
     /// lastId
     var prev_id: Int? = nil
@@ -21,43 +21,29 @@ class ZLReceivedEventController: ZLBaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setUpUI()
-        tableContainerView.startLoad()
+        viewStatus = .loading
+        requestReceivedEvent(loadNew: true)
     }
-    
-    
-    func setUpUI() {
-        title = "动态"
-        setZLNavigationBarHidden(true)
-        contentView.addSubview(tableContainerView)
-        tableContainerView.snp.makeConstraints { make in
-            make.top.equalTo(2.5)
-            make.left.bottom.right.equalToSuperview()
-        }
-    }
-    
-    lazy var tableContainerView: ZLTableContainerView = {
-        let view = ZLTableContainerView()
-        view.setTableViewFooter()
-        view.register(ZLEventTableViewCell.self, forCellReuseIdentifier: "ZLEventTableViewCell")
-        view.register(ZLRepoEventTableViewCell.self, forCellReuseIdentifier: "ZLRepoEventTableViewCell")
-        view.register(ZLPushEventTableViewCell.self, forCellReuseIdentifier: "ZLPushEventTableViewCell")
-        view.register(ZLIssueEventTableViewCell.self, forCellReuseIdentifier: "ZLIssueEventTableViewCell")
-        view.register(ZLPullRequestEventTableViewCell.self, forCellReuseIdentifier: "ZLPullRequestEventTableViewCell")
-        view.register(ZLCommitCommentEventTableViewCell.self, forCellReuseIdentifier: "ZLCommitCommentEventTableViewCell")
-        view.delegate = self
-        return view
-    }()
-}
 
-// MARK: - ZLTableContainerViewDelegate
-extension ZLReceivedEventController: ZLTableContainerViewDelegate {
+    override func setupUI() {
+        title = "动态"
+        setRefreshView(type: .header)
+        setRefreshView(type: .footer)
+        hiddenRefreshView(type: .footer)
+        
+        tableView.register(ZLEventTableViewCell.self, forCellReuseIdentifier: "ZLEventTableViewCell")
+        tableView.register(ZLRepoEventTableViewCell.self, forCellReuseIdentifier: "ZLRepoEventTableViewCell")
+        tableView.register(ZLPushEventTableViewCell.self, forCellReuseIdentifier: "ZLPushEventTableViewCell")
+        tableView.register(ZLIssueEventTableViewCell.self, forCellReuseIdentifier: "ZLIssueEventTableViewCell")
+        tableView.register(ZLPullRequestEventTableViewCell.self, forCellReuseIdentifier: "ZLPullRequestEventTableViewCell")
+        tableView.register(ZLCommitCommentEventTableViewCell.self, forCellReuseIdentifier: "ZLCommitCommentEventTableViewCell")
+    }
     
-    func zlLoadNewData() {
+    override func refreshLoadNewData() {
         requestReceivedEvent(loadNew: true)
     }
     
-    func zlLoadMoreData() {
+    override func refreshLoadMoreData() {
         requestReceivedEvent(loadNew: false)
     }
     
@@ -75,24 +61,32 @@ extension ZLReceivedEventController {
                                                                      limit: 20,
                                                                      prev_id: loadNew ? nil : prev_id)) { [weak self] result, data, msg in
             guard let self else { return }
+            self.viewStatus = .normal
+            self.endRefreshView(type: .header)
+            self.endRefreshView(type: .footer)
+            
             if result, let eventArray = data as? [ZLGiteeEventModel] {
                 let cellDatas = eventArray.compactMap({
                     ZLEventTableViewCellData.generateEventCellData(model: $0)
                 })
                 self.prev_id = eventArray.last?.id
+                
+                self.zm_addSubViewModels(cellDatas)
                 if loadNew {
-                    self.removeAllSubViewModels()
-                    self.addSubViewModels(cellDatas)
-                    self.tableContainerView.resetCellDatas(cellDatas: cellDatas, 
-                                                           hasMoreData: self.prev_id != nil )
+                    for sectionData in self.sectionDataArray {
+                        sectionData.zm_removeFromSuperViewModel()
+                    }
+                    self.sectionDataArray = [ZMBaseTableViewSectionData(zm_sectionID: "",
+                                                                        cellDatas: cellDatas)]
                 } else {
-                    self.addSubViewModels(cellDatas)
-                    self.tableContainerView.appendCellDatas(cellDatas: cellDatas,
-                                                            hasMoreData: self.prev_id != nil )
+                    self.sectionDataArray.first?.cellDatas.append(contentsOf: cellDatas)
                 }
+                
+                self.tableViewProxy.reloadData()
+                self.viewStatus = (self.tableViewProxy.isEmpty) ? .empty : .normal
             } else {
+                self.viewStatus = self.tableViewProxy.isEmpty ? .error : .normal
                 ZLToastView.showMessage(msg)
-                self.tableContainerView.endRefresh()
             }
         }
     }
@@ -105,7 +99,7 @@ extension ZLReceivedEventController : JXPagingViewListViewDelegate {
     }
     
     func listScrollView() -> UIScrollView {
-        tableContainerView.tableView
+        tableView
     }
     
     func listViewDidScrollCallback(callback: @escaping (UIScrollView)->()) {

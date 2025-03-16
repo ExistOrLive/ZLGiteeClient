@@ -9,6 +9,7 @@ import ZLUIUtilities
 import ZLBaseExtension
 import HandyJSON
 import ZLUtilities
+import ZMMVVM
 
 /**
   payload: ZLGiteeRepoModel
@@ -17,7 +18,10 @@ class ZLStarEventTableViewCellData: ZLEventTableViewCellData, ZLRepoEventTableVi
     
     override init(model: ZLGiteeEventModel) {
         super.init(model: model)
-        cellReuseIdentifier = "ZLRepoEventTableViewCell"
+    }
+    
+    override var zm_cellReuseIdentifier: String {
+        "ZLRepoEventTableViewCell"
     }
     
     override func eventDescription() -> NSAttributedString {

@@ -9,15 +9,16 @@ import ZLUIUtilities
 import ZLBaseExtension
 import HandyJSON
 import ZLUtilities
+import ZMMVVM
 
 /**
   payload: ZLGiteeRepoModel
  */
 class ZLForkEventTableViewCellData: ZLEventTableViewCellData, ZLRepoEventTableViewCellDelegate {
     
-    override init(model: ZLGiteeEventModel) {
-        super.init(model: model)
-        cellReuseIdentifier = "ZLRepoEventTableViewCell"
+
+    override var zm_cellReuseIdentifier: String {
+        "ZLRepoEventTableViewCell"
     }
     
     lazy var repoPayload: ZLGiteeRepoModel? = {
@@ -35,14 +36,14 @@ class ZLForkEventTableViewCellData: ZLEventTableViewCellData, ZLRepoEventTableVi
         guard let full_name = repoPayload?.full_name else { return }
         let repoVc = ZLRepoInfoController(repoFullName: full_name)
         repoVc.hidesBottomBarWhenPushed = true
-        self.viewController?.navigationController?.pushViewController(repoVc, animated: true)
+        zm_viewController?.navigationController?.pushViewController(repoVc, animated: true)
     }
     
     func navigationToSourceRepoVC() {
         guard let full_name = repoPayload?.parent?.full_name else { return }
         let repoVc = ZLRepoInfoController(repoFullName:full_name)
         repoVc.hidesBottomBarWhenPushed = true
-        self.viewController?.navigationController?.pushViewController(repoVc, animated: true)
+        zm_viewController?.navigationController?.pushViewController(repoVc, animated: true)
     }
     
     func repoName() -> String {

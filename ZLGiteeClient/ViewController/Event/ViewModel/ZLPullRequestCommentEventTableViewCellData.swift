@@ -13,9 +13,9 @@ import ZLBaseExtension
 // PullRequestCommentEvent
 class ZLPullRequestCommentEventTableViewCellData: ZLEventTableViewCellData, ZLPullRequstEventTableViewCellDelegate {
     
-    override init(model: ZLGiteeEventModel) {
-        super.init(model: model)
-        cellReuseIdentifier = "ZLPullRequestEventTableViewCell"
+
+    override var zm_cellReuseIdentifier: String {
+        "ZLPullRequestEventTableViewCell"
     }
     
     lazy var pullRequestCommentPayload: ZLGiteePullRequestCommentEventPayloadModel? = {
@@ -34,12 +34,12 @@ class ZLPullRequestCommentEventTableViewCellData: ZLEventTableViewCellData, ZLPu
         ).asAttributedString()
     }
     
-    override func onCellSingleTap() {
+    override func zm_onCellSingleTap() {
         guard let url = pullRequestCommentPayload?.pull_request?.html_url else { return }
         let vc = ZLWebContentController()
         vc.hidesBottomBarWhenPushed = true
         vc.requestURL = URL(string: url)
-        viewController?.navigationController?.pushViewController(vc, animated: true)
+        zm_viewController?.navigationController?.pushViewController(vc, animated: true)
     }
     
     
@@ -69,14 +69,14 @@ class ZLPullRequestCommentEventTableViewCellData: ZLEventTableViewCellData, ZLPu
         guard let fullName = pullRequestCommentPayload?.pull_request?.base?.repo?.full_name else { return }
         let repoVc = ZLRepoInfoController(repoFullName: fullName)
         repoVc.hidesBottomBarWhenPushed = true
-        self.viewController?.navigationController?.pushViewController(repoVc, animated: true)
+        zm_viewController?.navigationController?.pushViewController(repoVc, animated: true)
     }
     
     func onPullRequestHeadRepoClicked() {
         guard let fullName = pullRequestCommentPayload?.pull_request?.head?.repo?.full_name else { return }
         let repoVc = ZLRepoInfoController(repoFullName: fullName)
         repoVc.hidesBottomBarWhenPushed = true
-        self.viewController?.navigationController?.pushViewController(repoVc, animated: true)
+        zm_viewController?.navigationController?.pushViewController(repoVc, animated: true)
     }
     
    

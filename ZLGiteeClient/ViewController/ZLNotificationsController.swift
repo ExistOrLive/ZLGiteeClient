@@ -7,9 +7,9 @@
 
 import UIKit
 import Moya
-import ZLBaseUI
+import ZLUIUtilities
 
-class ZLNotificationsController: ZLBaseViewController {
+class ZLNotificationsController: ZMTableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()

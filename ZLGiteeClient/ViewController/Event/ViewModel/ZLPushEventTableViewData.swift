@@ -12,9 +12,9 @@ import ZLUtilities
 
 class ZLPushEventTableViewCellData: ZLEventTableViewCellData {
     
-    override init(model: ZLGiteeEventModel) {
-        super.init(model: model)
-        cellReuseIdentifier = "ZLPushEventTableViewCell"
+    
+    override var zm_cellReuseIdentifier: String {
+        "ZLPushEventTableViewCell"
     }
     
     lazy var pushPayload: ZLGiteePushEventPayloadModel? = {

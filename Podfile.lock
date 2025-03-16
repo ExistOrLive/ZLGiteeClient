@@ -1,21 +1,9 @@
 PODS:
-  - AGConnectABTest (1.9.0.302):
-    - AGConnectCredential (~> 1.4)
-  - AGConnectCore (1.9.0.302):
-    - HMFoundation (~> 1.4)
-  - AGConnectCredential (1.9.0.302):
-    - AGConnectCore (~> 1.4)
-  - AGConnectRemoteConfig (1.9.0.302):
-    - AGConnectABTest (~> 1.4)
-    - AGConnectCredential (~> 1.7)
   - Alamofire (5.9.1)
   - FFPopup (1.1.5)
   - FWPopupView (4.2.2):
     - SnapKit
   - HandyJSON (5.0.2)
-  - HiAnalytics (6.10.0.311):
-    - AGConnectCredential
-  - HMFoundation (1.9.0.302)
   - IQKeyboardManager (6.5.18)
   - JXPagingView/Paging (2.1.3)
   - JXSegmentedView (1.3.1)
@@ -24,7 +12,6 @@ PODS:
   - LookinServer (1.2.8):
     - LookinServer/Core (= 1.2.8)
   - LookinServer/Core (1.2.8)
-  - Masonry (1.1.0)
   - MBProgressHUD (1.2.0)
   - MJRefresh (3.7.9)
   - Moya (15.0.0):
@@ -39,20 +26,17 @@ PODS:
   - YYText (1.0.7)
   - ZLBaseExtension (1.2.0):
     - YYText
-  - ZLBaseUI (1.2.1):
-    - Masonry
   - ZLUIUtilities (0.1.0):
     - MBProgressHUD
     - MJRefresh
     - SnapKit
     - Toast
     - ZLBaseExtension
-    - ZLBaseUI
     - ZLUtilities
-  - ZLUtilities (0.1.0):
-    - AGConnectCore
-    - AGConnectRemoteConfig
-    - HiAnalytics
+    - ZMMVVM
+  - ZLUtilities (0.1.0)
+  - ZMMVVM (0.1.0):
+    - SnapKit
 
 DEPENDENCIES:
   - FFPopup
@@ -72,29 +56,22 @@ DEPENDENCIES:
   - Toast
   - YYText
   - ZLBaseExtension (from `https://github.com/ExistOrLive/ZLBaseExtension.git`)
-  - ZLBaseUI (from `https://github.com/ExistOrLive/ZLBaseUI.git`)
-  - ZLUIUtilities (from `https://github.com/ExistOrLive/ZLUIUtilities.git`)
+  - ZLUIUtilities (from `https://github.com/ExistOrLive/ZLUIUtilities.git`, branch `ZMMVVM`)
   - ZLUtilities (from `https://github.com/ExistOrLive/ZLUtilities.git`)
+  - ZMMVVM (from `https://github.com/ExistOrLive/ZMMVVM.git`)
 
 SPEC REPOS:
   trunk:
-    - AGConnectABTest
-    - AGConnectCore
-    - AGConnectCredential
-    - AGConnectRemoteConfig
     - Alamofire
     - FFPopup
     - FWPopupView
     - HandyJSON
-    - HiAnalytics
-    - HMFoundation
     - IQKeyboardManager
     - JXPagingView
     - JXSegmentedView
     - Kanna
     - KeychainAccess
     - LookinServer
-    - Masonry
     - MBProgressHUD
     - MJRefresh
     - Moya
@@ -106,45 +83,39 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   ZLBaseExtension:
     :git: https://github.com/ExistOrLive/ZLBaseExtension.git
-  ZLBaseUI:
-    :git: https://github.com/ExistOrLive/ZLBaseUI.git
   ZLUIUtilities:
+    :branch: ZMMVVM
     :git: https://github.com/ExistOrLive/ZLUIUtilities.git
   ZLUtilities:
     :git: https://github.com/ExistOrLive/ZLUtilities.git
+  ZMMVVM:
+    :git: https://github.com/ExistOrLive/ZMMVVM.git
 
 CHECKOUT OPTIONS:
   ZLBaseExtension:
-    :commit: 11fe61cdbe12ce25fe45be085fb5073952c6a7d2
+    :commit: 9219c50ad40d8436bc3a4478f5cfba5970b0c844
     :git: https://github.com/ExistOrLive/ZLBaseExtension.git
-  ZLBaseUI:
-    :commit: 8188110c5cb63e01397a588ff76b478cbc0bfe17
-    :git: https://github.com/ExistOrLive/ZLBaseUI.git
   ZLUIUtilities:
-    :commit: a6790ca7e2be4269c81095b16b81ca04c6823ea3
+    :commit: f650c411dbba312f447d212df81271155bd77375
     :git: https://github.com/ExistOrLive/ZLUIUtilities.git
   ZLUtilities:
-    :commit: db82d315cdd28ca33388ce4d8a628f4d287b3955
+    :commit: e598a9d8c8f11e0e9c05359a6c28846031ab1444
     :git: https://github.com/ExistOrLive/ZLUtilities.git
+  ZMMVVM:
+    :commit: b6f4532f6de363a74b3953a3216979b2a31158e8
+    :git: https://github.com/ExistOrLive/ZMMVVM.git
 
 SPEC CHECKSUMS:
-  AGConnectABTest: f1e5be41719628dc342e27d1139e379845bd8aa6
-  AGConnectCore: 8080cbbee27357ab3d9d97b13d5e3be117eeba35
-  AGConnectCredential: 962f8a4abc33f3ae7b69bcf00f709b2a74096a1d
-  AGConnectRemoteConfig: d84e6bb1ee804a13bb7d09676d00f95a61d7dbee
   Alamofire: f36a35757af4587d8e4f4bfa223ad10be2422b8c
   FFPopup: a208dcee8db3e54ec4a88fcd6481f6f5d85b7a83
   FWPopupView: b96d7d46d4afaad8e99d2739f9118a3c43c63a7b
   HandyJSON: 9e4e236f5d2dbefad5155a77417bbea438201c03
-  HiAnalytics: 07a774c560885f699db1d25af9e0cfc3fcf315e3
-  HMFoundation: 07a5cc092dc728e13400df5d24648f03ded00a95
   IQKeyboardManager: 67f92bb29b650c094c40bd11c0545b47bdd25c5b
   JXPagingView: afdd2e9af09c90160dd232b970d603cc6e7ddd0e
   JXSegmentedView: 4b0e5506a9883da26472c9c0857d782c13cef05a
   Kanna: 6ecbd674bcbef2766a2acf80e99d1174440c5b9c
   KeychainAccess: c0c4f7f38f6fc7bbe58f5702e25f7bd2f65abf51
   LookinServer: 1b2b61c6402ae29fa22182d48f5cd067b4e99e80
-  Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
   MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
   MJRefresh: ff9e531227924c84ce459338414550a05d2aea78
   Moya: 138f0573e53411fb3dc17016add0b748dfbd78ee
@@ -153,10 +124,10 @@ SPEC CHECKSUMS:
   Toast: 1f5ea13423a1e6674c4abdac5be53587ae481c4e
   YYText: 5c461d709e24d55a182d1441c41dc639a18a4849
   ZLBaseExtension: c052fc930ae508a09d1640580357263896486d3e
-  ZLBaseUI: 2815898555602f9bebb23ca0277ff5352d2a2952
-  ZLUIUtilities: c913a60f5ffdd89f3e84325f850dc2a2d2e52838
-  ZLUtilities: 65a433eda88c05edb4a48f9209c8736e2a5d3b0a
+  ZLUIUtilities: 216d4b7d5babfb1f4f5ff69c930ae3e60c7b7ea0
+  ZLUtilities: f47279dc92b4854fb2e2abb86b841dc8cd16e5a1
+  ZMMVVM: cea3ec4d56906c18b4713e188c177904784bba33
 
-PODFILE CHECKSUM: 5a4c2dd67b4cf9e925cb91c567a21578ddc240e5
+PODFILE CHECKSUM: 94a3d2d7067add705e4b3fc1d816d86a15da694e
 
 COCOAPODS: 1.15.2

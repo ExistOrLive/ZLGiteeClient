@@ -6,8 +6,9 @@
 //
 
 import UIKit
-import ZLBaseUI
 import ZLUtilities
+import ZLUIUtilities
+import ZMMVVM
 import JXSegmentedView
 
 enum ExploreType: CaseIterable {
@@ -27,7 +28,7 @@ enum ExploreType: CaseIterable {
     }
 }
 
-class ZLExploreController: ZLBaseViewController {
+class ZLExploreController: ZMViewController {
     
     lazy var exploreTypes: [ExploreType] = ExploreType.allCases
     
@@ -39,13 +40,10 @@ class ZLExploreController: ZLBaseViewController {
         return vcDic
     }()
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        setupUI()
-    }
     
-    @objc dynamic func setupUI() {
-        setZLNavigationBarHidden(true)
+    override func setupUI() {
+        super.setupUI()
+        isZmNavigationBarHidden = true
         contentView.addSubview(headerView)
         contentView.addSubview(segmentedListContainerView)
         
@@ -79,13 +77,13 @@ class ZLExploreController: ZLBaseViewController {
         trendingLabel.snp.makeConstraints { make in
             make.size.equalTo(30)
             make.left.equalTo(20)
-            make.centerY.equalToSuperview()
+            make.centerY.equalTo(segmentedView)
         }
         
         searchButton.snp.makeConstraints { make in
             make.right.equalTo(-20)
             make.size.equalTo(30)
-            make.centerY.equalToSuperview()
+            make.centerY.equalTo(segmentedView)
         }
         return view
     }()

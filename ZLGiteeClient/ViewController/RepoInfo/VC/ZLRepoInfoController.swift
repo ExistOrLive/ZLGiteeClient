@@ -8,22 +8,20 @@
 
 import UIKit
 import ZLUIUtilities
-import ZLBaseUI
+import ZMMVVM
 import ZLBaseExtension
 import ZLUtilities
 
-class ZLRepoInfoController: ZLBaseViewController {
+class ZLRepoInfoController: ZMTableViewController {
     
     let stateModel: ZLRepoInfoStateModel
-
-    // viewModel
-    var sectionDatas: [ZLTableViewBaseSectionData] = []
+    
     /// 分支cellData
     weak var branchCellData: ZLCommonTableViewCellDataV2?
     
     init(repoFullName: String) {
         self.stateModel = ZLRepoInfoStateModel(repoFullName: repoFullName)
-        super.init(nibName: nil, bundle: nil)
+        super.init(style: .grouped)
         self.stateModel.delegate = self
     }
     
@@ -33,21 +31,46 @@ class ZLRepoInfoController: ZLBaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-      
-        setupUI()
-            
-        tableContainerView.startLoad()
+        viewStatus = .loading
+        refreshLoadNewData()
     }
     
-    func setupUI() {
+ 
+    override func setupUI() {
+        super.setupUI()
         title = stateModel.repoFullName
+        zmNavigationBar.addRightView(moreButton)
         
-        contentView.addSubview(tableContainerView)
-        tableContainerView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+        tableView.register(ZLRepoInfoHeaderCell.self, forCellReuseIdentifier: "ZLRepoInfoHeaderCell")
+        tableView.register(ZLCommonTableViewCell.self, forCellReuseIdentifier: "ZLCommonTableViewCell")
+        tableView.register(ZLCommonSectionHeaderFooterView.self,
+                           forHeaderFooterViewReuseIdentifier: "ZLCommonSectionHeaderFooterView")
+        tableView.tableFooterView = readMeView
+        
+        setRefreshView(type: .header)
+        
+    }
+    
+    override func refreshLoadNewData() {
+        
+        stateModel.loadRepoRequest { [weak self] result, msg in
+            guard let self = self else { return }
+            self.viewStatus = .normal
+            self.endRefreshView(type: .header)
+            if result {
+                self.title = self.stateModel.repoInfo?.human_name
+                self.generateCellDatas()
+                self.tableViewProxy.reloadData()
+            } else if !result, !msg.isEmpty {
+                ZLToastView.showMessage(msg,sourceView: self.view)
+            }
         }
         
-        zlNavigationBar.rightButton = moreButton
+        stateModel.getRepoStarStatus()
+        
+        stateModel.getRepoWatchStatus()
+        
+        readMeView.startLoad(fullName: stateModel.repoFullName, ref: nil)
     }
     
     // MARK: - lazy view
@@ -62,18 +85,7 @@ class ZLRepoInfoController: ZLBaseViewController {
         button.addTarget(self, action: #selector(onMoreButtonClick(button:)), for: .touchUpInside)
         return  button
     }()
-    
-    lazy var tableContainerView: ZLTableContainerView = {
-        let view = ZLTableContainerView()
-        view.setTableViewHeader()
-        view.delegate = self
-        view.register(ZLRepoInfoHeaderCell.self, forCellReuseIdentifier: "ZLRepoInfoHeaderCell")
-        view.register(ZLCommonTableViewCell.self, forCellReuseIdentifier: "ZLCommonTableViewCell")
-        view.register(ZLCommonSectionHeaderFooterView.self, forViewReuseIdentifier: "ZLCommonSectionHeaderFooterView")
-        view.tableViewFooter = readMeView
-        return view
-    }()
-    
+        
     lazy var readMeView: ZLReadMeView = {
         let readMeView: ZLReadMeView = ZLReadMeView()
         readMeView.delegate = self
@@ -88,23 +100,23 @@ extension ZLRepoInfoController {
     func generateCellDatas() {
       
         guard let _ = stateModel.repoInfo else {
-            tableContainerView.resetSectionDatas(sectionDatas: sectionDatas, hasMoreData: false)
             return
         }
         
-        for sectionData in sectionDatas {
-            sectionData.removeFromSuperViewModel()
-        }
-        sectionDatas.removeAll()
         
+        sectionDataArray.forEach { $0.zm_removeFromSuperViewModel() }
+        sectionDataArray.removeAll()
+  
         /// header
-        let headerCellData = ZLRepoHeaderCellData(stateModel: stateModel)
-        addSubViewModel(headerCellData)
-        let headerSectionData = ZLTableViewBaseSectionData(cellDatas: [headerCellData])
-        headerSectionData.sectionHeaderViewData = ZLCommonSectionHeaderFooterViewData(sectionViewHeight: 10)
-        sectionDatas.append(headerSectionData)
+        let headerSectionData = ZMBaseTableViewSectionData()
+        headerSectionData.cellDatas = [ZLRepoHeaderCellData(stateModel: stateModel)]
+        headerSectionData.headerData = ZLCommonSectionHeaderFooterViewData(sectionViewHeight: 10)
+        sectionDataArray.append(headerSectionData)
+        
+
         
         /// item
+        let itemSectionData = ZMBaseTableViewSectionData()
         let commitCellData = ZLCommonTableViewCellDataV2(canClick: true,
                                                        title: "提交",
                                                        info: "",
@@ -147,19 +159,17 @@ extension ZLRepoInfoController {
                                                    actionBlock: { [weak self] in
             self?.onPrClicked()
         })
-        let itemCellDatas: [ZLTableViewBaseCellData] = [commitCellData,
-                                                        branchCellData,
-                                                        languageCellData,
-                                                        codeCellData,
-                                                        prCellData]
-        addSubViewModels(itemCellDatas)
         
-        let itemSectionData = ZLTableViewBaseSectionData(cellDatas: itemCellDatas)
-        headerSectionData.sectionHeaderViewData = ZLCommonSectionHeaderFooterViewData(sectionViewHeight: 10)
-        headerSectionData.sectionFooterViewData = ZLCommonSectionHeaderFooterViewData(sectionViewHeight: 10)
-        sectionDatas.append(itemSectionData)
-        
-        tableContainerView.resetSectionDatas(sectionDatas: sectionDatas, hasMoreData: false)
+        itemSectionData.cellDatas = [commitCellData,
+                                     branchCellData,
+                                     languageCellData,
+                                     codeCellData,
+                                     prCellData]
+        itemSectionData.headerData = ZLCommonSectionHeaderFooterViewData(sectionViewHeight: 10)
+        itemSectionData.footerData = ZLCommonSectionHeaderFooterViewData(sectionViewHeight: 10)
+        sectionDataArray.append(itemSectionData)
+      
+        sectionDataArray.forEach { $0.zm_addSuperViewModel(self) }
     }
 }
 
@@ -194,7 +204,7 @@ extension ZLRepoInfoController {
         let controller = ZLRepoContentController(loginName: stateModel.loginName,
                                                  repoName: stateModel.repoName,
                                                  ref: stateModel.currentBranch)
-        self.viewController?.navigationController?.pushViewController(controller, animated: true)
+        self.navigationController?.pushViewController(controller, animated: true)
     }
     
     func onPrClicked() {
@@ -213,47 +223,19 @@ extension ZLRepoInfoController {
 }
 
 
-// MARK: - ZLTableContainerViewDelegate
-extension ZLRepoInfoController: ZLTableContainerViewDelegate {
-    
-    func zlLoadNewData() {
-        
-        stateModel.loadRepoRequest { [weak self] result, msg in
-            guard let self = self else { return }
-            if result {
-                self.title = self.stateModel.repoInfo?.human_name
-                self.generateCellDatas()
-            } else if !result, !msg.isEmpty {
-                ZLToastView.showMessage(msg,sourceView: self.view)
-            }
-            self.tableContainerView.endRefresh()
-        }
-        
-        stateModel.getRepoStarStatus()
-        
-        stateModel.getRepoWatchStatus()
-        
-        readMeView.startLoad(fullName: stateModel.repoFullName, ref: nil)
-    }
-    
-    func zlLoadMoreData() {
-        // No Implementation
-    }
-}
-
 // MARK: - ZLRepoInfoStateModelDelegate
 extension ZLRepoInfoController: ZLRepoInfoStateModelDelegate {
     func onNeedReloadData() {
-        tableContainerView.reloadData()
+        tableViewProxy.reloadData()
     }
     
     func onWatchStatusUpdate() {
-        tableContainerView.reloadData()
-        zlLoadNewData()
+        tableViewProxy.reloadData()
+        refreshLoadNewData()
     }
     func onStarStatusUpdate() {
-        tableContainerView.reloadData()
-        zlLoadNewData()
+        tableViewProxy.reloadData()
+        refreshLoadNewData()
     }
 }
 
@@ -265,9 +247,9 @@ extension ZLRepoInfoController: ZLReadMeViewDelegate {
     }
 
     @objc func notifyNewHeight(height: CGFloat) {
-        if tableContainerView.tableViewFooter != nil {
+        if tableView.tableFooterView != nil {
             readMeView.frame = CGRect(x: 0, y: 0, width: 0, height: height)
-            tableContainerView.tableViewFooter = readMeView
+            tableView.tableFooterView = readMeView
         }
     }
 }

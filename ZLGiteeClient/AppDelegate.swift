@@ -7,7 +7,6 @@
 
 import UIKit
 import IQKeyboardManager
-import ZLBaseUI
 import ZLUIUtilities
 import ZLBaseExtension
 import ZLUtilities
@@ -44,14 +43,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         IQKeyboardManager.shared().isEnabled = false
         
-        ZLBaseUIConfig.sharedInstance().navigationBarTitleColor = UIColor.label(withName: "ZLNavigationBarTitleColor")
-        ZLBaseUIConfig.sharedInstance().navigationBarBackgoundColor = UIColor.back(withName: "ZLNavigationBarBackColor")
-        ZLBaseUIConfig.sharedInstance().viewControllerBackgoundColor = UIColor.back(withName: "ZLVCBackColor")
-        ZLBaseUIConfig.sharedInstance().buttonTitleColor = UIColor.label(withName: "ZLBaseButtonTitleColor")
-        ZLBaseUIConfig.sharedInstance().buttonBackColor = UIColor.back(withName: "ZLBaseButtonBackColor")
-        ZLBaseUIConfig.sharedInstance().buttonBorderColor = UIColor.back(withName: "ZLBaseButtonBorderColor")
-        ZLBaseUIConfig.sharedInstance().buttonCornerRadius = 4.0
-        ZLBaseUIConfig.sharedInstance().buttonBorderWidth = 1.0 / UIScreen.main.scale
+        ZMUIConfig.shared.navigationBarTitleColor = UIColor.label(withName: "ZLNavigationBarTitleColor")
+        ZMUIConfig.shared.navigationBarBackgoundColor = UIColor.back(withName: "ZLNavigationBarBackColor")
+        ZMUIConfig.shared.viewControllerBackgoundColor = UIColor.back(withName: "ZLVCBackColor")
+        ZMUIConfig.shared.buttonTitleColor = UIColor.label(withName: "ZLBaseButtonTitleColor")
+        ZMUIConfig.shared.buttonBackColor = UIColor.back(withName: "ZLBaseButtonBackColor")
+        ZMUIConfig.shared.buttonBorderColor = UIColor.back(withName: "ZLBaseButtonBorderColor")
+        ZMUIConfig.shared.buttonCornerRadius = 4.0
+        ZMUIConfig.shared.buttonBorderWidth = 1.0 / UIScreen.main.scale
         
         ZLViewStatusPresenter.set {
             UIImage.iconFontImage(withText: ZLIconFont.NoData.rawValue, fontSize: 45, imageSize: CGSize(width: 60, height: 70), color: ZLRGBValue_H(colorValue: 0x999999)) ?? UIImage(color: UIColor.clear)

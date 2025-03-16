@@ -6,20 +6,23 @@
 //
 
 import Foundation
-import ZLBaseUI
+import ZMMVVM
 import ZLUIUtilities
 
-class ZLOrgTableViewCellData: ZLTableViewBaseCellData {
+class ZLOrgTableViewCellData: ZMBaseTableViewCellViewModel {
 
     let orgModel: ZLGiteeOrgModel
 
      init(orgModel: ZLGiteeOrgModel) {
          self.orgModel = orgModel
          super.init()
-         self.cellReuseIdentifier = "ZLOrgTableViewCell"
      }
+     
+    override var zm_cellReuseIdentifier: String {
+        return "ZLOrgTableViewCell"
+    }
  
-    override func onCellSingleTap() {
+    override func zm_onCellSingleTap() {
     
     }
 }

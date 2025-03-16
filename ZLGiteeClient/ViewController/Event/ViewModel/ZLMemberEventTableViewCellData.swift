@@ -13,10 +13,9 @@ import ZLUtilities
   payload: ZLGiteeRepoModel
  */
 class ZLMemberEventTableViewCellData: ZLEventTableViewCellData, ZLRepoEventTableViewCellDelegate {
-    
-    override init(model: ZLGiteeEventModel) {
-        super.init(model: model)
-        cellReuseIdentifier = "ZLRepoEventTableViewCell"
+ 
+    override var zm_cellReuseIdentifier: String {
+        "ZLRepoEventTableViewCell"
     }
     
     lazy var memberEventPayload: ZLGiteeMemberEventPayloadModel? = {
@@ -46,14 +45,14 @@ class ZLMemberEventTableViewCellData: ZLEventTableViewCellData, ZLRepoEventTable
         guard let full_name = memberEventPayload?.repository?.full_name else { return }
         let repoVc = ZLRepoInfoController(repoFullName: full_name)
         repoVc.hidesBottomBarWhenPushed = true
-        self.viewController?.navigationController?.pushViewController(repoVc, animated: true)
+        zm_viewController?.navigationController?.pushViewController(repoVc, animated: true)
     }
     
     func navigationToSourceRepoVC() {
         guard let full_name = memberEventPayload?.repository?.parent?.full_name else { return }
         let repoVc = ZLRepoInfoController(repoFullName:full_name)
         repoVc.hidesBottomBarWhenPushed = true
-        self.viewController?.navigationController?.pushViewController(repoVc, animated: true)
+        zm_viewController?.navigationController?.pushViewController(repoVc, animated: true)
     }
     
     func repoName() -> String {
