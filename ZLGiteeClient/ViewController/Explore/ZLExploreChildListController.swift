@@ -13,11 +13,11 @@ import JXSegmentedView
 
 
 class ZLExploreChildListController: ZMTableViewController {
-
+    
     let type: ExploreType
-   
+    
     var page: Int = 1
-        
+    
     init(type: ExploreType) {
         self.type = type
         super.init()
@@ -35,42 +35,23 @@ class ZLExploreChildListController: ZMTableViewController {
     
     override func setupUI() {
         super.setupUI()
-        isZmNavigationBarHidden = true 
+        isZmNavigationBarHidden = true
         setRefreshViews(types: [.header,.footer])
+        tableView.contentInset = UIEdgeInsets(top: 5, left: 0, bottom: 0, right: 0)
         tableView.register(ZLRepositoryTableViewCell.self, forCellReuseIdentifier: "ZLRepositoryTableViewCell")
     }
     
     // MARK: - Refresh
     override func refreshLoadNewData() {
-        var request: ZLGiteeRequest = .latestRepoList(page: 1, per_page: 20)
-        switch type {
-        case .recommend:
-            request = .recommendRepoList(page: 1, per_page: 20)
-        case .latest:
-            request = .latestRepoList(page: 1, per_page: 20)
-        case .hot:
-            request = .popularRepoList(page: 1, per_page: 20)
-        }
-        
-        ZLGiteeRequest.sharedProvider.requestRest(request, completion: { [weak self] (result, model, msg) in
-            guard let self else { return }
-            if result, let array = model as? [ZLGiteeRepoModelV3] {
-                self.sectionDataArray.forEach{ $0.zm_removeFromSuperViewModel() }
-                let newCellDatas = array.map { ZLRepositoryTableViewCellDataForV3API(model: $0) }
-                self.zm_addSubViewModels(newCellDatas)
-                let sectionData = ZMBaseTableViewSectionData(zm_sectionID: "", cellDatas: newCellDatas)
-                self.sectionDataArray = [sectionData]
-                self.tableViewProxy.reloadData()
-                self.viewStatus = newCellDatas.isEmpty ? .empty : .normal
-                self.page = 2
-            } else {
-                self.viewStatus = self.sectionDataArray.first?.cellDatas.isEmpty ?? true ? .error : .normal
-            }
-            self.endRefreshView(type: .header)
-        })
+        loadData(isLoadNew: true)
     }
     
     override func refreshLoadMoreData() {
+        loadData(isLoadNew: false)
+    }
+    
+    func loadData(isLoadNew: Bool) {
+        let page = isLoadNew ? 1 : page
         var request: ZLGiteeRequest = .latestRepoList(page: page, per_page: 20)
         switch type {
         case .recommend:
@@ -85,11 +66,24 @@ class ZLExploreChildListController: ZMTableViewController {
             if result, let array = model as? [ZLGiteeRepoModelV3] {
                 let newCellDatas = array.map {  ZLRepositoryTableViewCellDataForV3API(model: $0) }
                 self.zm_addSubViewModels(newCellDatas)
-                self.sectionDataArray.first?.cellDatas.append(contentsOf: newCellDatas)
+                if isLoadNew {
+                    self.sectionDataArray.forEach{ $0.zm_removeFromSuperViewModel() }
+                    let sectionData = ZMBaseTableViewSectionData(zm_sectionID: "", cellDatas: newCellDatas)
+                    self.sectionDataArray = [sectionData]
+                } else {
+                    self.sectionDataArray.first?.cellDatas.append(contentsOf: newCellDatas)
+                }
+               
+                self.viewStatus = self.tableViewProxy.isEmpty ? .empty : .normal
                 self.tableViewProxy.reloadData()
-                self.page = self.page + 1
+                self.endRefreshViews(noMoreData: newCellDatas.count < 20)
+                self.page = page + 1
+            } else {
+                self.viewStatus = self.tableViewProxy.isEmpty ? .error : .normal
+                self.endRefreshViews()
+                ZLToastView.showMessage(msg)
             }
-            self.endRefreshView(type: .footer)
+            
         })
     }
 }

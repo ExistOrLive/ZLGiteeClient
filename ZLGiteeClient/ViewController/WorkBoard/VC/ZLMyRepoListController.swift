@@ -33,19 +33,17 @@ class ZLMyRepoListController: ZMTableViewController {
     
     override func setupUI() {
         super.setupUI()
-        title = "我的仓库"
-        setRefreshView(type: .header)
-        setRefreshView(type: .footer)
-        hiddenRefreshView(type: .footer)
         
-        tableView.removeFromSuperview()
-        tableView.register(ZLRepositoryTableViewCell.self, forCellReuseIdentifier: "ZLRepositoryTableViewCell")
-        tableView.contentInset = UIEdgeInsets(top: 5, left: 0, bottom: 0, right: 0)
+        title = "我的仓库"
+        
+        setRefreshViews(types: [.header,.footer])
         
         contentView.addSubview(verticalStackView)
         verticalStackView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.top.left.right.equalToSuperview()
+            make.bottom.equalTo(contentView.safeAreaLayoutGuide.snp.bottom)
         }
+        
         updateHeaderButtons()
     }
     
@@ -56,10 +54,14 @@ class ZLMyRepoListController: ZMTableViewController {
         stackView.distribution = .fill
         stackView.alignment = .fill
         stackView.addArrangedSubview(headerView)
+        tableView.removeFromSuperview()
         stackView.addArrangedSubview(tableView)
         headerView.snp.makeConstraints { make in
             make.height.equalTo(40)
         }
+        
+        tableView.register(ZLRepositoryTableViewCell.self, forCellReuseIdentifier: "ZLRepositoryTableViewCell")
+        tableView.contentInset = UIEdgeInsets(top: 5, left: 0, bottom: 0, right: 0)
         return stackView
     }()
     
@@ -328,43 +330,56 @@ extension ZLMyRepoListController {
 extension ZLMyRepoListController {
     func loadData(loadNewData: Bool) {
         
+        var page = 0
         if loadNewData == true {
             page = 1
         } else {
-            page += 1
+            page = self.page
         }
         
-        ZLGiteeRequest.sharedProvider.requestRest(.oauthUserRepoList(page: page,
-                                                                     per_page: per_page,
-                                                                     sort: sortType.value,
-                                                                     visibility: visibilityType.value,
-                                                                     affiliation: affiliationType.value),
-                                                  completion: { [weak self] (result, model, msg) in
-            guard let self else { return }
+        ZLGiteeRequest
+            .sharedProvider
+            .requestRest(.oauthUserRepoList(page: page,
+                                            per_page: per_page,
+                                            sort: sortType.value,
+                                            visibility: visibilityType.value,
+                                            affiliation: affiliationType.value),
+                         completion: { [weak self] (result, model, msg) in
+                guard let self else { return }
             self.viewStatus = .normal
-            self.endRefreshView(type: .header)
-            self.endRefreshView(type: .footer)
+            self.contentView.dismissProgressHUD()
             if result, let array = model as? [ZLGiteeRepoModel] {
                 let newCellDatas = array.map { ZLRepositoryTableViewCellData(model: $0) }
                 self.zm_addSubViewModels(newCellDatas)
                 if loadNewData {
+                    self.page = 2
                     for sectionData in self.sectionDataArray {
                         sectionData.zm_removeFromSuperViewModel()
                     }
                     let sectionData = ZMBaseTableViewSectionData(zm_sectionID: "", cellDatas: newCellDatas)
                     self.sectionDataArray = [sectionData]
-                    self.tableViewProxy.reloadData()
-                    self.viewStatus = newCellDatas.isEmpty ? .empty : .normal
-                    self.page = 2
+                    
+                    if self.tableView.contentOffset.y > 0 {
+                        self.tableView.zl_scrollToTop(animated: false)
+                        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.2) {
+                            self.tableViewProxy.reloadData()
+                        }
+                    } else {
+                        self.tableViewProxy.reloadData()
+                    }
+                
                 } else {
                     self.sectionDataArray.first?.cellDatas.append(contentsOf: newCellDatas)
                     self.tableViewProxy.reloadData()
                     self.page = self.page + 1
                 }
+                self.viewStatus = tableViewProxy.isEmpty ? .empty : .normal
+                self.endRefreshViews(noMoreData: newCellDatas.count < self.per_page)
                 
             } else {
-                self.viewStatus = self.tableViewProxy.isEmpty ? .error : .normal
-                self.endRefreshView(type: loadNewData ? .header : .footer)
+                self.viewStatus = tableViewProxy.isEmpty ? .error : .normal
+                self.endRefreshViews()
+                ZLToastView.showMessage(msg)
             }
         })
     }

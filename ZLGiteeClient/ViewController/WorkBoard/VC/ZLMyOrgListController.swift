@@ -25,9 +25,7 @@ class ZLMyOrgListController: ZMTableViewController {
     override func setupUI() {
         super.setupUI()
         title = "组织"
-        setRefreshView(type: .header)
-        setRefreshView(type: .footer)
-        hiddenRefreshView(type: .footer)
+        setRefreshViews(types: [.header,.footer])
         tableView.register(ZLOrgTableViewCell.self, forCellReuseIdentifier: "ZLOrgTableViewCell")
         tableView.contentInset = UIEdgeInsets(top: 5, left: 0, bottom: 0, right: 0)
     }
@@ -47,10 +45,11 @@ class ZLMyOrgListController: ZMTableViewController {
 extension ZLMyOrgListController {
     func loadData(loadNewData: Bool) {
         
+        var page = 0
         if loadNewData == true {
             page = 1
         } else {
-            page += 1
+            page = self.page
         }
         
         ZLGiteeRequest.sharedProvider.requestRest(.oauthUserOrgList(page: page, per_page: per_page),
@@ -58,24 +57,23 @@ extension ZLMyOrgListController {
             guard let self else { return }
             if result, let array = model as? [ZLGiteeOrgModel] {
                 let newCellDatas = array.map { ZLOrgTableViewCellData(orgModel: $0)}
+                self.zm_addSubViewModels(newCellDatas)
+                
                 if loadNewData {
                     sectionDataArray.forEach { $0.zm_removeFromSuperViewModel() }
-                    self.zm_addSubViewModels(newCellDatas)
                     let sectionData = ZMBaseTableViewSectionData(zm_sectionID: "", cellDatas: newCellDatas)
                     self.sectionDataArray = [sectionData]
-                    self.tableViewProxy.reloadData()
-                    self.viewStatus = newCellDatas.isEmpty ? .empty : .normal
                     self.page = 2
                 } else {
-                    self.zm_addSubViewModels(newCellDatas)
                     self.sectionDataArray.first?.cellDatas.append(contentsOf: newCellDatas)
-                    self.tableViewProxy.reloadData()
                     self.page = self.page + 1
                 }
-                
+                self.tableViewProxy.reloadData()
+                self.viewStatus = tableViewProxy.isEmpty ? .empty : .normal
+                self.endRefreshViews(noMoreData: newCellDatas.count < per_page)
             } else {
                 self.viewStatus = self.tableViewProxy.isEmpty  ? .error : .normal
-                self.endRefreshView(type: loadNewData ? .header : .footer)
+                self.endRefreshViews()
             }
         })
     }

@@ -43,6 +43,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         IQKeyboardManager.shared().isEnabled = false
         
+        ZMUIConfig.shared.navigationBarTitleFont = .zlMediumFont(withSize: 17)
         ZMUIConfig.shared.navigationBarTitleColor = UIColor.label(withName: "ZLNavigationBarTitleColor")
         ZMUIConfig.shared.navigationBarBackgoundColor = UIColor.back(withName: "ZLNavigationBarBackColor")
         ZMUIConfig.shared.viewControllerBackgoundColor = UIColor.back(withName: "ZLVCBackColor")
